@@ -1,0 +1,166 @@
+/* PaymentPage.css */
+
+/* General Styles */
+.payment-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  .page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+    color: #22225E; /* Dark blue */
+  }
+  
+  /* Layout */
+  .content-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+  }
+  
+  .left-panel {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .right-panel {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f7f7f7;
+  }
+  
+  .patient-info p,
+  .medical-info p,
+  .allergy-section p {
+    margin: 5px 0;
+    color: #22225E; /* Dark blue text */
+  }
+  
+  .medical-info h3,
+  .allergy-section h3 {
+    margin-bottom: 10px;
+    color: #22225E; /* Dark blue text */
+  }
+  
+  .medical-info ul,
+  .allergy-section ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .allergy-section ul li {
+    color: #d0021b; /* Red color for allergies */
+  }
+  
+  /* Table Styles */
+  .payment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+  }
+  
+  .payment-table th,
+  .payment-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    color: #22225E; /* Dark blue text */
+  }
+  
+  /* Payment Summary */
+  .payment-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 100px;
+  }
+  
+  .summary-item {
+    flex: 1;
+    padding: 5px;
+    border: 2px solid;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #22225E;
+  }
+  
+  .summary-item.total {
+    border-color: #22225E; /* Green */
+    color: #007500; /* Green */
+    margin-right: 10px;
+  }
+  
+  .summary-item.installment {
+    border-color: #22225E; /* Red */
+    color: #d0021b; /* Red */
+  }
+  
+  /* Payment Action */
+  .payment-action {
+    display: flex;
+    justify-content: flex-end; /* จัดไอเท็มไปที่ด้านขวา */
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .payment-input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  .pay-button {
+    background-color: #00c4b4; /* Light turquoise */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .pay-button:hover {
+    background-color: #00b2a4; /* Darker turquoise */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .content-container {
+      grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+  
+    .summary-item {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+  
+  .summary-title{
+    font-weight: 700;
+    font-size: 16px;
+    justify-content: flex-start;
+    white-space: nowrap;
+  }
+  .summary-value{
+    text-align: center;
+  }
+  .logocenter{
+    width: 100px; /* กำหนดความกว้างของรูปภาพ */
+    height: auto; /* ปรับความสูงให้สอดคล้องกับความกว้าง เพื่อรักษาสัดส่วน */
+    margin-left: 50%;
+  }
+  

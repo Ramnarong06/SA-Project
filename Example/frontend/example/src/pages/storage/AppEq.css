@@ -1,0 +1,225 @@
+/* src/App.css */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+  }
+  
+  .containerE {
+    display: flex;
+    flex-direction: row;
+    width: 100% ;/* ใช้ 100vw เพื่อให้ครอบคลุมความกว้างทั้งหมดของหน้าจอ */
+  }
+  
+  .sidebar {
+    width: 220px;
+    background: linear-gradient(180deg, #22225E, #42C2C2);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+  
+  .sidebar .logo {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  .sidebar ul.menu li {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .sidebar ul.menu li:hover,
+  .sidebar ul.menu li.active {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .sidebar .logout {
+    padding: 15px  20px;
+    background: #19879e;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .sidebar .logout:hover {
+    background: #d4e0e3;
+  }
+  
+  .headerE {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%; /* ทำให้ส่วน header ครอบคลุมพื้นที่เต็ม */
+  }
+  
+  .headerE-logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .headerE-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .userE-info img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .userE-info .user-name {
+    font-size: 16px;
+  }
+  
+  .main-contentE {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* ทำให้เนื้อหาภายในกึ่งกลางในแนวตั้ง */
+    align-items: center; /* ทำให้เนื้อหาภายในกึ่งกลางในแนวนอน */
+    background-color: #ffffff;
+  }
+
+  .contentE {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* ทำให้เนื้อหาภายในกึ่งกลางทั้งแนวตั้งและแนวนอน */
+    width: 100%; /* ให้เนื้อหาภายในขยายเต็มความกว้างของ main-content */
+  }
+  
+  .contentE-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #00c4cc;
+    text-align: center;
+  }
+  /*ข้างในฟอร์ม*/
+  .form {
+    width: 100%;
+    max-width: 600px;   /*กว้าง*/
+    background-color: #ebebeb;  /*สีพื้นหลังฟอร์ม*/
+    padding: 30px;      /*ขอบ*/
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);  /*เงา*/
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+    flex: 1;
+    padding: 0 20px;
+  }
+  /*ข้างในฟอร์ม*/
+
+  .formh {
+    width: 100%;
+    max-width: 400px;   /*กว้าง*/
+    background-color: #42C2C2;  /*สีพื้นหลังฟอร์ม*/
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);  /*เงา*/
+  }
+
+  
+  label {
+    display: block;
+    font-weight: normal;
+    margin-bottom: 5px;
+  }
+
+  .label1 {
+    color: #ffffff;
+    text-align: center;
+    text-align: middle;
+    font-size: 20px;
+    display: block;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="date"] {
+    width: 100%;
+    padding: 9px;     /*กว้างช่องกรอก*/
+    border: 1px solid #ccc;   /*ขอบช่อง*/
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .form-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 16px;
+  }
+  
+  button.cancel {
+    background-color: #c5c5c5;
+    color: black;
+  }
+  
+  button.reset {
+    background-color: #FED635;
+    color: black;
+  }
+  
+  button.submit {
+    background-color: #42C2C2;
+    color: white;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  .container2 {
+    display: flex;
+    justify-content: right; /* จัดแนวนอน */
+    margin-top: -50px;       /* ขยับขึ้นด้านบน */
+    margin-right: 125px;     /*ห่างจากฝั่งขวา*/
+    height: auto;           /* เต็มความสูงของ viewport */
+  }
+
+  img {
+    max-width: 55%;    /* ปรับขนาดของรูปภาพ */
+  }
