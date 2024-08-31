@@ -2,6 +2,15 @@ import React from 'react';
 import { Form, Input, Button, DatePicker } from 'antd'; // นำเข้าส่วนประกอบที่จำเป็นจาก Ant Design
 import { ClockCircleOutlined } from '@ant-design/icons'; // นำเข้าไอคอนนาฬิกาจาก Ant Design
 import './create.css'; // นำเข้าไฟล์ CSS
+import Schedule from "../../pages/schedule/create.tsx";
+import Schedule2 from "../../pages/schedule/view.tsx";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link,
+    
+  } from "react-router-dom";
 
 const App: React.FC = () => {
   const [form] = Form.useForm(); // สร้าง form instance สำหรับการจัดการฟอร์ม
@@ -83,14 +92,21 @@ const App: React.FC = () => {
 
         {/* ปุ่มยืนยันและยกเลิก */}
         <Form.Item>
+            <Link to="/schedule2">
             <div className="form-actions">
                 <Button type="primary" htmlType="submit" className="submit-button">
-                    ยืนยัน
+                  ยืนยัน
                 </Button>
+                
                 <Button htmlType="button" className="cancel-button">
                     ยกเลิก
                 </Button>
             </div>
+            </Link>
+            <Routes>
+              <Route path="/schedule" element={<Schedule />} />
+              <Route path="/schedule2" element={<Schedule2 />} />
+            </Routes>
         </Form.Item>
       </Form>
     </div>
