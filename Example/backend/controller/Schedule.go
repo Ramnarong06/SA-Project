@@ -2,7 +2,7 @@ package controller
 
 import (
 	"net/http"
-
+	"time"
 	"github.com/gin-gonic/gin"
 	"github.com/tanapon395/sa-67-example/config"
 	"github.com/tanapon395/sa-67-example/entity"
@@ -10,59 +10,60 @@ import (
 
 // POST /users
 func CreateSchedule(c *gin.Context) {
-	var schedule entity.Schedule
+    var requestBody struct {
+        Date        time.Time `json:"Date"`
+        Tel         string    `json:"Tel"`
+        TreatmentID uint      `json:"TreatmentID"`
+        TstatusID   uint      `json:"TstatusID"`
+    }
 
-	// bind เข้าตัวแปร user
-	if err := c.ShouldBindJSON(&schedule); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+    // Bind JSON request เข้าตัวแปร requestBody
+    if err := c.ShouldBindJSON(&requestBody); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
 
-	db := config.DB()
+    db := config.DB()
 
-	// 
-	var patient entity.Patient
-	db.First(&patient, schedule.PatientID)
-	if patient.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "patient not found"})
-		return
-	}
+    // หา Patient โดยใช้หมายเลขโทรศัพท์ (Tel)
+    var patient entity.Patient
+    if err := db.Where("tel = ?", requestBody.Tel).First(&patient).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "patient not found"})
+        return
+    }
 
-	// 
-	var treatment entity.Treatment
-	db.First(&treatment, schedule.TreatmentID)
-	if treatment.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "treatment not found"})
-		return
-	}
+    // หา Treatment ตาม TreatmentID
+    var treatment entity.Treatment
+    if err := db.First(&treatment, requestBody.TreatmentID).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "treatment not found"})
+        return
+    }
 
-	//
-	var tstatus entity.Tstatus
-	db.First(&tstatus, schedule.TstatusID)
-	if tstatus.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "tStatus not found"})
-		return
-	}
+    // หา Tstatus ตาม TstatusID
+    var tstatus entity.Tstatus
+    if err := db.First(&tstatus, requestBody.TstatusID).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "tStatus not found"})
+        return
+    }
 
+    // สร้าง Schedule ใหม่ โดยใช้ข้อมูลที่ได้จากการหา Patient และอื่นๆ
+    s := entity.Schedule{
+        Date:        requestBody.Date,
+        PatientID:   patient.ID,
+        Patient:     patient,
+        TreatmentID: requestBody.TreatmentID,
+        Treatment:   treatment,
+        TstatusID:   requestBody.TstatusID,
+        Tstatus:     tstatus,
+    }
 
-	// 
-	s := entity.Schedule{
-		Date:			schedule.Date,
-		PatientID:		schedule.PatientID,
-		Patient:		patient,
-		TreatmentID:	schedule.TreatmentID,
-		Treatment:		treatment,
-		TstatusID: 		schedule.TstatusID,	
-		Tstatus:		tstatus,		
-	}
+    // บันทึกข้อมูล Schedule ใหม่ลงในฐานข้อมูล
+    if err := db.Create(&s).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
 
-	// บันทึก
-	if err := db.Create(&s).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusCreated, gin.H{"message": "Created success", "data": s})
+    c.JSON(http.StatusCreated, gin.H{"message": "Created success", "data": s})
 }
 
 // GET /user/:id

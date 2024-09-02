@@ -42,6 +42,26 @@ async function GetGenders() {
   return res;
 }
 
+async function GetTreatment() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/treatments`, requestOptions)
+    .then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 async function DeleteUserByID(id: Number | undefined) {
   const requestOptions = {
     method: "DELETE"
@@ -121,5 +141,6 @@ export {
   GetGenders,
   DeleteUserByID,
   GetUserById,
-  UpdateUser
+  UpdateUser,
+  GetTreatment
 };

@@ -40,6 +40,7 @@ func main() {
 
 		// Gender Routes
 		router.GET("/genders", controller.ListGenders)
+		router.GET("/treatments", controller.ListTreatment)
 	}
 
 	r.GET("/", func(c *gin.Context) {

@@ -31,7 +31,7 @@ import logo2 from "./assets/TestLogo.png";
 
 import Dashboard from "./pages/dashboard";
 import Customer from "./pages/customer";
-import Test from "./pages/Test";
+//import Test from "./pages/Test";
 import Storage from "./pages/storage/AddEq";
 import Schedule from "./pages/schedule/create.tsx";
 import Schedule2 from "./pages/schedule/view.tsx";
@@ -96,7 +96,7 @@ const items: MenuItem[] = [
       {
         key: 'employee',
         label: (
-          <Link to="/test">
+          <Link to="/customer">
             พนักงาน
           </Link>
         ),
@@ -309,7 +309,7 @@ const App: React.FC = () => {
                 <Route path="/customer" element={<Customer />} />
                 <Route path="/customer/create" element={<CustomerCreate />} />
                 <Route path="/customer/edit/:id" element={<CustomerEdit />} />
-                <Route path="/test" element={<Test />} />
+                
                 <Route path="/storage" element={<Storage />} />
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/schedule" element={<Schedule />} />

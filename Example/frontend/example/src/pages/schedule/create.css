@@ -69,6 +69,12 @@ h2 {
   margin-right: 0; /* กำจัดระยะห่างด้านขวาของฟิลด์สุดท้ายในแถว */
 }
 
+.ant-picker {
+  width: Auto; /* ตั้งค่าให้ DatePicker มีความกว้างเต็มที่ */
+  max-width: 1000px; /* กำหนดความกว้างสูงสุดเพื่อให้สอดคล้องกับ input อื่นๆ */
+  padding: 8px; /* เพิ่ม padding เพื่อให้เท่ากับ input อื่นๆ */
+}
+
 .patient-status {
   font-family: 'Noto Sans Thai';
   margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของลิงก์ผู้ป่วยนอก */
