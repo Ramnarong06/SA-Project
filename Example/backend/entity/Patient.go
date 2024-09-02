@@ -8,7 +8,7 @@ type Patient struct {
 	gorm.Model
 	FirstName 		string
 	LastName 		string
-	Birthday 		time.Time `gorm:"type:DATE;not null;"`
+	Birthday 		time.Time 
 	Weight 			int
 	Height 			int
 	Sex 			string
@@ -17,5 +17,5 @@ type Patient struct {
 	Chronicdisease 	string
 	Tel 			string
 	
-	Schedules [] Schedule `gorm:"foreignKey:PatientID"`
+	Schedules 		[]Schedule `gorm:"foreignKey:PatientID"`
 }

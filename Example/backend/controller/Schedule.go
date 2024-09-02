@@ -2,71 +2,90 @@ package controller
 
 import (
 	"net/http"
-	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/tanapon395/sa-67-example/config"
 	"github.com/tanapon395/sa-67-example/entity"
 )
 
-// POST /schedules
+// POST /users
 func CreateSchedule(c *gin.Context) {
-	var input struct {
-		FirstName   string `json:"first_name" binding:"required"`
-		LastName    string `json:"last_name" binding:"required"`
-		Date        time.Time `json:"date" binding:"required"`
-		TreatmentID uint   `json:"treatment_id" binding:"required"`
-	}
-	
-	if err := c.ShouldBindJSON(&input); err != nil {
+	var schedule entity.Schedule
+
+	// bind เข้าตัวแปร user
+	if err := c.ShouldBindJSON(&schedule); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	db := config.DB()
 
-	// ค้นหา Patient ด้วย FirstName และ LastName
+	// 
 	var patient entity.Patient
-	if err := db.Where("first_name = ? AND last_name = ?", input.FirstName, input.LastName).First(&patient).Error; err != nil {
+	db.First(&patient, schedule.PatientID)
+	if patient.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "patient not found"})
 		return
 	}
 
-	// ค้นหา Treatment ด้วย ID
+	// 
 	var treatment entity.Treatment
-	if err := db.First(&treatment, input.TreatmentID).Error; err != nil {
+	db.First(&treatment, schedule.TreatmentID)
+	if treatment.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "treatment not found"})
 		return
 	}
-	
 
-	// สร้าง Schedule
-	s := entity.Schedule{
-		Date:        input.Date,
-		PatientID:   patient.ID,
-		TreatmentID: treatment.ID,
-		Status:      "Pending", // สถานะเริ่มต้นเป็น Pending
-	}
-
-	// บันทึกลงฐานข้อมูล
-	if err := db.Create(&s).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	//
+	var tstatus entity.Tstatus
+	db.First(&tstatus, schedule.TstatusID)
+	if tstatus.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "tStatus not found"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "Schedule created successfully", "data": s})
+
+	// 
+	s := entity.Schedule{
+		Date:			schedule.Date,
+		PatientID:		schedule.PatientID,
+		Patient:		patient,
+		TreatmentID:	schedule.TreatmentID,
+		Treatment:		treatment,
+		TstatusID: 		schedule.TstatusID,	
+		Tstatus:		tstatus,		
+	}
+
+	// บันทึก
+	if err := db.Create(&s).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"message": "Created success", "data": s})
 }
 
-// GET /schedule/:id
+// GET /user/:id
 func GetSchedule(c *gin.Context) {
 	ID := c.Param("id")
 	var schedule entity.Schedule
 
 	db := config.DB()
-	results := db.Preload("Patient").Preload("Treatment").First(&schedule, ID)
-	if results.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+	//
+	results1 := db.Preload("Treatment").First(&schedule, ID)
+	if results1.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results1.Error.Error()})
 		return
 	}
+	//
+	results2 := db.Preload("Tstatus").First(&schedule, ID)
+	if results2.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results2.Error.Error()})
+		return
+	}
+	//
+
+
 	if schedule.ID == 0 {
 		c.JSON(http.StatusNoContent, gin.H{})
 		return
@@ -74,21 +93,29 @@ func GetSchedule(c *gin.Context) {
 	c.JSON(http.StatusOK, schedule)
 }
 
-// GET /schedules
+// GET /users
 func ListSchedules(c *gin.Context) {
-	var schedules []entity.Schedule
+
+	var schedule []entity.Schedule
 
 	db := config.DB()
-	results := db.Preload("Patient").Preload("Treatment").Find(&schedules)
-	if results.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+	results1 := db.Preload("Treatment").Find(&schedule)
+	if results1.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results1.Error.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, schedules)
+	//
+	results2 := db.Preload("Tstatus").Find(&schedule)
+	if results2.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results2.Error.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, schedule)
 }
 
-// DELETE /schedules/:id
+//
 func DeleteSchedule(c *gin.Context) {
+
 	id := c.Param("id")
 	db := config.DB()
 	if tx := db.Exec("DELETE FROM schedules WHERE id = ?", id); tx.RowsAffected == 0 {
@@ -96,9 +123,10 @@ func DeleteSchedule(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Deleted successful"})
+
 }
 
-// PATCH /schedules/:id
+// PATCH /users
 func UpdateSchedule(c *gin.Context) {
 	var schedule entity.Schedule
 

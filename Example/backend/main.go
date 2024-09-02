@@ -31,7 +31,7 @@ func main() {
 		router.PATCH("/users", controller.UpdateUser)
 		router.DELETE("/users/:id", controller.DeleteUser)
 
-		// Schedule Routes
+		//Schedule Routes
 		router.GET("/schedules", controller.ListSchedules)
 		router.GET("/schedule/:id", controller.GetSchedule)
 		router.POST("/schedules", controller.CreateSchedule)

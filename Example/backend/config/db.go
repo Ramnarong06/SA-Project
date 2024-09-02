@@ -23,11 +23,11 @@ func ConnectionDB() {
     fmt.Println("connected database")
     db = database
 }
-const (
-    DateTime = "2006-01-02 15:04:05"
-    DateOnly = "2006-01-02"
-)
 
+func getDOB(year, month, day int) time.Time {
+    dob := time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
+    return dob
+}
 
 func SetupDatabase() {
 
@@ -37,24 +37,32 @@ func SetupDatabase() {
 		&entity.Schedule{},
 		&entity.Patient{},
 		&entity.Treatment{},
+		&entity.Tstatus{},
 	)
-
+	// Gender
 	GenderMale := entity.Gender{Name: "Male"}
 	GenderFemale := entity.Gender{Name: "Female"}
 
 	db.FirstOrCreate(&GenderMale, &entity.Gender{Name: "Male"})
 	db.FirstOrCreate(&GenderFemale, &entity.Gender{Name: "Female"})
 
+	// Treatment
     TreatmentCleaning := entity.Treatment{TreatmentName: "ขูดหินปูน"}
+	TreatmentFillTeeth := entity.Treatment{TreatmentName: "อุดฟัน"}
+	TreatmentPullTooth := entity.Treatment{TreatmentName: "ถอนฟัน"}
+
     db.FirstOrCreate(&TreatmentCleaning, &entity.Treatment{TreatmentName: "ขูดหินปูน"})
-
-    TreatmentFillTeeth := entity.Treatment{TreatmentName: "อุดฟัน"}
     db.FirstOrCreate(&TreatmentFillTeeth, &entity.Treatment{TreatmentName: "อุดฟัน"})
-
-    TreatmentPullTooth := entity.Treatment{TreatmentName: "ถอนฟัน"}
     db.FirstOrCreate(&TreatmentPullTooth, &entity.Treatment{TreatmentName: "ถอนฟัน"})
 
+	// TStatus
+	TStatusPending := entity.Tstatus{TStatusName: "Pending"}
+	TStatusDone := entity.Tstatus{TStatusName: "Done"}
 
+	db.FirstOrCreate(&TStatusPending, &entity.Tstatus{TStatusName: "Pending"})
+	db.FirstOrCreate(&TStatusDone, &entity.Tstatus{TStatusName: "Done"})
+
+	// Create User
 	hashedPassword, _ := HashPassword("123456")
 	BirthDay, _ := time.Parse("2006-01-02", "1988-11-12")
 	User := &entity.User{
@@ -69,14 +77,23 @@ func SetupDatabase() {
 		Email: "sa@gmail.com",
 	})
 	
+	// const (
+	// 	//TimeFormat1 to format date into
+	// 	TimeFormat1 = "2006-01-02"
+	// 	//TimeFormat2 Other format to format date time
+	// 	TimeFormat2 = "January 02, 2006"
+	// )
 	
-	BirthDay2 := time.Date(2000, time.January, 2, 0, 0, 0, 0, time.UTC)
-	BirthDay2.Format("2006-02-01")
+
+	// Create Patient
+	//BirthDay2 := time.Date(2000, time.January, 2, 0, 0, 0, 0, time.UTC)
+	dob := getDOB(2011, 4, 2)
+	//BirthDay = dob.Format(TimeFormat1);
 
 	Patient := &entity.Patient{
 		FirstName: 		"นรชาติ",
 		LastName:  		"ติวางวาย",
-		Birthday:   	BirthDay2,
+		Birthday:   	dob,
 		Weight:   		66,
 		Height:  		166,
 		Sex:  			"Male",
@@ -89,20 +106,20 @@ func SetupDatabase() {
 		FirstName: "นรชาติ",
 		LastName:  "ติวางวาย",
 	})
-
+ 
+	// Create Schedule
     currentTime := time.Now()
-	
     Schedule := &entity.Schedule{
         Date:       	currentTime,
         PatientID:  	1,
         TreatmentID: 	1,
-        Status:     	"Pending",
+        TstatusID:     	1,
     }
 
     db.FirstOrCreate(&Schedule, entity.Schedule{
-        Date:       currentTime,
-        PatientID:  1,
-        TreatmentID: 1,
-        Status:     "Pending",
+        Date:       	currentTime,
+        PatientID:  	1,
+        TreatmentID: 	1,
+        TstatusID:     	1,
     })
 }
