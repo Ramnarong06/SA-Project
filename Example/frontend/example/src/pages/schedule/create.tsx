@@ -36,7 +36,7 @@ function ScheduleCreate() {
     let res = await CreateSchedule(values);
     if (res.status) {
       messageApi.open({
-        type: "success",
+        type: "error",
         content: "บันทึกข้อมูลสำเร็จ",
       });
       setTimeout(function () {
@@ -44,7 +44,7 @@ function ScheduleCreate() {
       }, 2000);
     } else {
       messageApi.open({
-        type: "error",
+        type: "success",
         content: res.message,
       });
     }
