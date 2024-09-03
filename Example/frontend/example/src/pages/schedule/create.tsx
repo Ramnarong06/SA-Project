@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, DatePicker, Select } from "antd";
+import { Form, Input, Button, DatePicker, Select, message } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import "./create.css";
 import { TreatmentsInterface } from "../../interfaces/ITreatment";
-import { GetTreatment } from "../../services/https";
+
+import { SchedulesInterface } from "../../interfaces/ISchedule";
+import { ImageUpload } from "../../interfaces/IUpload";
+import { GetTreatment,CreateUser } from "../../services/https";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Schedule from "../../pages/schedule/create";
 import Schedule2 from "../../pages/schedule/view";
+import { CreateSchedule } from "../../services/https";
 
 const { Option } = Select;
 
@@ -14,7 +18,9 @@ function ScheduleCreate() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [treatments, setTreatments] = useState<TreatmentsInterface[]>([]);
-
+  const [profile, setProfile] = useState<ImageUpload>();
+  const [messageApi, contextHolder] = message.useMessage();
+  
   const getTreatment = async () => {
     try {
       let res = await GetTreatment();
@@ -26,14 +32,28 @@ function ScheduleCreate() {
     }
   };
 
+  const onFinish = async (values: SchedulesInterface) => {
+    let res = await CreateSchedule(values);
+    if (res.status) {
+      messageApi.open({
+        type: "success",
+        content: "บันทึกข้อมูลสำเร็จ",
+      });
+      setTimeout(function () {
+        navigate("/schedule2");
+      }, 2000);
+    } else {
+      messageApi.open({
+        type: "error",
+        content: res.message,
+      });
+    }
+  };
+
   useEffect(() => {
     getTreatment();
   }, []);
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-    navigate("/schedule2");
-  };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
@@ -41,6 +61,7 @@ function ScheduleCreate() {
 
   return (
     <div className="appointment-form">
+      {contextHolder}
       <div className="header">
         <ClockCircleOutlined className="icon" />
         <h2>นัดหมายผู้ป่วยใน</h2>
@@ -69,7 +90,7 @@ function ScheduleCreate() {
             rules={[{ required: true, message: "กรุณาเลือกการรักษา!" }]}
             style={{ width: "100%" }}
           >
-            <Select
+            <Select 
               placeholder="เลือกการรักษา"
               allowClear
               style={{ width: "100%", height: "40px", lineHeight: "40px" }}
@@ -86,7 +107,7 @@ function ScheduleCreate() {
         <div className="form-row">
           <Form.Item
             label="วันนัดหมาย"
-            name="appointmentDate"
+            name="Date"
             rules={[{ required: true, message: "กรุณาเลือกวันนัดหมาย!" }]}
             style={{ width: "100%" }}
           >

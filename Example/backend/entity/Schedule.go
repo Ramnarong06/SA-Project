@@ -19,3 +19,9 @@ type Schedule struct {
 	TstatusID   	uint
 	Tstatus			Tstatus `gorm:"foriegnKey:TStatusID"`
 }
+
+func (s *Schedule) BeforeSave(tx *gorm.DB) (err error) {
+    // Set time to 00:00:00
+    s.Date = time.Date(s.Date.Year(), s.Date.Month(), s.Date.Day(), 0, 0, 0, 0, s.Date.Location())
+    return
+}

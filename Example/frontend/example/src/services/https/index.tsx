@@ -1,5 +1,5 @@
 import { UsersInterface } from "../../interfaces/IUser";
-
+import { SchedulesInterface } from "../../interfaces/ISchedule";
 const apiUrl = "http://localhost:8000";
 
 async function GetUsers() {
@@ -116,6 +116,25 @@ async function CreateUser(data: UsersInterface) {
   return res;
 }
 
+async function CreateSchedule(data: SchedulesInterface) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+
+  let res = await fetch(`${apiUrl}/schedules`, requestOptions)
+    .then((res) => {
+      if (res.status == 201) {
+        return res.json();
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 async function UpdateUser(data: UsersInterface) {
   const requestOptions = {
     method: "PATCH",
@@ -142,5 +161,6 @@ export {
   DeleteUserByID,
   GetUserById,
   UpdateUser,
-  GetTreatment
+  GetTreatment,
+  CreateSchedule
 };

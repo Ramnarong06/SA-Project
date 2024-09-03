@@ -26,7 +26,7 @@ function CustomerCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [genders, setGenders] = useState<GendersInterface[]>([]);
   const [profile, setProfile] = useState<ImageUpload>();
-
+  
   const onFinish = async (values: UsersInterface) => {
     let res = await CreateUser(values);
     if (res.status) {

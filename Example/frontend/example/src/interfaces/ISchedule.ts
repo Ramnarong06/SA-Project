@@ -4,5 +4,5 @@ export interface SchedulesInterface {
     Date?:          string;          
     PatientID?:     number;     
     TreatmentID?:   number;   
-    Status?:        string;        
+    TstatusID?:        string;        
 }

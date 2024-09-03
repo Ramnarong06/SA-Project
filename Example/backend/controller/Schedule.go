@@ -40,21 +40,23 @@ func CreateSchedule(c *gin.Context) {
     }
 
     // หา Tstatus ตาม TstatusID
-    var tstatus entity.Tstatus
-    if err := db.First(&tstatus, requestBody.TstatusID).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "tStatus not found"})
-        return
-    }
+    // var tstatus entity.Tstatus
+    // if err := db.First(&tstatus, requestBody.TstatusID).Error; err != nil {
+    //     c.JSON(http.StatusNotFound, gin.H{"error": "tStatus not found"})
+    //     return
+    // }
 
     // สร้าง Schedule ใหม่ โดยใช้ข้อมูลที่ได้จากการหา Patient และอื่นๆ
     s := entity.Schedule{
-        Date:        requestBody.Date,
-        PatientID:   patient.ID,
-        Patient:     patient,
-        TreatmentID: requestBody.TreatmentID,
-        Treatment:   treatment,
-        TstatusID:   requestBody.TstatusID,
-        Tstatus:     tstatus,
+        Date:        	requestBody.Date,
+        PatientID:   	patient.ID,
+        Patient:     	patient,
+        TreatmentID: 	requestBody.TreatmentID,
+        Treatment:   	treatment,
+        // TstatusID:   requestBody.TstatusID,
+        // Tstatus:     tstatus,
+		TstatusID:		1,
+		// Tstatus:     	tstatus,
     }
 
     // บันทึกข้อมูล Schedule ใหม่ลงในฐานข้อมูล
