@@ -40,7 +40,7 @@ function ScheduleCreate() {
         content: "บันทึกข้อมูลสำเร็จ",
       });
       setTimeout(function () {
-        navigate("/schedule2");
+        navigate("/schedule");
       }, 2000);
     } else {
       messageApi.open({
