@@ -42,6 +42,7 @@ func main() {
 		router.GET("/genders", controller.ListGenders)
 		router.GET("/treatments", controller.ListTreatment)
 		router.GET("/tstatuss", controller.ListTstatuss)
+		router.GET("/getschedulebydate/:date", controller.GetScheduleByDate)
 	}
 
 	r.GET("/", func(c *gin.Context) {

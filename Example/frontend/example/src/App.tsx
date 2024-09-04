@@ -35,7 +35,7 @@ import Customer from "./pages/customer";
 import Storage from "./pages/storage/AddEq";
 import Schedule from "./pages/schedule/create.tsx";
 import Schedule2 from "./pages/schedule/view.tsx";
-import Payment from "./pages/payment/PaymentPage.tsx";
+
 import CustomerCreate from "./pages/customer/create";
 import CustomerEdit from "./pages/customer/edit";
 
@@ -147,7 +147,7 @@ const items: MenuItem[] = [
       {
         key: 'payment',
         label: (
-          <Link to="/payment">
+          <Link to="000">
             ชำระเงิน
           </Link>
         ),
@@ -311,7 +311,7 @@ const App: React.FC = () => {
                 <Route path="/customer/edit/:id" element={<CustomerEdit />} />
                 
                 <Route path="/storage" element={<Storage />} />
-                <Route path="/payment" element={<Payment />} />
+                
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/schedule2" element={<Schedule2 />} />
               </Routes>

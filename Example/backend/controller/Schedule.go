@@ -155,3 +155,43 @@ func UpdateSchedule(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Updated successful"})
 }
+
+// GET /schedules/:date
+
+func GetScheduleByDate(c *gin.Context) {
+    dateParam := c.Param("date")
+
+    // แปลงค่า dateParam เป็นรูปแบบ time.Time
+    date, err := time.Parse("2006-01-02", dateParam)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error":         "Invalid date format. Use YYYY-MM-DD",
+            "provided_date": dateParam,
+        })
+        return
+    }
+
+    // ลบวันที่ไป 1 วัน
+    previousDate := date.AddDate(0, 0, -1)
+
+    var schedules []entity.Schedule
+
+    db := config.DB()
+    // Query หาข้อมูล Schedule โดยเทียบเฉพาะวันที่ที่ลบไป 1 วัน
+    results := db.Preload("Treatment").Preload("Tstatus").
+        Where("DATE(date) = ?", previousDate.Format("2006-01-02")).Find(&schedules)
+    
+    if results.Error != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+        return
+    }
+
+    if len(schedules) == 0 {
+        c.JSON(http.StatusNotFound, gin.H{"message": "No schedules found for the provided date"})
+        return
+    }
+
+    c.JSON(http.StatusOK, schedules)
+}
+
+

@@ -19,16 +19,16 @@ const ScheduleView: React.FC = () => {
 
   // ตัวอย่างข้อมูลการนัดหมาย สามารถปรับหรือเชื่อมโยงกับฐานข้อมูลได้ตามความต้องการ
   const appointments = [
-    { name: 'ขูดหินปูน', doctor: 'นายแพทย์ ธนกร' },
-    { name: 'ขูดหินปูน', doctor: 'นายแพทย์ นันทเดช' },
-    { name: 'อุดฟัน', doctor: 'นายแพทย์ ธีรธรรม' },
-    { name: 'อุดฟัน', doctor: 'นายแพทย์ ศิริพจน์' },
-    { name: 'ขูดหินปูน', doctor: 'นายแพทย์ สุรพงษ์' },
-    { name: 'ขูดหินปูน', doctor: 'นายแพทย์ ธนา' },
-    { name: 'อุดฟัน', doctor: 'นายแพทย์ สมชาย' },
-    { name: 'ขูดหินปูน', doctor: 'นายแพทย์ วิชัย' },
-    { name: 'ขูดหินปูน', doctor: 'นายแพทย์ วิโรจน์' },
-    { name: 'อุดฟัน', doctor: 'นายแพทย์ สุชาติ' },
+    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ ธนกร' },
+    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ นันทเดช' },
+    { TreatmentName: 'อุดฟัน', FirstName: 'นายแพทย์ ธีรธรรม' },
+    { TreatmentName: 'อุดฟัน', FirstName: 'นายแพทย์ ศิริพจน์' },
+    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ สุรพงษ์' },
+    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ ธนา' },
+    { TreatmentName: 'อุดฟัน', FirstName: 'นายแพทย์ สมชาย' },
+    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ วิชัย' },
+    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ วิโรจน์' },
+    { TreatmentName: 'อุดฟัน', FirstName: 'นายแพทย์ สุชาติ' },
   ];
 
   // ฟังก์ชันที่ถูกเรียกเมื่อมีการเลือกวันที่จากปฏิทิน
@@ -69,8 +69,8 @@ const ScheduleView: React.FC = () => {
                 ]}
               >
                 <List.Item.Meta
-                  title={item.name}  // ชื่อรายการนัดหมาย
-                  description={item.doctor}  // ชื่อแพทย์ผู้ดูแล
+                  title={item.TreatmentName}  // ชื่อรายการนัดหมาย
+                  description={item.FirstName}  // ชื่อแพทย์ผู้ดูแล
                 />
               </List.Item>
             )}

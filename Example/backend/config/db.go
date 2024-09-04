@@ -108,7 +108,7 @@ func SetupDatabase() {
 	})
  
 	// Create Schedule
-    currentTime := time.Now()
+    currentTime := time.Now().AddDate(0, 0, -1)
     Schedule := &entity.Schedule{
         Date:       	currentTime,
         PatientID:  	1,
