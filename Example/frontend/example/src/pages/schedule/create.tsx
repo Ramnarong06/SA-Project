@@ -9,7 +9,7 @@ import { ImageUpload } from "../../interfaces/IUpload";
 import { GetTreatment,CreateUser } from "../../services/https";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Schedule from "../../pages/schedule/create";
-import Schedule2 from "../../pages/schedule/view";
+import Schedule2 from "../../pages/schedule/view.tsx";
 import { CreateSchedule } from "../../services/https";
 
 const { Option } = Select;

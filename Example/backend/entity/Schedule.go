@@ -21,7 +21,7 @@ type Schedule struct {
 }
 
 func (s *Schedule) BeforeSave(tx *gorm.DB) (err error) {
-    // Set time to 00:00:00
-    s.Date = time.Date(s.Date.Year(), s.Date.Month(), s.Date.Day()+1, 0, 0, 0, 0, s.Date.Location())
+    // Set time to 23:59:00
+    s.Date = time.Date(s.Date.Year(), s.Date.Month(), s.Date.Day(), 23, 59, 0, 0, s.Date.Location())
     return
 }

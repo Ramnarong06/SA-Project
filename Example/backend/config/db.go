@@ -106,6 +106,24 @@ func SetupDatabase() {
 		FirstName: "นรชาติ",
 		LastName:  "ติวางวาย",
 	})
+
+	Patient2 := &entity.Patient{
+		FirstName: 		"รามณรงค์",
+		LastName:  		"พันธเดช",
+		Birthday:   	dob,
+		Weight:   		66,
+		Height:  		166,
+		Sex:  			"Male",
+		BloodType:		"A",
+		DrugAllergy:	"-",
+		Chronicdisease:	"-",
+		Tel:			"1111111111",
+	}
+	db.FirstOrCreate(&Patient2, entity.Patient{
+		FirstName: "รามณรงค์",
+		LastName:  "พันธเดช",
+	})
+	
  
 	// Create Schedule
     currentTime := time.Now().AddDate(0, 0, -1)

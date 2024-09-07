@@ -8,7 +8,6 @@ import (
 	"github.com/tanapon395/sa-67-example/entity"
 )
 
-// GET /genders
 func ListPatients(c *gin.Context) {
 	var patient []entity.Patient
 

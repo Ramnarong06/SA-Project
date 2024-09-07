@@ -43,6 +43,7 @@ func main() {
 		router.GET("/treatments", controller.ListTreatment)
 		router.GET("/tstatuss", controller.ListTstatuss)
 		router.GET("/getschedulebydate/:date", controller.GetScheduleByDate)
+		router.GET("/updateschedulestatus/:date", controller.UpdateScheduleStatus)
 	}
 
 	r.GET("/", func(c *gin.Context) {

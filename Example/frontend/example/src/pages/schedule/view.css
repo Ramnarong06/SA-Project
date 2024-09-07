@@ -56,7 +56,8 @@
     display: flex;
     justify-content: flex-end; /* หรือ right ก็ได้ */
     margin-right: 20px; /* ปรับค่าตามต้องการ */
-    
+    margin-bottom: 20px; /* เพิ่ม margin ด้านล่าง */
+    padding-bottom: 10px; /* หรือเพิ่ม padding ด้านล่าง */
 }
 
 .add-button {
