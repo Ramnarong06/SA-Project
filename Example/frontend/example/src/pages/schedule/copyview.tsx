@@ -34,13 +34,7 @@ const ScheduleView: React.FC = () => {
     }
   }, [selectedDate]);
 
-  // ฟังก์ชันที่ถูกเรียกเมื่อกด checkbox เพื่อเปลี่ยนสถานะ
-  const handleStatusChange = async (appointmentId: number) => {
-    const success = await UpdateScheduleStatus(appointmentId, 2); // เปลี่ยน TstatusID เป็น 2
-    if (success) {
-      fetchAppointments(selectedDate!); // ดึงข้อมูลใหม่หลังอัปเดตสำเร็จ
-    }
-  };
+  
 
   const onDateChange = (date: any) => {
     setSelectedDate(date?.toDate());
@@ -67,11 +61,12 @@ const ScheduleView: React.FC = () => {
           <List
             itemLayout="horizontal"
             dataSource={appointments}
+            
             renderItem={(item) => (
               <List.Item
                 actions={[
                   <Button icon={<EditOutlined />} key="edit" />,
-                  <Checkbox key="status" onChange={() => handleStatusChange(item.ID)} />  // เรียก handleStatusChange เมื่อกด checkbox
+                  <Checkbox key="status" />  
                 ]}
               >
                 <List.Item.Meta

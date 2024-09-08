@@ -1,6 +1,7 @@
 import { UsersInterface } from "../../interfaces/IUser";
 import { SchedulesInterface } from "../../interfaces/ISchedule";
 const apiUrl = "http://localhost:8000";
+import axios from 'axios';
 
 async function GetUsers() {
   const requestOptions = {
@@ -174,20 +175,49 @@ async function UpdateUser(data: UsersInterface) {
   return res;
 }
 
-async function UpdateScheduleStatus(scheduleId: number, statusId: number) {
+async function UpdateSchedule(data: SchedulesInterface) {
   const requestOptions = {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ TstatusID: statusId }),  // ส่งข้อมูล TstatusID ใหม่
+    body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/schedules/${scheduleId}`, requestOptions)
+  let res = await fetch(`${apiUrl}/updateschedules`, requestOptions)
     .then((res) => {
-      return res.status === 200;
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
     });
 
   return res;
 }
+
+// async function UpdateScheduleStatus(scheduleId: number, statusId: number) {
+//   const requestOptions = {
+//     method: "PATCH",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ TstatusID: statusId }),  // ส่งข้อมูล TstatusID ใหม่
+//   };
+
+//   let res = await fetch(`${apiUrl}/schedules/${scheduleId}`, requestOptions)
+//     .then((res) => {
+//       return res.status === 200;
+//     });
+
+//   return res;
+// }
+const UpdateScheduleStatus = async (scheduleId: number, newStatus: number) => {
+  try {
+    const response = await axios.patch(`/updateschedulestatus/${scheduleId}`, { TstatusID: newStatus }); // แก้ URL ให้ถูกต้อง
+    return response.status === 200;
+  } catch (error) {
+    console.error('Error updating schedule status:', error);
+    return false;
+  }
+};
+
 
 export {
   GetUsers,
@@ -200,4 +230,5 @@ export {
   CreateSchedule,
   GetSchedulesByDate,
   UpdateScheduleStatus,
+  UpdateSchedule,
 };

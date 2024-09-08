@@ -35,7 +35,8 @@ func main() {
 		router.GET("/schedules", controller.ListSchedules)
 		router.GET("/schedule/:id", controller.GetSchedule)
 		router.POST("/schedules", controller.CreateSchedule)
-		router.PATCH("/schedules/:id", controller.UpdateSchedule)
+		router.PATCH("/updateschedules", controller.UpdateSchedule)
+		//router.PATCH("/schedules/:id", controller.UpdateSchedule)
 		router.DELETE("/schedules/:id", controller.DeleteSchedule)
 
 		// Gender Routes
@@ -43,7 +44,7 @@ func main() {
 		router.GET("/treatments", controller.ListTreatment)
 		router.GET("/tstatuss", controller.ListTstatuss)
 		router.GET("/getschedulebydate/:date", controller.GetScheduleByDate)
-		router.PATCH("/updateschedulestatus/:date", controller.UpdateScheduleStatus)
+		router.PATCH("/updateschedulestatus/:id", controller.UpdateScheduleStatus)
 	}
 
 	r.GET("/", func(c *gin.Context) {
