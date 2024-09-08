@@ -173,6 +173,7 @@ async function UpdateUser(data: UsersInterface) {
 
   return res;
 }
+
 async function UpdateScheduleStatus(scheduleId: number, statusId: number) {
   const requestOptions = {
     method: "PATCH",
@@ -187,6 +188,7 @@ async function UpdateScheduleStatus(scheduleId: number, statusId: number) {
 
   return res;
 }
+
 export {
   GetUsers,
   CreateUser,

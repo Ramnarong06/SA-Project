@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, List, Button, Checkbox } from 'antd';
 import { EditOutlined, PlusOutlined, CalendarOutlined } from '@ant-design/icons';
 import './view.css';
@@ -11,71 +11,79 @@ import {
     Link,
     
   } from "react-router-dom";
+import { GetSchedulesByDate, UpdateScheduleStatus } from '../../services/https/index.tsx';
 
 
 const ScheduleView: React.FC = () => {
-  // สร้าง state สำหรับเก็บวันที่ที่ผู้ใช้เลือก
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [appointments, setAppointments] = useState<any[]>([]);
 
-  // ตัวอย่างข้อมูลการนัดหมาย สามารถปรับหรือเชื่อมโยงกับฐานข้อมูลได้ตามความต้องการ
-  const appointments = [
-    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ ธนกร' },
-    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ นันทเดช' },
-    { TreatmentName: 'อุดฟัน', FirstName: 'นายแพทย์ ธีรธรรม' },
-    { TreatmentName: 'อุดฟัน', FirstName: 'นายแพทย์ ศิริพจน์' },
-    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ สุรพงษ์' },
-    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ ธนา' },
-    { TreatmentName: 'อุดฟัน', FirstName: 'นายแพทย์ สมชาย' },
-    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ วิชัย' },
-    { TreatmentName: 'ขูดหินปูน', FirstName: 'นายแพทย์ วิโรจน์' },
-    { TreatmentName: 'อุดฟัน', FirstName: 'นายแพทย์ สุชาติ' },
-  ];
+  const fetchAppointments = async (date: Date) => {
+    const formattedDate = date.toISOString().split('T')[0];  // แปลงวันที่เป็น YYYY-MM-DD
+    const data = await GetSchedulesByDate(formattedDate);     // เรียก API
+    if (data && data.length > 0) {
+      setAppointments(data);  // อัปเดตข้อมูลนัดหมาย
+    } else {
+      setAppointments([]);    // ถ้าไม่มีข้อมูลนัดหมาย ให้ล้าง appointments
+    }
+  };
 
-  // ฟังก์ชันที่ถูกเรียกเมื่อมีการเลือกวันที่จากปฏิทิน
+  useEffect(() => {
+    if (selectedDate) {
+      fetchAppointments(selectedDate);
+    }
+  }, [selectedDate]);
+
+  // ฟังก์ชันที่ถูกเรียกเมื่อกด checkbox เพื่อเปลี่ยนสถานะ
+  const handleStatusChange = async (appointmentId: number) => {
+    const success = await UpdateScheduleStatus(appointmentId, 2); // เปลี่ยน TstatusID เป็น 2
+    if (success) {
+      fetchAppointments(selectedDate!); // ดึงข้อมูลใหม่หลังอัปเดตสำเร็จ
+    }
+  };
+
   const onDateChange = (date: any) => {
-    setSelectedDate(date); // อัปเดตวันที่ที่เลือก
+    setSelectedDate(date?.toDate());
   };
 
   return (
     <div>
-      {/* ส่วนของหัวข้อ "Schedule" ที่มีไอคอน อยู่นอกสี่เหลี่ยมสีเทา */}
       <div className="schedule-header">
-        <CalendarOutlined className="schedule-icon" /> {/* ไอคอนปฏิทิน */}
-        <span className="schedule-title">Schedule</span> {/* ข้อความหัวข้อ */}
+        <CalendarOutlined className="schedule-icon" />
+        <span className="schedule-title">Schedule</span>
       </div>
 
-      {/* คอนเทนเนอร์หลักที่ครอบคลุมทั้งปฏิทินและรายการนัดหมาย */}
       <div className="schedule-container">
-        {/* ส่วนของปฏิทิน */}
         <div className="calendar-section">
-            <Calendar fullscreen={false} onSelect={onDateChange} /> {/* ปฏิทินที่ไม่เต็มหน้าจอ */}
-            <div className="add-button-container">
-            <Link to="/schedule"><Button className="add-button" type="primary" shape="circle" icon={<PlusOutlined />} /></Link>
-            </div>
+          <Calendar fullscreen={false} onSelect={onDateChange} />
+          <div className="add-button-container">
+            <Link to="/schedule">
+              <Button className="add-button" type="primary" shape="circle" icon={<PlusOutlined />} />
+            </Link>
+          </div>
         </div>
-        
-        {/* ส่วนของรายการนัดหมาย */}
+
         <div className="appointments-section">
           <List
-            itemLayout="horizontal"  // จัดรูปแบบรายการเป็นแนวนอน
-            dataSource={appointments}  // ข้อมูลรายการนัดหมาย
+            itemLayout="horizontal"
+            dataSource={appointments}
             renderItem={(item) => (
               <List.Item
                 actions={[
-                  // ปุ่มแก้ไขรายการนัดหมาย
                   <Button icon={<EditOutlined />} key="edit" />,
-                  // ช่องทำเครื่องหมายสถานะ
-                  <Checkbox key="status" />
+                  <Checkbox key="status" onChange={() => handleStatusChange(item.ID)} />  // เรียก handleStatusChange เมื่อกด checkbox
                 ]}
               >
                 <List.Item.Meta
-                  title={item.TreatmentName}  // ชื่อรายการนัดหมาย
-                  description={item.FirstName}  // ชื่อแพทย์ผู้ดูแล
+                  title={item.TreatmentName}
+                  description={`${item.FirstName} ${item.LastName}`}  // แสดงทั้งชื่อจริงและนามสกุล
                 />
               </List.Item>
             )}
+            locale={{ emptyText: 'ไม่มีการนัดหมายในวันนี้' }}  // ข้อความเมื่อไม่มีนัดหมาย
           />
         </div>
+
         <Routes>
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/schedule2" element={<Schedule2 />} />

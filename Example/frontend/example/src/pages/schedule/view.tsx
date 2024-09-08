@@ -17,6 +17,13 @@ import { GetSchedulesByDate, UpdateScheduleStatus } from '../../services/https/i
 const ScheduleView: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [appointments, setAppointments] = useState<any[]>([]);
+  const [isChecked, setIsChecked] = useState(true);
+  const [notChecked, setnotChecked] = useState(false);
+  
+
+  const handleChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
+    setIsChecked(e.target.checked);
+  };
 
   const fetchAppointments = async (date: Date) => {
     const formattedDate = date.toISOString().split('T')[0];  // แปลงวันที่เป็น YYYY-MM-DD
@@ -34,13 +41,7 @@ const ScheduleView: React.FC = () => {
     }
   }, [selectedDate]);
 
-  // ฟังก์ชันที่ถูกเรียกเมื่อกด checkbox เพื่อเปลี่ยนสถานะ
-  const handleStatusChange = async (appointmentId: number) => {
-    const success = await UpdateScheduleStatus(appointmentId, 2); // เปลี่ยน TstatusID เป็น 2
-    if (success) {
-      fetchAppointments(selectedDate!); // ดึงข้อมูลใหม่หลังอัปเดตสำเร็จ
-    }
-  };
+  
 
   const onDateChange = (date: any) => {
     setSelectedDate(date?.toDate());
@@ -67,11 +68,12 @@ const ScheduleView: React.FC = () => {
           <List
             itemLayout="horizontal"
             dataSource={appointments}
+            
             renderItem={(item) => (
               <List.Item
                 actions={[
                   <Button icon={<EditOutlined />} key="edit" />,
-                  <Checkbox key="status" onChange={() => handleStatusChange(item.ID)} />  // เรียก handleStatusChange เมื่อกด checkbox
+                  <Checkbox key="status" checked={notChecked} onChange={handleChange} />  
                 ]}
               >
                 <List.Item.Meta

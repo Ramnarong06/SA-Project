@@ -243,14 +243,17 @@ func GetScheduleByDate(c *gin.Context) {
 }
 
 func UpdateScheduleStatus(c *gin.Context) {
-    id := c.Param("id")
+    ScheduleID := c.Param("id")
 
+    
     var schedule entity.Schedule
-    if err := config.DB().Where("id = ?", id).First(&schedule).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Schedule not found"})
-        return
-    }
-
+    db := config.DB()
+	result := db.First(&schedule, ScheduleID)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
+		return
+	}
+    //
     var input struct {
         TstatusID uint `json:"TstatusID"`  // รับ TstatusID จาก request body
     }
@@ -259,7 +262,7 @@ func UpdateScheduleStatus(c *gin.Context) {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
         return
     }
-
+   
     schedule.TstatusID = input.TstatusID  // อัปเดตสถานะ
 
     if err := config.DB().Save(&schedule).Error; err != nil {
