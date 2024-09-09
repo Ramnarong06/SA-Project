@@ -194,29 +194,36 @@ async function UpdateSchedule(data: SchedulesInterface) {
   return res;
 }
 
-// async function UpdateScheduleStatus(scheduleId: number, statusId: number) {
-//   const requestOptions = {
-//     method: "PATCH",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ TstatusID: statusId }),  // ส่งข้อมูล TstatusID ใหม่
-//   };
 
-//   let res = await fetch(`${apiUrl}/schedules/${scheduleId}`, requestOptions)
-//     .then((res) => {
-//       return res.status === 200;
-//     });
+// const UpdateScheduleStatus = async (scheduleId: number, newStatus: number) => {
+//   try {
+//     const url = `/updateschedulestatus/${scheduleId}`;
+//     console.log("URL ที่เรียก:", url);
+//     const response = await axios.patch(url, { TstatusID: newStatus });
+//     return response.status === 200;
+//   } catch (error) {
+//     console.error('Error updating schedule status:', error);
+//     return false;
+//   }
+// };
+async function UpdateScheduleStatus(id: Number | undefined) {
+  const requestOptions = {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(id),
+  };
 
-//   return res;
-// }
-const UpdateScheduleStatus = async (scheduleId: number, newStatus: number) => {
-  try {
-    const response = await axios.patch(`/updateschedulestatus/${scheduleId}`, { TstatusID: newStatus }); // แก้ URL ให้ถูกต้อง
-    return response.status === 200;
-  } catch (error) {
-    console.error('Error updating schedule status:', error);
-    return false;
-  }
-};
+  let res = await fetch(`${apiUrl}/updateschedulestatus/${id}`, requestOptions)
+    .then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
 
 
 export {

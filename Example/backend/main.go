@@ -45,6 +45,7 @@ func main() {
 		router.GET("/tstatuss", controller.ListTstatuss)
 		router.GET("/getschedulebydate/:date", controller.GetScheduleByDate)
 		router.PATCH("/updateschedulestatus/:id", controller.UpdateScheduleStatus)
+		
 	}
 
 	r.GET("/", func(c *gin.Context) {

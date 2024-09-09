@@ -12,11 +12,16 @@ const ScheduleView: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [appointments, setAppointments] = useState<any[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
+  //
+  const [UpdateId, setUpdateId] = useState<Number>();
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  //
   const navigate = useNavigate();
 
   const fetchAppointments = async (date: Date) => {
     const formattedDate = date.toISOString().split('T')[0];  // แปลงวันที่เป็น YYYY-MM-DD
     const data = await GetSchedulesByDate(formattedDate);     // เรียก API
+    console.log(data)
     if (data && data.length > 0) {
       setAppointments(data);  // อัปเดตข้อมูลนัดหมาย
     } else {
@@ -32,9 +37,10 @@ const ScheduleView: React.FC = () => {
 
   const onDateChange = (date: any) => {
     setSelectedDate(date?.toDate());
+    
   };
 
-  // ฟังก์ชันอัปเดตสถานะ
+  //ฟังก์ชันอัปเดตสถานะ
   // const handleStatusUpdate = async (ID: number) => {
   //   const result = await UpdateScheduleStatus(ID, 2); // เปลี่ยนสถานะเป็น 2
   //   if (result) {
@@ -54,7 +60,9 @@ const ScheduleView: React.FC = () => {
   //   }
   // };
 
-  const onFinish = async (values: SchedulesInterface) => {
+  
+
+  const Finish = async (values: SchedulesInterface) => {
     let res = await UpdateSchedule(values); // ส่งค่า values ที่แก้ไขแล้ว
     if (res) {
       messageApi.open({
@@ -62,7 +70,7 @@ const ScheduleView: React.FC = () => {
         content: res.message,
       });
       setTimeout(function () {
-        navigate("/customer");
+        navigate("/schedule");
       }, 2000);
     } else {
       messageApi.open({
@@ -71,13 +79,36 @@ const ScheduleView: React.FC = () => {
       });
     }
   };
+
+  // const handleOk = async () => {
+    
+  //   setConfirmLoading(true);
+  //   let res = await UpdateSchedule(UpdateId);
+  //   if (res) {
+  //     setOpen(false);
+  //     messageApi.open({
+  //       type: "success",
+  //       content: "ลบข้อมูลสำเร็จ",
+  //     });
+  //     getUsers();
+  //   } else {
+  //     setOpen(false);
+  //     messageApi.open({
+  //       type: "error",
+  //       content: "เกิดข้อผิดพลาด !",
+  //     });
+  //   }
+  //   setConfirmLoading(false);
+  // };
   
 
   return (
+    
     <div>
       <div className="schedule-header">
         <CalendarOutlined className="schedule-icon" />
         <span className="schedule-title">Schedule</span>
+        
       </div>
 
       <div className="schedule-container">
@@ -96,22 +127,33 @@ const ScheduleView: React.FC = () => {
             dataSource={appointments}
             renderItem={(item) => (
               <List.Item
+              
                 actions={[
                   <Button icon={<EditOutlined />} key="edit" />,
                   <Button
-                    onClick={() => onFinish({ ...item, TstatusID: 2 })}  // แก้ไขการเรียก onFinish
+                    onClick={() => {
+                      UpdateScheduleStatus(item.ID);  // เรียกใช้ UpdateScheduleStatus ทันที
+              
+                      // ใช้ setTimeout เพื่อทำงานหลังจากช่วงเวลาที่กำหนด (เช่น 2 วินาที = 2000 มิลลิวินาที)
+                      setTimeout(() => {
+                        window.location.reload(); // สิ่งที่ต้องการให้ทำหลังจากเวลา
+                      }, 200);  // ระยะเวลาในมิลลิวินาที
+                    }}
                     style={{ marginLeft: 10 }}
                     shape="circle"
                     icon={<DeleteOutlined />}
                     size={"large"}
                     danger
                   />
+                  
                 ]}
               >
+                
                 <List.Item.Meta
                   title={item.TreatmentName}
                   description={`${item.FirstName} ${item.LastName}`}  // แสดงทั้งชื่อจริงและนามสกุล
                 />
+              <p>{item.id}</p>
               </List.Item>
             )}
             locale={{ emptyText: 'ไม่มีการนัดหมายในวันนี้' }}
