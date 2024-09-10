@@ -117,7 +117,23 @@ async function GetUserById(id: Number | undefined) {
 
   return res;
 }
+//
+async function GetScheduleById(id: Number | undefined) {
+  const requestOptions = {
+    method: "GET"
+  };
 
+  let res = await fetch(`${apiUrl}/schedule/${id}`, requestOptions)
+    .then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
 async function CreateUser(data: UsersInterface) {
   const requestOptions = {
     method: "POST",
@@ -195,17 +211,6 @@ async function UpdateSchedule(data: SchedulesInterface) {
 }
 
 
-// const UpdateScheduleStatus = async (scheduleId: number, newStatus: number) => {
-//   try {
-//     const url = `/updateschedulestatus/${scheduleId}`;
-//     console.log("URL ที่เรียก:", url);
-//     const response = await axios.patch(url, { TstatusID: newStatus });
-//     return response.status === 200;
-//   } catch (error) {
-//     console.error('Error updating schedule status:', error);
-//     return false;
-//   }
-// };
 async function UpdateScheduleStatus(id: Number | undefined) {
   const requestOptions = {
     method: "PATCH",
@@ -238,4 +243,5 @@ export {
   GetSchedulesByDate,
   UpdateScheduleStatus,
   UpdateSchedule,
+  GetScheduleById,
 };

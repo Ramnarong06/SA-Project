@@ -25,3 +25,7 @@ npm instal dayjs --save
 --- Run ---
 go run main.go
 npm run dev
+
+// เพิ่มเติม
+npm install dayjs
+npm install dayjs-plugin-utc

@@ -7,6 +7,7 @@ import Schedule2 from "../../pages/schedule/view.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import { GetSchedulesByDate, UpdateSchedule, UpdateScheduleStatus } from '../../services/https/index.tsx';
 import { SchedulesInterface } from '../../interfaces/ISchedule.ts';
+import UpSchedule from "../schedule/update/update.css";
 
 const ScheduleView: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -80,27 +81,6 @@ const ScheduleView: React.FC = () => {
     }
   };
 
-  // const handleOk = async () => {
-    
-  //   setConfirmLoading(true);
-  //   let res = await UpdateSchedule(UpdateId);
-  //   if (res) {
-  //     setOpen(false);
-  //     messageApi.open({
-  //       type: "success",
-  //       content: "ลบข้อมูลสำเร็จ",
-  //     });
-  //     getUsers();
-  //   } else {
-  //     setOpen(false);
-  //     messageApi.open({
-  //       type: "error",
-  //       content: "เกิดข้อผิดพลาด !",
-  //     });
-  //   }
-  //   setConfirmLoading(false);
-  // };
-  
 
   return (
     
@@ -120,24 +100,26 @@ const ScheduleView: React.FC = () => {
             </Link>
           </div>
         </div>
-
+        
         <div className="appointments-section">
         <List
             itemLayout="horizontal"
             dataSource={appointments}
-            renderItem={(item) => (
-              <List.Item
+            renderItem={(item,record) => (
               
+              <List.Item
                 actions={[
-                  <Button icon={<EditOutlined />} key="edit" />,
+                  <Button 
+                    icon={<EditOutlined />} 
+                    key="edit"
+                    onClick={() => navigate(`/editschedule/edit/${item.ID}`)} 
+                  />,
                   <Button
                     onClick={() => {
-                      UpdateScheduleStatus(item.ID);  // เรียกใช้ UpdateScheduleStatus ทันที
-              
-                      // ใช้ setTimeout เพื่อทำงานหลังจากช่วงเวลาที่กำหนด (เช่น 2 วินาที = 2000 มิลลิวินาที)
+                      UpdateScheduleStatus(item.ID);
                       setTimeout(() => {
-                        window.location.reload(); // สิ่งที่ต้องการให้ทำหลังจากเวลา
-                      }, 200);  // ระยะเวลาในมิลลิวินาที
+                        window.location.reload(); 
+                      }, 200);
                     }}
                     style={{ marginLeft: 10 }}
                     shape="circle"
@@ -158,12 +140,13 @@ const ScheduleView: React.FC = () => {
             )}
             locale={{ emptyText: 'ไม่มีการนัดหมายในวันนี้' }}
           />
-
+      
         </div>
 
         <Routes>
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/schedule2" element={<Schedule2 />} />
+          
         </Routes>
       </div>
     </div>

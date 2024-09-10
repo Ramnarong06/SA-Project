@@ -1,116 +1,149 @@
-import React from 'react';
-import { Form, Input, Button, DatePicker } from 'antd'; // นำเข้าส่วนประกอบที่จำเป็นจาก Ant Design
-import { ClockCircleOutlined } from '@ant-design/icons'; // นำเข้าไอคอนนาฬิกาจาก Ant Design
-import './create.css'; // นำเข้าไฟล์ CSS
-import Schedule from "../../pages/schedule/create.tsx";
+import React, { useState, useEffect } from "react";
+import { Form, Input, Button, DatePicker, Select, message } from "antd";
+import { ClockCircleOutlined } from "@ant-design/icons";
+import "./create.css";
+import { TreatmentsInterface } from "../../interfaces/ITreatment";
+
+import { SchedulesInterface } from "../../interfaces/ISchedule";
+import { ImageUpload } from "../../interfaces/IUpload";
+import { GetTreatment,CreateUser } from "../../services/https";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import Schedule from "../../pages/schedule/create";
 import Schedule2 from "../../pages/schedule/view.tsx";
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link,
-    
-  } from "react-router-dom";
+import { CreateSchedule } from "../../services/https";
 
-const App: React.FC = () => {
-  const [form] = Form.useForm(); // สร้าง form instance สำหรับการจัดการฟอร์ม
+const { Option } = Select;
 
-  // ฟังก์ชันที่จะทำงานเมื่อฟอร์มถูกส่งและข้อมูลถูกต้อง
-  const onFinish = (values: any) => {
-    console.log('Success:', values); // แสดงค่าที่กรอกในฟอร์มบน console
+function ScheduleCreate() {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const [treatments, setTreatments] = useState<TreatmentsInterface[]>([]);
+  const [profile, setProfile] = useState<ImageUpload>();
+  const [messageApi, contextHolder] = message.useMessage();
+  
+  const getTreatment = async () => {
+    try {
+      let res = await GetTreatment();
+      if (res) {
+        setTreatments(res);
+      }
+    } catch (error) {
+      console.error("Error fetching treatments:", error);
+    }
   };
 
-  // ฟังก์ชันที่จะทำงานเมื่อฟอร์มถูกส่งแต่มีข้อผิดพลาด
+  const onFinish = async (values: SchedulesInterface) => {
+    let res = await CreateSchedule(values);
+    if (res.status) {
+      messageApi.open({
+        type: "error",
+        content: "บันทึกข้อมูลสำเร็จ",
+      });
+      setTimeout(function () {
+        navigate("/schedule2");
+      }, 2000);
+    } else {
+      messageApi.open({
+        type: "success",
+        content: res.message,
+      });
+      setTimeout(function () {
+        navigate("/schedule2");
+      }, 200);
+    }
+  };
+
+  useEffect(() => {
+    getTreatment();
+  }, []);
+
+
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo); // แสดงข้อผิดพลาดบน console
+    console.log("Failed:", errorInfo);
   };
 
   return (
     <div className="appointment-form">
-      {/* แสดงโลโก้ของคลินิก */}
-      {/* <img src="logo.png" alt="logo" className="logo" /> */}
-
-      {/* หัวข้อของหน้า */}
+      {contextHolder}
       <div className="header">
-        <ClockCircleOutlined className="icon" /> {/* แสดงไอคอนนาฬิกา */}
-        <h2>นัดหมายผู้ป่วยใน</h2> {/* แสดงหัวข้อของฟอร์ม */}
+        <ClockCircleOutlined className="icon" />
+        <h2>นัดหมายผู้ป่วยใน</h2>
       </div>
 
-      {/* ฟอร์มการนัดหมาย */}
       <Form
-        form={form} // เชื่อมฟอร์มกับ form instance ที่สร้างขึ้น
-        name="appointment" // ตั้งชื่อฟอร์มเพื่อการอ้างอิงภายหลัง
-        layout="vertical" // จัดเรียงฟอร์มในแนวตั้ง
-        onFinish={onFinish} // ฟังก์ชันที่จะทำงานเมื่อฟอร์มถูกส่งและข้อมูลถูกต้อง
-        onFinishFailed={onFinishFailed} // ฟังก์ชันที่จะทำงานเมื่อฟอร์มถูกส่งแต่มีข้อผิดพลาด
+        form={form}
+        name="appointment"
+        layout="vertical"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
-        {/* แบ่งฟิลด์ฟอร์มออกเป็นสองคอลัมน์ */}
         <div className="form-row">
-          {/* ฟิลด์สำหรับกรอกชื่อจริง */}
           <Form.Item
-            label="ชื่อจริง"
-            name="firstName"
-            rules={[{ required: true, message: 'กรุณากรอกชื่อจริง!' }]}
+            label="เบอร์โทร"
+            name="tel"
+            rules={[{ required: true, message: "กรุณากรอกเบอร์โทร!" }]}
+            style={{ width: "100%" }}
           >
-            <Input placeholder="ชื่อจริง" /> {/* ฟิลด์กรอกชื่อจริง */}
+            <Input placeholder="เบอร์โทร" />
           </Form.Item>
 
-          {/* ฟิลด์สำหรับกรอกนามสกุล */}
           <Form.Item
-            label="นามสกุล"
-            name="lastName"
-            rules={[{ required: true, message: 'กรุณากรอกนามสกุล!' }]}
+            name="TreatmentID"
+            label="การรักษา"
+            rules={[{ required: true, message: "กรุณาเลือกการรักษา!" }]}
+            style={{ width: "100%" }}
           >
-            <Input placeholder="นามสกุล" /> {/* ฟิลด์กรอกนามสกุล */}
+            <Select 
+              placeholder="เลือกการรักษา"
+              allowClear
+              style={{ width: "100%", height: "40px", lineHeight: "40px" }}
+            >
+              {treatments.map((item) => (
+                <Option value={item.ID} key={item.TreatmentName}>
+                  {item.TreatmentName}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
         </div>
 
         <div className="form-row">
-          {/* ฟิลด์สำหรับกรอกการรักษา */}
-          <Form.Item
-            label="การรักษา"
-            name="treatment"
-            rules={[{ required: true, message: 'กรุณากรอกการรักษา!' }]}
-          >
-            <Input placeholder="การรักษา" /> {/* ฟิลด์กรอกการรักษา */}
-          </Form.Item>
-
-          {/* ฟิลด์สำหรับเลือกวันนัดหมาย */}
           <Form.Item
             label="วันนัดหมาย"
-            name="appointmentDate"
-            rules={[{ required: true, message: 'กรุณาเลือกวันนัดหมาย!' }]}
+            name="Date"
+            rules={[{ required: true, message: "กรุณาเลือกวันนัดหมาย!" }]}
+            style={{ width: "100%" }}
           >
-            <DatePicker format="DD/MM/YYYY" style={{ width: '100%',padding: '8px'}} /> {/* ฟิลด์เลือกวันนัดหมาย */}
+            <DatePicker
+              format="DD/MM/YYYY"
+              style={{ width: "48.5%", height: "40px", lineHeight: "40px" }}
+            />
           </Form.Item>
         </div>
 
-        {/* ลิงก์สำหรับผู้ป่วยนอก */}
         <div className="patient-status">
-          <a href="#">สำหรับผู้ป่วยนอก</a> {/* แสดงลิงก์สำหรับผู้ป่วยนอก */}
+          <a href="#">สำหรับผู้ป่วยนอก</a>
         </div>
 
-        {/* ปุ่มยืนยันและยกเลิก */}
         <Form.Item>
-            <Link to="/schedule2">
-            <div className="form-actions">
-                <Button type="primary" htmlType="submit" className="submit-button">
-                  ยืนยัน
-                </Button>
-                
-                <Button htmlType="button" className="cancel-button">
-                    ยกเลิก
-                </Button>
-            </div>
-            </Link>
-            <Routes>
-              <Route path="/schedule" element={<Schedule />} />
-              <Route path="/schedule2" element={<Schedule2 />} />
-            </Routes>
+          <div className="form-actions">
+            <Button type="primary" htmlType="submit" className="submit-button">
+              ยืนยัน
+            </Button>
+              
+            <Button htmlType="button" className="cancel-button">
+              ยกเลิก
+            </Button>
+          </div>
         </Form.Item>
       </Form>
+
+      <Routes>
+        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/schedule2" element={<Schedule2 />} />
+      </Routes>
     </div>
   );
 };
 
-export default App; // ส่งออกคอมโพเนนต์ App เพื่อให้สามารถใช้งานในที่อื่นได้
+export default ScheduleCreate;

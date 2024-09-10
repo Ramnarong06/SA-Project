@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -40,17 +41,13 @@ func CreateSchedule(c *gin.Context) {
 		return
 	}
 
-	// หา Tstatus ตาม TstatusID
-	// var tstatus entity.Tstatus
-	// if err := db.First(&tstatus, requestBody.TstatusID).Error; err != nil {
-	//     c.JSON(http.StatusNotFound, gin.H{"error": "tStatus not found"})
-	//     return
-	// }
+	
+	//previousDate := requestBody.Date.AddDate(0, 0, 1)
+	location, _ := time.LoadLocation("Asia/Bangkok")
+	adjustedDate := requestBody.Date.In(location)
 
-	// สร้าง Schedule ใหม่ โดยใช้ข้อมูลที่ได้จากการหา Patient และอื่นๆ
-	previousDate := requestBody.Date.AddDate(0, 0, 1)
 	s := entity.Schedule{
-		Date:        previousDate,
+		Date:        adjustedDate,
 		PatientID:   patient.ID,
 		Patient:     patient,
 		TreatmentID: requestBody.TreatmentID,
@@ -130,6 +127,36 @@ func DeleteSchedule(c *gin.Context) {
 }
 
 // PATCH /users
+// func UpdateSchedule(c *gin.Context) {
+// 	var schedule entity.Schedule
+// 	ScheduleID := c.Param("id")
+
+// 	db := config.DB()
+
+// 	// ดึง schedule เดิมมาก่อน
+// 	result := db.First(&schedule, ScheduleID)
+// 	if result.Error != nil {
+// 		c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
+// 		return
+// 	}
+
+// 	// ใช้ payload ใหม่เป็น map เพื่ออัปเดตเฉพาะฟิลด์ที่จำเป็น
+// 	var payload map[string]interface{}
+// 	if err := c.ShouldBindJSON(&payload); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request, unable to map payload"})
+// 		return
+// 	}
+
+	
+// 	result = db.Model(&schedule).Updates(payload)
+// 	if result.Error != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
+// 		return
+// 	}
+
+// 	c.JSON(http.StatusOK, gin.H{"message": "Updated successfully"})
+// }
+
 func UpdateSchedule(c *gin.Context) {
 	var schedule entity.Schedule
 
@@ -146,7 +173,12 @@ func UpdateSchedule(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request, unable to map payload"})
 		return
 	}
+	//schedule.TstatusID = 1;
+	fmt.Println(schedule)
 
+	loc, _ := time.LoadLocation("Asia/Bangkok")
+	schedule.Date = schedule.Date.In(loc)
+	
 	result = db.Save(&schedule)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
@@ -156,42 +188,6 @@ func UpdateSchedule(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Updated successful"})
 }
 
-//GET /schedules/:date
-// func GetScheduleByDate(c *gin.Context) {
-//     dateParam := c.Param("date")
-
-//     // แปลงค่า dateParam เป็นรูปแบบ time.Time
-//     date, err := time.Parse("2006-01-02", dateParam)
-//     if err != nil {
-//         c.JSON(http.StatusBadRequest, gin.H{
-//             "error":         "Invalid date format. Use YYYY-MM-DD",
-//             "provided_date": dateParam,
-//         })
-//         return
-//     }
-
-//     // ลบวันที่ไป 1 วัน
-//     previousDate := date.AddDate(0, 0, -1)
-
-//     var schedules []entity.Schedule
-
-//     db := config.DB()
-//     // Query หาข้อมูล Schedule โดยเทียบเฉพาะวันที่ที่ลบไป 1 วัน
-//     results := db.Preload("Treatment").Preload("Tstatus").
-//         Where("DATE(date) = ?", previousDate.Format("2006-01-02")).Find(&schedules)
-
-//     if results.Error != nil {
-//         c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
-//         return
-//     }
-
-//     if len(schedules) == 0 {
-//         c.JSON(http.StatusNotFound, gin.H{"message": "No schedules found for the provided date"})
-//         return
-//     }
-
-//	    c.JSON(http.StatusOK, schedules)
-//	}
 func GetScheduleByDate(c *gin.Context) {
 	dateParam := c.Param("date")
 
@@ -230,10 +226,13 @@ func GetScheduleByDate(c *gin.Context) {
 	for _, schedule := range schedules {
 		// นำข้อมูลที่ต้องการใส่ใน response
 		response = append(response, gin.H{
-			"ID":           schedule.ID,
-			"TreatmentName": schedule.Treatment.TreatmentName,
-			"FirstName":     schedule.Patient.FirstName,
-			"LastName":      schedule.Patient.LastName,
+			"ID":           	schedule.ID,
+			"TreatmentID": 		schedule.TreatmentID,
+			"TreatmentName": 	schedule.Treatment.TreatmentName,
+			"TstatusID": 		schedule.TstatusID,
+			"TStatusName": 		schedule.Tstatus.TStatusName,
+			"FirstName":     	schedule.Patient.FirstName,
+			"LastName":      	schedule.Patient.LastName,
 		})
 	}
 
@@ -241,35 +240,6 @@ func GetScheduleByDate(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// func UpdateScheduleStatus(c *gin.Context) {
-//     ScheduleID := c.Param("id")
-
-//     var schedule entity.Schedule
-//     db := config.DB()
-// 	result := db.First(&schedule, ScheduleID)
-// 	if result.Error != nil {
-// 		c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
-// 		return
-// 	}
-//     //
-//     var input struct {
-//         TstatusID uint `json:"TstatusID"`  // รับ TstatusID จาก request body
-//     }
-
-//     if err := c.ShouldBindJSON(&input); err != nil {
-//         c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
-//         return
-//     }
-
-//     schedule.TstatusID = input.TstatusID  // อัปเดตสถานะ
-
-//     if err := config.DB().Save(&schedule).Error; err != nil {
-//         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-//         return
-//     }
-
-//	    c.JSON(http.StatusOK, gin.H{"message": "Status updated successfully"})
-//	}
 func UpdateScheduleStatus(c *gin.Context) {
 	ScheduleID := c.Param("id") // รับ id จาก URL
 

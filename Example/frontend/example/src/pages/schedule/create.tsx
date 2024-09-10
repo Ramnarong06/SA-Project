@@ -3,10 +3,9 @@ import { Form, Input, Button, DatePicker, Select, message } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import "./create.css";
 import { TreatmentsInterface } from "../../interfaces/ITreatment";
-
 import { SchedulesInterface } from "../../interfaces/ISchedule";
 import { ImageUpload } from "../../interfaces/IUpload";
-import { GetTreatment,CreateUser } from "../../services/https";
+import { GetTreatment, CreateUser } from "../../services/https";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Schedule from "../../pages/schedule/create";
 import Schedule2 from "../../pages/schedule/view.tsx";
@@ -20,7 +19,7 @@ function ScheduleCreate() {
   const [treatments, setTreatments] = useState<TreatmentsInterface[]>([]);
   const [profile, setProfile] = useState<ImageUpload>();
   const [messageApi, contextHolder] = message.useMessage();
-  
+
   const getTreatment = async () => {
     try {
       let res = await GetTreatment();
@@ -36,7 +35,7 @@ function ScheduleCreate() {
     let res = await CreateSchedule(values);
     if (res.status) {
       messageApi.open({
-        type: "error",
+        type: "success",
         content: "บันทึกข้อมูลสำเร็จ",
       });
       setTimeout(function () {
@@ -44,7 +43,7 @@ function ScheduleCreate() {
       }, 2000);
     } else {
       messageApi.open({
-        type: "success",
+        type: "error",
         content: res.message,
       });
       setTimeout(function () {
@@ -57,9 +56,12 @@ function ScheduleCreate() {
     getTreatment();
   }, []);
 
-
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const onCancel = () => {
+    navigate("/schedule2");
   };
 
   return (
@@ -93,7 +95,7 @@ function ScheduleCreate() {
             rules={[{ required: true, message: "กรุณาเลือกการรักษา!" }]}
             style={{ width: "100%" }}
           >
-            <Select 
+            <Select
               placeholder="เลือกการรักษา"
               allowClear
               style={{ width: "100%", height: "40px", lineHeight: "40px" }}
@@ -131,7 +133,7 @@ function ScheduleCreate() {
               ยืนยัน
             </Button>
 
-            <Button htmlType="button" className="cancel-button">
+            <Button htmlType="button" className="cancel-button" onClick={onCancel}>
               ยกเลิก
             </Button>
           </div>
@@ -144,6 +146,6 @@ function ScheduleCreate() {
       </Routes>
     </div>
   );
-};
+}
 
 export default ScheduleCreate;

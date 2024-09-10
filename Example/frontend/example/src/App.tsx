@@ -31,11 +31,13 @@ import logo2 from "./assets/TestLogo.png";
 
 import Dashboard from "./pages/dashboard";
 import Customer from "./pages/customer";
-//import Test from "./pages/Test";
+
 import Storage from "./pages/storage/AddEq";
+//
 import Schedule from "./pages/schedule/create.tsx";
 import Schedule2 from "./pages/schedule/view.tsx";
-
+import EditSchedule from "./pages/schedule/edit/edit.tsx";
+//
 import CustomerCreate from "./pages/customer/create";
 import CustomerEdit from "./pages/customer/edit";
 
@@ -104,7 +106,7 @@ const items: MenuItem[] = [
       {
         key: 'patient',
         label: (
-          <Link to="002">
+          <Link to="/editschedule/edit/:id">
             ผู้ป่วย
           </Link>
         ),
@@ -314,6 +316,7 @@ const App: React.FC = () => {
                 
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/schedule2" element={<Schedule2 />} />
+                <Route path="/editschedule/edit/:id" element={<EditSchedule />} />
               </Routes>
             </div>
           </Content>
@@ -328,6 +331,4 @@ const App: React.FC = () => {
 
 export default App;
 
-// function setCurrentPage(arg0: string): void {
-//   throw new Error("Function not implemented.");
-// }
+

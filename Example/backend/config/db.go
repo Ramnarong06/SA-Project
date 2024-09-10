@@ -126,18 +126,18 @@ func SetupDatabase() {
 	
  
 	// Create Schedule
-    currentTime := time.Now().AddDate(0, 0, -1)
-    Schedule := &entity.Schedule{
-        Date:       	currentTime,
-        PatientID:  	1,
-        TreatmentID: 	1,
-        TstatusID:     	1,
-    }
+    // currentTime := time.Now().AddDate(0, 0, -1)
+    // Schedule := &entity.Schedule{
+    //     Date:       	currentTime,
+    //     PatientID:  	1,
+    //     TreatmentID: 	1,
+    //     TstatusID:     	1,
+    // }
 
-    db.FirstOrCreate(&Schedule, entity.Schedule{
-        Date:       	currentTime,
-        PatientID:  	1,
-        TreatmentID: 	1,
-        TstatusID:     	1,
-    })
+    // db.FirstOrCreate(&Schedule, entity.Schedule{
+    //     Date:       	currentTime,
+    //     PatientID:  	1,
+    //     TreatmentID: 	1,
+    //     TstatusID:     	1,
+    // })
 }
