@@ -154,24 +154,7 @@ async function GetScheduleById(id: Number | undefined) {
 
   return res;
 }
-async function CreateUser(data: UsersInterface) {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  };
 
-  let res = await fetch(`${apiUrl}/users`, requestOptions)
-    .then((res) => {
-      if (res.status == 201) {
-        return res.json();
-      } else {
-        return false;
-      }
-    });
-
-  return res;
-}
 
 async function CreateSchedule(data: SchedulesInterface) {
   const requestOptions = {
@@ -192,24 +175,7 @@ async function CreateSchedule(data: SchedulesInterface) {
   return res;
 }
 
-async function UpdateUser(data: UsersInterface) {
-  const requestOptions = {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  };
 
-  let res = await fetch(`${apiUrl}/users`, requestOptions)
-    .then((res) => {
-      if (res.status == 200) {
-        return res.json();
-      } else {
-        return false;
-      }
-    });
-
-  return res;
-}
 
 async function UpdateSchedule(data: SchedulesInterface) {
   const requestOptions = {
@@ -253,11 +219,11 @@ async function UpdateScheduleStatus(id: Number | undefined) {
 
 export {
   GetUsers,
-  CreateUser,
+  
   GetGenders,
   DeleteUserByID,
   GetUserById,
-  UpdateUser,
+  
   GetTreatment,
   CreateSchedule,
   GetSchedulesByDate,

@@ -5,12 +5,12 @@ import "./create.css";
 import { TreatmentsInterface } from "../../../interfaces/ITreatment.ts";
 import { SchedulesInterface } from "../../../interfaces/ISchedule.ts";
 import { ImageUpload } from "../../../interfaces/IUpload.ts";
-import { GetTreatment, GetPatients, CreateUser } from "../../../services/https/index.tsx"; // เพิ่ม GetPatients ที่นี่
+import { GetTreatment, GetPatients,CreateSchedule  } from "../../../services/https/index.tsx"; // เพิ่ม GetPatients ที่นี่
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Schedule from "./create.tsx";
 import ViewSchedule from "../view/view.tsx";
-import { CreateSchedule } from "../../../services/https/index.tsx";
 
+//import { CreateSchedule } from  "../../../services/https/index.tsx"
 const { Option } = Select;
 
 function ScheduleCreate() {
