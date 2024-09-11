@@ -227,6 +227,7 @@ func GetScheduleByDate(c *gin.Context) {
 		// นำข้อมูลที่ต้องการใส่ใน response
 		response = append(response, gin.H{
 			"ID":           	schedule.ID,
+			"Tel":				schedule.Patient.Tel,				
 			"TreatmentID": 		schedule.TreatmentID,
 			"TreatmentName": 	schedule.Treatment.TreatmentName,
 			"TstatusID": 		schedule.TstatusID,

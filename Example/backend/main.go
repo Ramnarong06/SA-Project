@@ -41,6 +41,7 @@ func main() {
 
 		// Gender Routes
 		router.GET("/genders", controller.ListGenders)
+		router.GET("/patients", controller.ListPatients)
 		router.GET("/treatments", controller.ListTreatment)
 		router.GET("/tstatuss", controller.ListTstatuss)
 		router.GET("/getschedulebydate/:date", controller.GetScheduleByDate)

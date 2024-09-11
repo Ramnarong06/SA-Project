@@ -26,6 +26,9 @@ npm instal dayjs --save
 go run main.go
 npm run dev
 
-// เพิ่มเติม
-npm install dayjs
-npm install dayjs-plugin-utc
+
+git init 
+git add . 
+git commit -m "my first commit" 
+git branch -m main 
+git push -u origin main

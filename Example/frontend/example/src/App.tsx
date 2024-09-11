@@ -34,8 +34,8 @@ import Customer from "./pages/customer";
 
 import Storage from "./pages/storage/AddEq";
 //
-import Schedule from "./pages/schedule/create.tsx";
-import Schedule2 from "./pages/schedule/view.tsx";
+import Schedule from "./pages/schedule/create/create.tsx";
+import ViewSchedule from "./pages/schedule/view/view.tsx";
 import EditSchedule from "./pages/schedule/edit/edit.tsx";
 //
 import CustomerCreate from "./pages/customer/create";
@@ -123,7 +123,7 @@ const items: MenuItem[] = [
       {
         key: 'Schedule',
         label: (
-          <Link to="/schedule2">
+          <Link to="/viewschedule">
             กำหนดการ
           </Link>
         ),
@@ -315,7 +315,7 @@ const App: React.FC = () => {
                 <Route path="/storage" element={<Storage />} />
                 
                 <Route path="/schedule" element={<Schedule />} />
-                <Route path="/schedule2" element={<Schedule2 />} />
+                <Route path="/viewschedule" element={<ViewSchedule />} />
                 <Route path="/editschedule/edit/:id" element={<EditSchedule />} />
               </Routes>
             </div>

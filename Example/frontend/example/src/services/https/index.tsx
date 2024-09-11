@@ -43,6 +43,26 @@ async function GetGenders() {
   return res;
 }
 
+async function GetPatients() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/patients`, requestOptions)
+    .then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 async function GetTreatment() {
   const requestOptions = {
     method: "GET",
@@ -244,4 +264,5 @@ export {
   UpdateScheduleStatus,
   UpdateSchedule,
   GetScheduleById,
+  GetPatients,
 };

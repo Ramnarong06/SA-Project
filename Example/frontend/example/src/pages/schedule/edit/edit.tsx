@@ -4,8 +4,10 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import { TreatmentsInterface } from "../../../interfaces/ITreatment";
 import { SchedulesInterface } from "../../../interfaces/ISchedule";
 import { GetTreatment, UpdateSchedule, GetScheduleById } from "../../../services/https";
-import { useNavigate, useParams } from "react-router-dom";
+//mport { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
+import ViewSchedule from "../view/view.tsx";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate,useParams } from "react-router-dom";
 //import utc from 'dayjs/plugin/utc';
 
 const { Option } = Select;
@@ -65,29 +67,46 @@ function ScheduleEdit() {
               PatientID: schedule.PatientID,
               TstatusID: schedule.TstatusID
           };
-    
-    try {
-      let res = await UpdateSchedule(updatedValues); // ใช้ฟังก์ชัน UpdateSchedule แทน CreateSchedule
-      if (res.status) {
-        messageApi.open({
-          type: "error",
-          content: "อัปเดตข้อมูลสำเร็จ",
-        });
-        setTimeout(() => {
-          navigate("/schedule2");
-        }, 2000);
-      } else {
-        messageApi.open({
-          type: "success",
-          content: res.message || "เกิดข้อผิดพลาดในการอัปเดตข้อมูล",
-        });
-      }
-    } catch (error) {
+    let res = await UpdateSchedule(updatedValues);
+    // try {
+    //   let res = await UpdateSchedule(updatedValues); // ใช้ฟังก์ชัน UpdateSchedule แทน CreateSchedule
+    //   if (res.status) {
+    //     messageApi.open({
+    //       type: "error",
+    //       content: "อัปเดตข้อมูลสำเร็จ",
+    //     })
+    //     setTimeout(function () {
+    //       navigate("/schedule2");
+    //     }, 200);
+    //   } else {
+    //     messageApi.open({
+    //       type: "success",
+    //       content: res.message || "เกิดข้อผิดพลาดในการอัปเดตข้อมูล",
+    //     });
+    //   }
+    // } catch (error) {
+    //   messageApi.open({
+    //     type: "error",
+    //     content: "เกิดข้อผิดพลาดในการอัปเดตข้อมูล",
+    //   });
+    // }
+    if (res && res.status === true) {
       messageApi.open({
-        type: "error",
-        content: "เกิดข้อผิดพลาดในการอัปเดตข้อมูล",
+        type: "error", // แก้เป็น success
+        content: "อัปเดตข้อมูลสำเร็จ",
+      });
+      
+    } else {
+      messageApi.open({
+        type: "success", // แก้เป็น error
+        content: res.message || "เกิดข้อผิดพลาดในการอัปเดตข้อมูล",
       });
     }
+    
+    setTimeout(function () {
+      navigate("/schedule2");
+    }, 800);
+
   };
 
 
@@ -96,7 +115,7 @@ function ScheduleEdit() {
   };
 
   const onCancel = () => {
-    navigate("/schedule2");
+    navigate("/viewschedule");
   };
 
   // เรียกใช้ข้อมูลเมื่อคอมโพเนนต์โหลด
@@ -165,7 +184,11 @@ function ScheduleEdit() {
           </div>
         </Form.Item>
       </Form>
+      <Routes>
+        <Route path="/viewschedule" element={<ViewSchedule />} />
+      </Routes>
     </div>
+    
   );
 }
 

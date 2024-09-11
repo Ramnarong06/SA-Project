@@ -17,3 +17,13 @@ func ListPatients(c *gin.Context) {
 
 	c.JSON(http.StatusOK, &patient)
 }
+
+func SelectPatients(c *gin.Context) {
+	var patient []entity.Patient
+
+	db := config.DB()
+
+	db.Find(&patient)
+
+	c.JSON(http.StatusOK, &patient)
+}
