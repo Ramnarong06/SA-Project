@@ -35,7 +35,9 @@ import Schedule from "./pages/schedule/create/create.tsx";
 import ViewSchedule from "./pages/schedule/view/view.tsx";
 import EditSchedule from "./pages/schedule/edit/edit.tsx";
 //
-
+import PaymentList from "./pages/payments/PaymentList/PaymentList.tsx";
+import SavePayment from "./pages/payments/SavePayment/SavePayment.tsx";
+import Payment from "./pages/payments/payment/PaymentPage.tsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -143,18 +145,26 @@ const items: MenuItem[] = [
     icon: <DollarOutlined />,
     children: [
       {
-        key: 'payment',
+        key: 'paymentlist',
         label: (
-          <Link to="000">
-            ชำระเงิน
+          <Link to="paymentlist">
+            paymentlist
           </Link>
         ),
       },
       {
         key: 'savepayment',
         label: (
-          <Link to="006">
-            บันทึกการชำระ
+          <Link to="savepayment">
+            savepayment
+          </Link>
+        ),
+      },
+      {
+        key: 'payment',
+        label: (
+          <Link to="payment">
+            payment
           </Link>
         ),
       },
@@ -306,6 +316,9 @@ const App: React.FC = () => {
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/viewschedule" element={<ViewSchedule />} />
                 <Route path="/editschedule/edit/:id" element={<EditSchedule />} />
+                <Route path="/paymentlist" element={<PaymentList />} />
+                <Route path="/savepayment" element={<SavePayment />} />
+                <Route path="/payment" element={<Payment />} />
               </Routes>
             </div>
           </Content>

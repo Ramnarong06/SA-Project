@@ -12,18 +12,19 @@
     text-align: left; /* จัดข้อความในฟอร์มให้อยู่กลาง */
   }
   
-  .logo {
+  .logoEdit {
     
     width: 150px; /* กำหนดความกว้างของโลโก้ */
     margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่างของโลโก้ */
   }
   
-  .header {
+  .headercreateedit {
     
     display: flex; /* ใช้ Flexbox ในการจัดเรียงไอคอนและหัวข้อ */
     align-items: left; /* จัดให้ไอคอนและหัวข้ออยู่ในแนวเดียวกัน */
     justify-content: left; /* จัดไอคอนและหัวข้อให้อยู่กลางหน้าจอ */
     margin-bottom: 60px; /* เพิ่มระยะห่างด้านล่างของส่วนหัว */
+    border-bottom: 2px solid #22225E
   }
   
   .title {

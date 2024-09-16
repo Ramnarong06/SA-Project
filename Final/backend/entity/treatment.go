@@ -4,6 +4,6 @@ import (
 )
 type Treatment struct {
 	gorm.Model
-	TreatmentName string
-	Schedule [] Schedule `gorm:"foreignKey:TreatmentID"`
+	TreatmentName 	string
+	Schedule 		[] Schedule `gorm:"foreignKey:TreatmentID"`
 }

@@ -10,7 +10,6 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react
 import Schedule from "./create.tsx";
 import ViewSchedule from "../view/view.tsx";
 
-//import { CreateSchedule } from  "../../../services/https/index.tsx"
 const { Option } = Select;
 
 function ScheduleCreate() {
@@ -85,7 +84,7 @@ function ScheduleCreate() {
   return (
     <div className="appointment-form">
       {contextHolder}
-      <div className="header">
+      <div className="headercreateschedule">
         <ClockCircleOutlined className="icon" />
         <h2>นัดหมายผู้ป่วยใน</h2>
       </div>
@@ -153,11 +152,11 @@ function ScheduleCreate() {
 
         <Form.Item>
           <div className="form-actions">
-            <Button type="primary" htmlType="submit" className="submit-button">
+            <Button type="primary" htmlType="submit" className="submit-button-schedule-create">
               ยืนยัน
             </Button>
 
-            <Button htmlType="button" className="cancel-button" onClick={onCancel}>
+            <Button htmlType="button" className="cancel-button-schedule-create" onClick={onCancel}>
               ยกเลิก
             </Button>
           </div>

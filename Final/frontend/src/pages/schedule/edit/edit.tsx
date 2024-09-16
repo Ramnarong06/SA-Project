@@ -4,11 +4,10 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import { TreatmentsInterface } from "../../../interfaces/ITreatment";
 import { SchedulesInterface } from "../../../interfaces/ISchedule";
 import { GetTreatment, UpdateSchedule, GetScheduleById } from "../../../services/https";
-//mport { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import ViewSchedule from "../view/view.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate,useParams } from "react-router-dom";
-//import utc from 'dayjs/plugin/utc';
+
 
 const { Option } = Select;
 
@@ -16,10 +15,7 @@ function ScheduleEdit() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [treatments, setTreatments] = useState<TreatmentsInterface[]>([]);
-  //
-  //const [schedule, setSchedule] = useState<SchedulesInterface | null>(null);
   const [schedule, setSchedule] = useState<SchedulesInterface>();
-  //
   const [messageApi, contextHolder] = message.useMessage();
   const { id } = useParams(); // รับ id จาก URL
 
@@ -44,7 +40,7 @@ function ScheduleEdit() {
         // ตั้งค่าเริ่มต้นในฟอร์มเมื่อดึงข้อมูลมาได้
         form.setFieldsValue({
           TreatmentID: res.TreatmentID,
-          Date: dayjs(res.Date)//.subtract(1, 'day'),  // ใช้ local() เพื่อแปลงเป็นเวลาในโซนท้องถิ่น
+          Date: dayjs(res.Date)
         });
       }
     } catch (error) {
@@ -53,12 +49,12 @@ function ScheduleEdit() {
   };
   
 
-  // ฟังก์ชันอัปเดตเมื่อผู้ใช้กดบันทึก
+  
   const onFinish = async (values: SchedulesInterface) => {
-    if (!schedule) return; // ตรวจสอบว่ามีข้อมูล schedule ก่อน
+    if (!schedule) return; 
     
     const updatedValues: SchedulesInterface = {
-              //...schedule, // ใช้ค่าเดิมทั้งหมด
+              
               ...values, // อัปเดตค่าที่ถูกกรอกใหม่
               ID: schedule.ID, // ระบุ ID ของการนัดหมายที่ต้องการอัปเดต
               PatientID: schedule.PatientID,
@@ -103,7 +99,7 @@ function ScheduleEdit() {
   return (
     <div className="appointment-form">
       {contextHolder}
-      <div className="header">
+      <div className="headercreateschedule">
         <ClockCircleOutlined className="icon" />
         <h2>แก้ไขนัดหมายผู้ป่วยใน</h2>
       </div>
@@ -150,11 +146,11 @@ function ScheduleEdit() {
 
         <Form.Item>
           <div className="form-actions">
-            <Button type="primary" htmlType="submit" className="submit-button">
+            <Button type="primary" htmlType="submit" className="submit-button-schedule-create">
               ยืนยัน
             </Button>
 
-            <Button htmlType="button" className="cancel-button" onClick={onCancel}>
+            <Button htmlType="button" className="cancel-button-schedule-create" onClick={onCancel}>
               ยกเลิก
             </Button>
           </div>

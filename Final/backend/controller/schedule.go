@@ -125,37 +125,6 @@ func DeleteSchedule(c *gin.Context) {
 
 }
 
-// PATCH /users
-// func UpdateSchedule(c *gin.Context) {
-// 	var schedule entity.Schedule
-// 	ScheduleID := c.Param("id")
-
-// 	db := config.DB()
-
-// 	// ดึง schedule เดิมมาก่อน
-// 	result := db.First(&schedule, ScheduleID)
-// 	if result.Error != nil {
-// 		c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
-// 		return
-// 	}
-
-// 	// ใช้ payload ใหม่เป็น map เพื่ออัปเดตเฉพาะฟิลด์ที่จำเป็น
-// 	var payload map[string]interface{}
-// 	if err := c.ShouldBindJSON(&payload); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request, unable to map payload"})
-// 		return
-// 	}
-
-	
-// 	result = db.Model(&schedule).Updates(payload)
-// 	if result.Error != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, gin.H{"message": "Updated successfully"})
-// }
-
 func UpdateSchedule(c *gin.Context) {
 	var schedule entity.Schedule
 
