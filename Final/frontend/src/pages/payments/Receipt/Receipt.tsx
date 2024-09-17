@@ -7,9 +7,9 @@ import jsPDF from 'jspdf';
 // import { useState, useEffect  } from 'react';
 // import { Modal,message  } from 'antd';
 //import { PaymentDentalRecordInterface } from '../../interfaces/interfacePaymentDentalRecoed';
-import { PaymentDentalRecordInterface } from '../../../interfaces/IPaymentDentalRecord';
+import { PaymentDentalRecordInterface } from '../../../interfaces/payment/IPaymentDentalRecord';
 //import { ReceiptInterface } from '../../interfaces/interfaceReceipt';
-import { ReceiptInterface } from '../../../interfaces/IReceipt';
+import { ReceiptInterface } from '../../../interfaces/payment/IReceipt';
 
 
 export const generatePDF = async ( payment: PaymentDentalRecordInterface ,receipt:ReceiptInterface) => {

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, Button, DatePicker, Select, message } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import "./create.css";
-import { TreatmentsInterface } from "../../../interfaces/ITreatment.ts";
-import { SchedulesInterface } from "../../../interfaces/ISchedule.ts";
+import { TreatmentsInterface } from "../../../interfaces/schedule/ITreatment.ts";
+import { SchedulesInterface } from "../../../interfaces/schedule/ISchedule.ts";
 import { ImageUpload } from "../../../interfaces/IUpload.ts";
-import { GetTreatment, CreateUser } from "../../../services/https/index.tsx";
+import { GetTreatment, CreateUser } from "../../../services/https/payment/index.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Schedule from "./create.tsx";
 import ViewSchedule from "../view/view.tsx";
-import { CreateSchedule } from "../../../services/https/index.tsx";
+import { CreateSchedule } from "../../../services/https/payment/index.tsx";
 
 const { Option } = Select;
 

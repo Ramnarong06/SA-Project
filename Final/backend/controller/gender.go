@@ -14,3 +14,10 @@ func ListGenders(c *gin.Context) {
 	db.Find(&gender)
 	c.JSON(http.StatusOK, &gender)
 }
+
+func GetAll(c *gin.Context) {
+	db := config.DB()
+	var genders []entity.Gender
+	db.Find(&genders)
+	c.JSON(http.StatusOK, &genders)
+ }

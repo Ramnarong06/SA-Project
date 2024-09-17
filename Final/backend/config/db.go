@@ -101,7 +101,22 @@ func SetupDatabase() {
 
 	dob := getDOB(2011, 4, 2)
 
-
+	//
+	Patient3:=entity.Patient{
+		FirstName :		"สมหญิง",
+		LastName :		"สุขขี",
+		Birthday :		dob,
+		Weight : 		45,
+		Height : 		150,
+		//Age :			50,
+		DrugAllergy :		"ความดัน",
+		Chronicdisease : 	"ย่าฆ่าเชื้อ",
+		Tel :"0610000000",
+		BloodTypeID :1,
+		GenderID:1,
+		}
+	db.FirstOrCreate(&Patient3)
+	//
 	Patient := &entity.Patient{
 		FirstName: 		"นรชาติ",
 		LastName:  		"ติวางวาย",
@@ -136,6 +151,8 @@ func SetupDatabase() {
 		LastName:  "พันธเดช",
 	})
 	
+	
+	
 	//ชำระเงิน
 	NowDate := time.Now()//เวลาปัจจุบัน
 	Payment:=entity.Payment{
@@ -143,37 +160,61 @@ func SetupDatabase() {
 		PaymentMethodID : 1,
 		EmployeeID : 1,
 	}
-	//db.FirstOrCreate(&Payment)
-	db.FirstOrCreate(&Payment, entity.Payment{
-		Date :NowDate,
-		PaymentMethodID : 1,
-		EmployeeID : 1,
-	})
+	db.FirstOrCreate(&Payment)
 
 	record := entity.DentalRecord{
-		Date:					NowDate,
-		Description:			"ฟันพุ",
-		Fees:					500,
-		Installment: 			0,
-		NumberOfInstallment: 	"0/0",
-		PatientID:				1,
-		EmployeeID:				1,
-		TreatmentID:			1,
-		StatusID:				1,
-		PaymentID: 				nil,
-	}
-	//db.FirstOrCreate(&record)
-	db.FirstOrCreate(&record, entity.DentalRecord{
-		Date:					NowDate,
-		Description:			"ฟันพุ",
-		Fees:					500,
-		Installment: 			0,
-		NumberOfInstallment: 	"0/0",
-		PatientID:				1,
-		EmployeeID:				1,
-		TreatmentID:			1,
-		StatusID:				1,
-		PaymentID: 				nil,
-	})
+		Date :NowDate,
+		Description :"ฟันพุ",
+		Fees :500,
+		Installment: 0,
+		NumberOfInstallment: "0/0",
 
+		PatientID :1,
+		
+		EmployeeID :1,
+
+		TreatmentID :1,
+		
+		StatusID :1,
+		PaymentID: nil,
+
+		}
+	db.FirstOrCreate(&record)
+	//
+	hashedPassword, _ := HashPassword("123456")
+	BirthDay, _ := time.Parse("2006-01-02", "1988-11-12")
+
+	Employee1	:=	&entity.Employee{
+		FirstName: 		"รามณรงค์",
+       	LastName:		"พันธเดช",
+		BirthDay:		BirthDay,
+		Address:		"ประเทศไทย",
+		Tel:			"0822222222",
+       	Email:     		"sa@gmail.com",
+       	Password:  		hashedPassword,
+       	GenderID:  		1,
+		JobPositionID:  1,
+	}
+
+	db.FirstOrCreate(Employee1, &entity.Employee{
+		Email: 			"sa@gmail.com",
+	})
+	hashedPassword2, _ := HashPassword("123456")
+	//BirthDay, _ := time.Parse("2006-01-02", "1988-11-12")
+
+	Employee2	:=	&entity.Employee{
+		FirstName: 		"สมชาย",
+       	LastName:		"ใจดี",
+		BirthDay:		BirthDay,
+		Address:		"ประเทศไทย",
+		Tel:			"0811111111",
+       	Email:     		"sa2@gmail.com",
+       	Password:  		hashedPassword2,
+       	GenderID:  		1,
+		JobPositionID:  1,
+	}
+
+	db.FirstOrCreate(Employee2, &entity.Employee{
+		Email: 			"sa2@gmail.com",
+	})
 }

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, DatePicker, Select, message } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
-import { TreatmentsInterface } from "../../../interfaces/ITreatment";
-import { SchedulesInterface } from "../../../interfaces/ISchedule";
-import { GetTreatment, UpdateSchedule, GetScheduleById } from "../../../services/https";
+import { TreatmentsInterface } from "../../../interfaces/schedule/ITreatment.ts";
+import { SchedulesInterface } from "../../../interfaces/schedule/ISchedule.ts";
+import { GetTreatment, UpdateSchedule, GetScheduleById } from "../../../services/https/schedule/index.tsx";
 import dayjs from "dayjs";
 import ViewSchedule from "../view/view.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate,useParams } from "react-router-dom";

@@ -15,11 +15,11 @@ import {LeftOutlined } from '@ant-design/icons';
 //import { DentalRecoedInterface } from '../../interfaces/InterfaceDentalRecoed';
 //import { GetDentalRecordByID } from '../../services/https'; 
 //import { PaymentDentalRecordInterface } from '../../interfaces/interfacePaymentDentalRecoed';
-import { PaymentDentalRecordInterface } from '../../../interfaces/IPaymentDentalRecord';
-import { GetDentalRecordByID, GetReceiptByID } from '../../../services/https';
-import { CreatePayment, UpdateDentalRecordPayment } from '../../../services/https';
+import { PaymentDentalRecordInterface } from '../../../interfaces/payment/IPaymentDentalRecord';
+import { GetDentalRecordByID, GetReceiptByID } from '../../../services/https/payment';
+import { CreatePayment, UpdateDentalRecordPayment } from '../../../services/https/payment';
 //import { ReceiptInterface } from '../../interfaces/interfaceReceipt';
-import { ReceiptInterface } from '../../../interfaces/IReceipt';
+import { ReceiptInterface } from '../../../interfaces/payment/IReceipt';
 //import taptopay from '../../assets/tap-to-pay.gif'
 import taptopay from '../../../assets/tap-to-pay.gif'
 import choosepayment from '../../../assets/online-payment.gif'
@@ -60,7 +60,7 @@ const PaymentPage: React.FC = () => {
       const data = {
         //date: "2006-06-25T09:00:00Z", // วันที่ปัจจุบัน
         paymentmethodid: paymentMethodID, // แปลงวิธีการชำระเงินที่เลือกเป็น ID
-        EmployeeID: 2, // รับค่า Employee ID จาก dental record
+        EmployeeID: 1, // รับค่า Employee ID จาก dental record
        // Fees: payment.PrintFees, // สมมติว่า Fees ถูกส่งผ่าน payment.PrintFees
       };
   

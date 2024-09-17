@@ -19,7 +19,6 @@ func GetAllDentalRecord(c *gin.Context) {
 	var record []struct{
 		FirstName 				string
 		LastName 				string
-		Age 					uint
 		Date 					time.Time `json:"-"` //่`json:"-"`ไม่ให้แสดงออกOut put
 		FormattedDate 			string `json:"Date"`
 		Fees 					float32
@@ -29,7 +28,7 @@ func GetAllDentalRecord(c *gin.Context) {
 		PrintFees          	string   // feesที่แปลงแล้ว
 	}
 	result := db.Model(&entity.DentalRecord{}).
-	Select("dental_records.id","dental_records.date","dental_records.Number_Of_Installment","statuses.Status_Name","patients.First_Name","patients.Last_Name","patients.Age","dental_records.fees").
+	Select("dental_records.id","dental_records.date","dental_records.Number_Of_Installment","statuses.Status_Name","patients.First_Name","patients.Last_Name","dental_records.fees").
 	Joins("inner join statuses on dental_records.status_id = statuses.id ").
 	Joins("inner join patients on dental_records.patient_id = patients.id").
 	Where("dental_records.payment_id IS NULL").Find(&record)//ต้องแก้กลับเป็นลบ NOT ออก
@@ -57,7 +56,7 @@ func GetAllDentalRecord(c *gin.Context) {
 		FirstName           string
 		LastName            string
 		Sex                 string
-		Age                 uint
+		
 		Tel                 string
 		BloodGroup          string
 		DrugAllergy         string
@@ -78,7 +77,7 @@ func GetAllDentalRecord(c *gin.Context) {
 		PrintInstallment   	string    // Installment ที่แปลงแล้ว
 	}
 	results := db.Model(&entity.DentalRecord{}).
-		Select("dental_records.id", "dental_records.date", "dental_records.description", "dental_records.fees", "dental_records.installment", "dental_records.number_of_installment", "patients.first_name", "patients.last_name", "patients.age", "patients.tel", "blood_types.blood_group", "patients.drug_allergy", "patients.choronicdisease", "employees.first_name AS efirstname", "employees.last_name AS elastname", "genders.sex").
+		Select("dental_records.id", "dental_records.date", "dental_records.description", "dental_records.fees", "dental_records.installment", "dental_records.number_of_installment", "patients.first_name", "patients.last_name", "patients.tel", "blood_types.blood_group", "patients.drug_allergy", "patients.choronicdisease", "employees.first_name AS efirstname", "employees.last_name AS elastname", "genders.sex").
 		Joins("inner join statuses on dental_records.status_id = statuses.id ").
 		Joins("inner join patients on dental_records.patient_id = patients.id").
 		Joins("inner join blood_types on patients.blood_type_id = blood_types.id").
@@ -115,7 +114,7 @@ func GetReceipt(c *gin.Context) {
 		FirstName           string
 		LastName            string
 		Sex                 string
-		Age                 uint
+		
 		Tel                 string
 		BloodGroup          string
 		DrugAllergy         string
@@ -136,7 +135,7 @@ func GetReceipt(c *gin.Context) {
 		PrintInstallment   	string    // Installment ที่แปลงแล้ว
 	}
 	results := db.Model(&entity.DentalRecord{}).
-		Select("dental_records.id", "dental_records.date", "dental_records.description", "dental_records.fees", "dental_records.installment", "dental_records.number_of_installment", "patients.first_name", "patients.last_name", "patients.age", "patients.tel", "blood_types.blood_group", "patients.drug_allergy", "patients.choronicdisease", "employees.first_name AS efirstname", "employees.last_name AS elastname", "genders.sex","payment_employee.first_name AS Pefirst_name","payment_employee.last_name AS Pelast_name").
+		Select("dental_records.id", "dental_records.date", "dental_records.description", "dental_records.fees", "dental_records.installment", "dental_records.number_of_installment", "patients.first_name", "patients.last_name", "patients.tel", "blood_types.blood_group", "patients.drug_allergy", "patients.choronicdisease", "employees.first_name AS efirstname", "employees.last_name AS elastname", "genders.sex","payment_employee.first_name AS Pefirst_name","payment_employee.last_name AS Pelast_name").
 		Joins("inner join statuses on dental_records.status_id = statuses.id ").
 		Joins("inner join patients on dental_records.patient_id = patients.id").
 		Joins("inner join blood_types on patients.blood_type_id = blood_types.id").
@@ -219,7 +218,7 @@ func GetReceipt(c *gin.Context) {
 		ID 						uint `json:"-"`
 		FirstName 				string
 		LastName 				string
-		Age 					uint
+		
 		Fees  					float32 
 		NumberOfInstallment		string
 		MethodName 				string
@@ -231,7 +230,7 @@ func GetReceipt(c *gin.Context) {
 		PrintFees           string   // feesที่แปลงแล้ว
 	}
 	result := db.Model(&entity.DentalRecord{}).
-	Select("dental_records.id","dental_records.date","dental_records.Number_Of_Installment","statuses.Status_Name","patients.First_Name","patients.Last_Name","patients.Age","dental_records.fees","payment_employee.First_Name AS Efirst_name","payment_employee.Last_Name AS Elast_name","payment_methods.method_name").
+	Select("dental_records.id","dental_records.date","dental_records.Number_Of_Installment","statuses.Status_Name","patients.First_Name","patients.Last_Name","dental_records.fees","payment_employee.First_Name AS Efirst_name","payment_employee.Last_Name AS Elast_name","payment_methods.method_name").
 	Joins("inner join statuses on dental_records.status_id = statuses.id ").
 	Joins("inner join patients on dental_records.patient_id = patients.id").
 	Joins("inner join payments on dental_records.payment_id = payments.id").

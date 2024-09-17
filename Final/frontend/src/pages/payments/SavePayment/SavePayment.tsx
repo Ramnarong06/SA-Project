@@ -5,10 +5,10 @@ import logo from '../assets/logo.jpg'
 import {useNavigate} from 'react-router-dom'; 
 //import Nologo from '../../assets/nologo.png';
 //import { SavePaymentInterface } from '../../interfaces/InterfaceSavePayment';
-import { SavePaymentInterface } from '../../../interfaces/ISavePayment';
+import { SavePaymentInterface } from '../../../interfaces/payment/ISavePayment';
 import { useState, useEffect } from "react";
 import { message } from "antd";
-import { GetSavePayment } from '../../../services/https';
+import { GetSavePayment } from '../../../services/https/payment';
 
 const SavePayment: React.FC = () => {
   const navigate = useNavigate();

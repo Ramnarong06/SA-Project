@@ -4,6 +4,7 @@ import (
 )
 type Gender struct {
 	gorm.Model
-	Sex 			string
+	Sex 			string `json:"sex"`
 	Patient 		[]Patient `gorm:"foreignKey:GenderID"`
 }
+

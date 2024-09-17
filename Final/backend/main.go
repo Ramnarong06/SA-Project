@@ -2,9 +2,12 @@ package main
 
 import (
 	"net/http"
-	"github.com/gin-gonic/gin"
+
 	"example.com/project/config"
 	"example.com/project/controller"
+	"example.com/project/controller/employee"
+	"example.com/project/middlewares"
+	"github.com/gin-gonic/gin"
 )
 
 const PORT = "8000"
@@ -13,15 +16,18 @@ func main() {
 
 	// open connection database
 	config.ConnectionDB()
-
 	// Generate databases
 	config.SetupDatabase()
-
 	r := gin.Default()
 
 	r.Use(CORSMiddleware())
+	r.POST("/signup", employee.SignUp)
+	r.POST("/signin", employee.SignIn)
 
 	router := r.Group("")
+
+	
+	router2 := r.Group("api")
 	{
 		
 		//Schedule Routes
@@ -38,18 +44,28 @@ func main() {
 		router.GET("/tstatuss", controller.ListTstatuss)
 		
 		// ระบบชำระเงิน
-		router.GET("/record",controller.GetAllDentalRecord)
-      	router.GET("/saverecord",controller.GetSaveDentalRecord)
-      	router.GET("/PaymentRecord/:id",controller.PaymentDentalRecord)
-      	router.GET("/Receipt/:id",controller.GetReceipt)
-      	router.GET("/SaveRecord",controller.GetSaveDentalRecord)
-      	router.POST("/newPayment", controller.CreatePayment)
-      	router.POST("/newDentalRecord", controller.CreateDentalRecord)
-      	router.DELETE("/deleteDentalRecord/:id", controller.DeleteDentalRecord)
-      	router.DELETE("/deletePayment/:id", controller.DeletePayment)
-      	router.PATCH("/uprecord/:id", controller.UpdateDentalRecord)
-      	router.PUT("/uprecordpay/:id", controller.UpdateDentalRecordPayment)
+		router2.GET("/record",controller.GetAllDentalRecord)
+		router2.GET("/saverecord",controller.GetSaveDentalRecord)
+		router2.GET("/PaymentRecord/:id",controller.PaymentDentalRecord)
+		router2.GET("/Receipt/:id",controller.GetReceipt)
+		router2.GET("/SaveRecord",controller.GetSaveDentalRecord)
+		router2.POST("/newPayment", controller.CreatePayment)
+		router2.POST("/newDentalRecord", controller.CreateDentalRecord)
+		router2.DELETE("/deleteDentalRecord/:id", controller.DeleteDentalRecord)
+		router2.DELETE("/deletePayment/:id", controller.DeletePayment)
+		router2.PATCH("/uprecord/:id", controller.UpdateDentalRecord)
+		router2.PUT("/uprecordpay/:id", controller.UpdateDentalRecordPayment)
+		
+		router.Use(middlewares.Authorizes())
+
+		//login employee
+		router.PATCH("/employee/:id", employee.Update)
+		router.GET("/employees", employee.GetAll)
+		router.GET("/employee/:id", employee.Get)
+		router.DELETE("/employee/:id", employee.Delete)
+
 	}
+	r.GET("/genders", controller.ListGenders)
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)

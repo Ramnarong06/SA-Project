@@ -3,11 +3,9 @@ import { Calendar, List, Button, message } from 'antd';
 import { EditOutlined, PlusOutlined, CalendarOutlined, DeleteOutlined,CheckOutlined } from '@ant-design/icons';
 import './view.css';
 import Schedule from "../create/create.tsx";
-//import ViewSchedule from "../../../pages/schedule/view/view.css";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
-import { GetSchedulesByDate, UpdateSchedule, UpdateScheduleStatus } from '../../../services/https/index.tsx';
-import { SchedulesInterface } from '../../../interfaces/ISchedule.ts';
-//import UpSchedule from "../schedule/update/update.css";
+import { GetSchedulesByDate, UpdateSchedule, UpdateScheduleStatus } from "../../../services/https/schedule/index.tsx";
+import { SchedulesInterface } from '../../../interfaces/schedule/ISchedule.ts';
 
 const ScheduleView: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -86,7 +84,7 @@ const ScheduleView: React.FC = () => {
         <List
             itemLayout="horizontal"
             dataSource={appointments}
-            renderItem={(item,record) => (
+            renderItem={(item) => (
               <>
               <List.Item
               
