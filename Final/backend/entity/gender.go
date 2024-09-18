@@ -6,5 +6,6 @@ type Gender struct {
 	gorm.Model
 	Sex 			string `json:"sex"`
 	Patient 		[]Patient `gorm:"foreignKey:GenderID"`
+	Employee 		[]Employee`gorm:"foriegnKey:GenderID"`
 }
 

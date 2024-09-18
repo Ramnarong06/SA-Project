@@ -85,7 +85,7 @@ function ScheduleCreate() {
     <div className="appointment-form">
       {contextHolder}
       <div className="headercreateschedule">
-        <ClockCircleOutlined className="icon" />
+        <ClockCircleOutlined className="iconcreate" />
         <h2>นัดหมายผู้ป่วยใน</h2>
       </div>
 

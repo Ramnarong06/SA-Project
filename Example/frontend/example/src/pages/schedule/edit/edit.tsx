@@ -127,8 +127,8 @@ function ScheduleEdit() {
   return (
     <div className="appointment-form">
       {contextHolder}
-      <div className="header">
-        <ClockCircleOutlined className="icon" />
+      <div className="headeredit">
+        //<ClockCircleOutlined className="iconeditschedule" />
         <h2>แก้ไขนัดหมายผู้ป่วยใน</h2>
       </div>
 

@@ -7,10 +7,9 @@ import (
 	"example.com/project/entity"
 )
 
-
-func JobPosition(c *gin.Context) {
-	var jobposition []entity.JobPosition
+func ListJobPositions(c *gin.Context) {
+	var jobPositions []entity.JobPosition
 	db := config.DB()
-	db.Find(&jobposition)
-	c.JSON(http.StatusOK, &jobposition)
+	db.Find(&jobPositions)
+	c.JSON(http.StatusOK, &jobPositions)
 }

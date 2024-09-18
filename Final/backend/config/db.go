@@ -14,6 +14,7 @@ func DB() *gorm.DB {
     return db
 }
 
+/*สร้างฐานข้อมูล*/
 func ConnectionDB() {
     database, err := gorm.Open(sqlite.Open("sa.db?cache=shared"), &gorm.Config{})
     if err != nil {
@@ -31,18 +32,16 @@ func getDOB(year, month, day int) time.Time {
 func SetupDatabase() {
 
     db.AutoMigrate(
-		&entity.Schedule{},
-		&entity.Patient{},
-		&entity.Treatment{},
-		&entity.Tstatus{},
-		&entity.Gender{},
-		&entity.BloodType{},
-		&entity.DentalRecord{},
-		&entity.Employee{},
-		&entity.JobPosition{},
-		&entity.Payment{},
-		&entity.PaymentMethod{},
-		&entity.Status{},
+		
+		&entity.Patient{},&entity.Employee{},&entity.Gender{},&entity.BloodType{},&entity.JobPosition{},
+		
+		&entity.Schedule{},&entity.Tstatus{},&entity.Treatment{},
+		
+		&entity.DentalRecord{},&entity.Status{},
+		
+		&entity.Payment{},&entity.PaymentMethod{},
+		
+		&entity.Equipments{}, &entity.Requisitions{}, &entity.Restocks{},
 	)
 	
 
@@ -81,8 +80,13 @@ func SetupDatabase() {
 	db.FirstOrCreate(&BloodAB, &entity.BloodType{BloodGroup : "AB"})
 
 	//แผนกพนักงาน
-	jobFinance := entity.JobPosition{Job : "Finance"}
-	db.FirstOrCreate(&jobFinance, &entity.JobPosition{Job: "Finance"})
+	JobPositionDentist := entity.JobPosition{Job: "ทันตแพทย์"}
+	JobPositionFinance := entity.JobPosition{Job: "เจ้าหน้าที่การเงิน"}
+	JobPositionPatientService := entity.JobPosition{Job: "เจ้าหน้าที่บริการคนไข้"}
+
+	db.FirstOrCreate(&JobPositionDentist, &entity.JobPosition{Job: "ทันตแพทย์"})
+	db.FirstOrCreate(&JobPositionFinance, &entity.JobPosition{Job: "เจ้าหน้าที่การเงิน"})
+	db.FirstOrCreate(&JobPositionPatientService, &entity.JobPosition{Job: "เจ้าหน้าที่บริการคนไข้"})
 
 	//วิธีชำระเงิน
 	transfer:= entity.PaymentMethod{MethodName: "โอน"}//เอาไว้เช็คในฐานข้อมูลว่ามีคำนี้หรือยัง

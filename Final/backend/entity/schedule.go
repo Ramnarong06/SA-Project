@@ -3,6 +3,7 @@ package entity
 import (
 	"time"
 	"gorm.io/gorm"
+	
 )
 
 type Schedule struct {

@@ -11,12 +11,18 @@ type Patient struct {
 	Birthday 		time.Time 
 	Weight 			int
 	Height 			int
+
 	GenderID   		uint
 	Gender			Gender `gorm:"foriegnKey:GenderID"`
+
 	BloodTypeID   	uint
 	BloodType		Gender `gorm:"foriegnKey:BloodTypeID"`
+
 	DrugAllergy 	string
 	Chronicdisease 	string
 	Tel 			string
-	Schedules 		[]Schedule `gorm:"foreignKey:PatientID"`
+
+	Schedules 		[]Schedule 		`gorm:"foreignKey:PatientID"`
+
+	DentalRecord	[]DentalRecord	`gorm:"foreignKey:PatientID"`
 }

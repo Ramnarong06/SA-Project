@@ -58,7 +58,7 @@ async function DeleteEmployeessById(id: string) {
 }
 
 
-async function CreateUser(data: EmployeeInterface) {
+async function CreateEmployee(data: EmployeeInterface) {
 
   return await axios
 
@@ -77,5 +77,5 @@ export {
   GetEmployeesById,
   UpdateEmployeesById,
   DeleteEmployeessById,
-  CreateUser,
+  CreateEmployee,
 };

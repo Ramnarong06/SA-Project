@@ -18,29 +18,30 @@
     margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่างของโลโก้ */
   }
   
-  .headercreateedit {
-    
-    display: flex; /* ใช้ Flexbox ในการจัดเรียงไอคอนและหัวข้อ */
-    align-items: left; /* จัดให้ไอคอนและหัวข้ออยู่ในแนวเดียวกัน */
-    justify-content: left; /* จัดไอคอนและหัวข้อให้อยู่กลางหน้าจอ */
-    margin-bottom: 60px; /* เพิ่มระยะห่างด้านล่างของส่วนหัว */
-    border-bottom: 2px solid #22225E
+  
+  
+  .headeredit {
+    display: flex;
+    align-items: center; /* ปรับให้ไอคอนและหัวข้ออยู่ในแนวเดียวกันแนวตั้ง */
+    justify-content: flex-start; /* จัดให้อยู่ชิดซ้าย */
+    margin-bottom: 60px;
   }
   
-  .title {
-    
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 10px;
-    color: #22225E; /* Dark blue */
+  .iconedit {
+    font-size: 32px; /* ปรับขนาดไอคอนให้ใหญ่ขึ้น */
+    color: #22225E;
+    margin-right: 15px;
+    vertical-align: middle; /* จัดไอคอนให้อยู่ตรงกลางของบรรทัด */
+    line-height: 1; /* ปรับความสูงของบรรทัดให้พอดีกับขนาดไอคอน */
   }
   
-  .icon {
-    font-size: 24px; /* กำหนดขนาดของไอคอน */
-    color: #22225E; /* กำหนดสีของไอคอน */
-    margin-right: 15px; /* เพิ่มระยะห่างระหว่างไอคอนและหัวข้อ */
+  h2 {
+    margin: 0;
+    font-size: 32px;
+    font-family: 'Noto Sans Thai';
+    color: #333; /* เปลี่ยนสีเป็นสีที่คุณต้องการ */
+    color: #22225E; /* เปลี่ยนสีของข้อความ "นัดหมายผู้ป่วยใน" */
+    line-height: 1; /* ปรับให้หัวข้ออยู่ในบรรทัดเดียวกับไอคอน */
   }
   
   h2 {

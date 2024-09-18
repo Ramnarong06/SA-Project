@@ -26,7 +26,7 @@ import {
   
   import { useNavigate } from "react-router-dom";
   
-  import { CreateEmployee } from "../../../services/https/payment";
+  import { CreateEmployee } from "../../../services/https/login";
   
   import { EmployeeInterface } from "../../../interfaces/individual/IEmployee";
   

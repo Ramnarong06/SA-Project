@@ -2,7 +2,7 @@
 .schedule-header {
     display: flex;                /* จัดเรียงแบบ Flexbox */
     align-items: center;          /* จัดให้อยู่ตรงกลางแนวตั้ง */
-    gap: 10px;                    /* เว้นระยะห่างระหว่างไอคอนกับข้อความ */
+    gap: 2px;                    /* เว้นระยะห่างระหว่างไอคอนกับข้อความ */
     font-size: 24px;              /* ขนาดฟอนต์ของข้อความ */
     font-weight: bold;            /* ทำให้ข้อความหนา */
     margin-bottom: 20px;          /* เพิ่มระยะห่างด้านล่าง */
@@ -10,15 +10,16 @@
   
   /* ไอคอนของปฏิทิน */
   .schedule-icon {
-    font-size: 32px;        /* กำหนดขนาดของไอคอน */
+    font-size: 30px;        /* กำหนดขนาดของไอคอน */
+    font-weight: bold;
     color: #22225E;       /* กำหนดสีของไอคอน */
     margin-right: 5px;      /* เพิ่มระยะห่างระหว่างไอคอนและหัวข้อ */              /* กำหนดขนาดไอคอน */
   }
   
   /* ข้อความหัวข้อ */
   .schedule-title {
-    margin: 0;
-    font-size: 32px;
+    margin: 0px;
+    font-size: 34px;
     font-family: 'Noto Sans Thai';
     color: #333; /* เปลี่ยนสีเป็นสีที่คุณต้องการ */
     color: #22225E; /* เปลี่ยนสีของข้อความ "นัดหมายผู้ป่วยใน" */
@@ -69,4 +70,102 @@
 .add-button {
     margin-top: 50px; /* Adjust this value as needed */
     align-self: flex-end;
+}
+
+
+/* From Uiverse.io by mrhyddenn */
+.icon-btn {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #cdcdcd;
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  position: relative;
+  transition: width 0.2s ease-in-out;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+.add-btn:hover {
+  width: 120px;
+}
+
+.add-btn::before,
+.add-btn::after {
+  transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  content: "";
+  position: absolute;
+  height: 4px;
+  width: 10px;
+  top: calc(50% - 2px);
+  background: seagreen;
+}
+
+.add-btn::after {
+  right: 6px;
+  overflow: hidden;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.add-btn::before {
+  left: 6px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.icon-btn:focus {
+  outline: none;
+}
+
+.btn-txt {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.add-btn:hover::before,
+.add-btn:hover::after {
+  width: 4px;
+  border-radius: 2px;
+}
+
+.add-btn:hover .btn-txt {
+  opacity: 1;
+}
+
+.add-icon::after,
+.add-icon::before {
+  transition: all 0.2s ease-in-out;
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 2px;
+  top: calc(50% - 10px);
+  background: seagreen;
+  overflow: hidden;
+}
+
+.add-icon::before {
+  left: 22px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.add-icon::after {
+  right: 22px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.add-btn:hover .add-icon::before {
+  left: 15px;
+  height: 4px;
+  top: calc(50% - 2px);
+}
+
+.add-btn:hover .add-icon::after {
+  right: 15px;
+  height: 4px;
+  top: calc(50% - 2px);
 }

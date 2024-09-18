@@ -27,7 +27,7 @@ import {
 
 import { Breadcrumb, Layout, Menu, theme,Button } from "antd";
 //import logo from "./assets/logo.png";
-import logo2 from "./assets/TestLogo.png";
+import Prelogo2 from "./assets/TestLogo.png";
 
 
 //
@@ -35,9 +35,30 @@ import Schedule from "./pages/schedule/create/create.tsx";
 import ViewSchedule from "./pages/schedule/view/view.tsx";
 import EditSchedule from "./pages/schedule/edit/edit.tsx";
 //
-import PaymentList from "./pages/payments/PaymentList/PaymentList.tsx";
-import SavePayment from "./pages/payments/SavePayment/SavePayment.tsx";
-import Payment from "./pages/payments/payment/PaymentPage.tsx";
+// import PaymentList from "./pages/payments/PaymentList/PaymentList.tsx";
+// import SavePayment from "./pages/payments/SavePayment/SavePayment.tsx";
+// import Payment from "./pages/payments/payment/PaymentPage.tsx";
+//
+
+// storage
+import CreateEq from "./pages/storage/CreateEq/CreateEq";
+import EditEq from "./pages/storage/EditEq/EditEq.tsx";
+import Equipments from "./pages/storage/Equipments/Equipments.tsx";  
+import Requisitions from "./pages/storage/Requisitions/Requisitions.tsx";
+import RequestEq from "./pages/storage/RequestEq/RequestEq.tsx";
+import LittleEq from "./pages/storage/LittleEq/LittleEq.tsx";
+import AddEq from "./pages/storage/AddEq/AddEq.tsx";
+import Restocks from "./pages/storage/Restocks/Restocks.tsx";
+
+// individual
+import Employee  from "./pages/individual/employee/index.tsx"
+import Patient  from "./pages/individual/patient/index.tsx"
+import PatientCreate from "./pages/individual/patient/create"
+import EmployeeCreate from "./pages/individual/employee/create"
+import EmployeeEdit from "./pages/individual/employee/edit"
+import PatientEdit from "./pages/individual/employee/edit"
+//
+
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -96,16 +117,16 @@ const items: MenuItem[] = [
       {
         key: 'employee',
         label: (
-          <Link to="/customer">
-            พนักงาน
+          <Link to="/employee/create">
+            เพิ่มข้อมูลพนักงาน
           </Link>
         ),
       },
       {
         key: 'patient',
         label: (
-          <Link to="/editschedule/edit/:id">
-            ผู้ป่วย
+          <Link to="/patient/create">
+            เพิ่มข้อมูลผู้ป่วย
           </Link>
         ),
       },
@@ -180,16 +201,16 @@ const items: MenuItem[] = [
       {
         key: 'equipment',
         label: (
-          <Link to="/storage">
-            อุปกรณ์
+          <Link to="equipments">
+            equipments
           </Link>
         ),
       },
       {
         key: 'Disbursement',
         label: (
-          <Link to="008">
-            รายการเบิก
+          <Link to="restocks">
+            restocks
           </Link>
         ),
       },
@@ -275,7 +296,7 @@ const App: React.FC = () => {
             }}
           >
             <img
-              src={logo2}
+              src={Prelogo2}
               alt="Logo"
               style={{ width: "60%"}}
             />
@@ -316,9 +337,32 @@ const App: React.FC = () => {
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/viewschedule" element={<ViewSchedule />} />
                 <Route path="/editschedule/edit/:id" element={<EditSchedule />} />
-                <Route path="/paymentlist" element={<PaymentList />} />
-                <Route path="/savepayment" element={<SavePayment />} />
-                <Route path="/payment" element={<Payment />} />
+                
+                //
+                <Route path="/CreateEq" element={<CreateEq />} />
+                <Route path="/EditEq" element={<EditEq />} />
+                <Route path="/Equipments" element={<Equipments />} />
+                <Route path="/Requisitions" element={<Requisitions />} />
+                <Route path="/LittleEq" element={<LittleEq />} />
+                <Route path="/AddEq" element={<AddEq />} />
+                <Route path="/RequestEq" element={<RequestEq />} />
+                <Route path="/Restocks" element={<Restocks />} />
+                <Route path="/AddEq/:id" element={<AddEq />} />
+                <Route path="/RequestEq/:id" element={<RequestEq />} />
+                <Route path="/EditEq/:id" element={<EditEq />} />
+                //
+                <Route path="/" element={<div>Manage Patient Records</div>} />
+                <Route path="/customer" element={<div>Manage Patient Records</div>} />
+                <Route path="/employee/create" element={<EmployeeCreate/>} />
+                <Route path="/employee/edit/:id" element={<EmployeeEdit/>} />
+                <Route path="/manage-patients" element={<div>Manage Patient Records</div>} />
+                <Route path="/employees" element={<Employee />} />
+                <Route path="/patients" element={<Patient/>} />
+                <Route path="/patient/create" element={<PatientCreate/>} />
+                <Route path="/patient/edit/:id" element={<PatientEdit/>} />
+                //
+                <Route path="/employee" element={<Employee />} />
+                <Route path="/patient" element={<Patient />} />
               </Routes>
             </div>
           </Content>

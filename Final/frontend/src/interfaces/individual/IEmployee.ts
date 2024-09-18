@@ -1,4 +1,4 @@
-export interface EmployeeInterface  {
+export interface EmployeesInterface  {
 	ID?:                number;
     FirstName?: 		string;
     LastName?:  		string;    	
@@ -9,5 +9,4 @@ export interface EmployeeInterface  {
     Password?:  		string;   	
     GenderID?:  		number;      	
 	JobPositionID?:  	number;      	
-	
 }

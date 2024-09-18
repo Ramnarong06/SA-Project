@@ -24,5 +24,9 @@ type Employee struct {
 
 	DentalRecord 	[]DentalRecord	`gorm:"foriegnKey:EmployeeID"`
 
-	Payment 		[]Payment		`gorm:"foriegnKey:PaymentID"`
+	Payment 		[]Payment		`gorm:"foriegnKey:EmployeeID"`
+
+	Requisitions	[]Requisitions	`gorm:"foriegnKey:EmployeeID`
+
+	Restocks		[]Restocks		`gorm:"foriegnKey:EmployeeID"`
 }

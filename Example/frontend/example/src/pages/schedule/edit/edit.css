@@ -18,12 +18,11 @@
     margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่างของโลโก้ */
   }
   
-  .header {
-    
-    display: flex; /* ใช้ Flexbox ในการจัดเรียงไอคอนและหัวข้อ */
-    align-items: left; /* จัดให้ไอคอนและหัวข้ออยู่ในแนวเดียวกัน */
-    justify-content: left; /* จัดไอคอนและหัวข้อให้อยู่กลางหน้าจอ */
-    margin-bottom: 60px; /* เพิ่มระยะห่างด้านล่างของส่วนหัว */
+  .headeredit {
+    display: flex;
+    align-items: center; /* แก้ไขจาก align-items: left เป็น center เพื่อให้อยู่ในแนวเดียวกัน */
+    justify-content: flex-start; /* จัดไอคอนและข้อความให้อยู่ชิดซ้าย */
+    margin-bottom: 60px;
   }
   
   .title {
@@ -36,10 +35,10 @@
     color: #22225E; /* Dark blue */
   }
   
-  .icon {
-    font-size: 24px; /* กำหนดขนาดของไอคอน */
-    color: #22225E; /* กำหนดสีของไอคอน */
-    margin-right: 15px; /* เพิ่มระยะห่างระหว่างไอคอนและหัวข้อ */
+  .iconeditschedule {
+    font-size: 24px; /* ปรับขนาดไอคอนให้ใหญ่ขึ้นตามต้องการ */
+    color: #22225E;
+    margin-right: 15px;
   }
   
   h2 {

@@ -79,7 +79,21 @@ const ScheduleView: React.FC = () => {
             </Link>
           </div>
         </div>
-        
+        {/* <div className="schedule-container">
+          <div className="calendar-section">
+            <Calendar fullscreen={false} onSelect={onDateChange} />
+            <div className="add-button-container">
+              <Link to="/schedule">
+                <button className="icon-btn add-btn">
+                  <div className="add-icon"></div>
+                  <div className="btn-txt">Add Photo</div>
+                </button>
+              </Link>
+            </div>
+          </div> */}
+
+      
+
         <div className="appointments-section">
         <List
             itemLayout="horizontal"

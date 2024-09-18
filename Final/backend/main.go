@@ -16,8 +16,10 @@ func main() {
 
 	// open connection database
 	config.ConnectionDB()
+
 	// Generate databases
 	config.SetupDatabase()
+
 	r := gin.Default()
 
 	r.Use(CORSMiddleware())
@@ -30,7 +32,7 @@ func main() {
 	router2 := r.Group("api")
 	{
 		
-		//Schedule Routes
+		//Schedule Routes------------------------------------------
 		router.GET("/schedules", controller.ListSchedules)
 		router.GET("/schedule/:id", controller.GetSchedule)
 		router.POST("/schedules", controller.CreateSchedule)
@@ -42,6 +44,7 @@ func main() {
 		router.GET("/patients", controller.ListPatients)
 		router.GET("/treatments", controller.ListTreatment)
 		router.GET("/tstatuss", controller.ListTstatuss)
+		//----------------------------------------------------------
 		
 		// ระบบชำระเงิน
 		router2.GET("/record",controller.GetAllDentalRecord)
@@ -56,16 +59,62 @@ func main() {
 		router2.PATCH("/uprecord/:id", controller.UpdateDentalRecord)
 		router2.PUT("/uprecordpay/:id", controller.UpdateDentalRecordPayment)
 		
+		// ระบบ stock
+
+		// Equipment Route
+		router.POST("/createEq", controller.CreateEq)
+        router.GET("/equipments", controller.GetAllEquipments)
+        router.GET("/equipment/:id", controller.GetEquipment)
+        router.PUT("/equipment/:id", controller.UpdateEquipment)
+        router.DELETE("/equipment/:id", controller.DeleteEquipment)
+        router.GET("/equipments/lowstock", controller.GetLowStockEquipments)  /*อุปกรณ์เหลือน้อย*/
+		
+		// requisitions Route
+        router.GET("/requisitions", controller.GetAllRequisitions)
+        router.PATCH("/requisitions", controller.RequisitionEquipment)     /*เบิกอุปกรณ์*/
+
+
+        // restocks Route
+        router.GET("/restocks", controller.GetAllRestocks)
+        router.PATCH("/restocks", controller.RestockEquipment)   /*เติมอุปกรณ์*/
+		//-------------------------------------------------------------------
+		// Employee Routes
+		router.GET("/employees", controller.ListEmployees)
+		router.GET("/employee/:id", controller.GetEmployee)
+		router.POST("/employees", controller.CreateEmployee)
+		router.PATCH("/employees", controller.UpdateEmployee)
+		router.DELETE("/employees/:id", controller.DeleteEmployee)
+		// Gender Routes
+		router.GET("/genders", controller.ListGenders)
+		// BloodType Routes
+		router.GET("/bloodTypes", controller.ListBloodTypes)
+		// JobPosition Routes
+		router.GET("/jobPositions",controller.ListJobPositions)
+		// Patient Routes
+		//router.GET("/patients", controller.ListPatients)
+		router.GET("/patient/:id", controller.GetPatient)
+		router.POST("/patients", controller.CreatePatient)
+		router.PATCH("/patients", controller.UpdatePatient)
+		router.DELETE("/patients/:id", controller.DeletePatient)
+		//--------------------------------------------------------------------
+		
+		
+		
+		
+		
+		
+		
+		
+		//login employee
 		router.Use(middlewares.Authorizes())
 
-		//login employee
-		router.PATCH("/employee/:id", employee.Update)
-		router.GET("/employees", employee.GetAll)
-		router.GET("/employee/:id", employee.Get)
-		router.DELETE("/employee/:id", employee.Delete)
+		//router.PATCH("/employee/:id", employee.Update)
+		//router.GET("/employees", employee.GetAll)
+		//router.GET("/employee/:id", employee.Get)
+		//router.DELETE("/employee/:id", employee.Delete)
 
 	}
-	r.GET("/genders", controller.ListGenders)
+	//r.GET("/genders", controller.ListGenders)
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)
