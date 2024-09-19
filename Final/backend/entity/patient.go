@@ -13,10 +13,10 @@ type Patient struct {
 	Height 			int
 
 	GenderID   		uint
-	Gender			Gender `gorm:"foriegnKey:GenderID"`
+	Gender			Gender 		`gorm:"foriegnKey:GenderID"`
 
-	BloodTypeID   	uint
-	BloodType		Gender `gorm:"foriegnKey:BloodTypeID"`
+	BloodTypeID   	uint	
+	BloodType		BloodType 	`gorm:"foriegnKey:BloodTypeID"`
 
 	DrugAllergy 	string
 	Chronicdisease 	string

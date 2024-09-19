@@ -62,11 +62,11 @@ func SetupDatabase() {
 	db.FirstOrCreate(&TStatusDone, &entity.Tstatus{TStatusName: "Done"})
 
 	// Gender
-	GenderMale := entity.Gender{Sex : "Male"}
-	GenderFemale := entity.Gender{Sex : "Female"}
+	GenderMale := entity.Gender{Sex : "ชาย"}
+	GenderFemale := entity.Gender{Sex : "หญิง"}
 
-	db.FirstOrCreate(&GenderMale, &entity.Gender{Sex : "Male"})
-	db.FirstOrCreate(&GenderFemale, &entity.Gender{Sex : "Female"})
+	db.FirstOrCreate(&GenderMale, &entity.Gender{Sex : "ชาย"})
+	db.FirstOrCreate(&GenderFemale, &entity.Gender{Sex : "หญิง"})
 
 	// BloodType
 	BloodO:= entity.BloodType{BloodGroup: "O"}
@@ -105,14 +105,13 @@ func SetupDatabase() {
 
 	dob := getDOB(2011, 4, 2)
 
-	//
+	
 	Patient3:=entity.Patient{
 		FirstName :		"สมหญิง",
 		LastName :		"สุขขี",
 		Birthday :		dob,
 		Weight : 		45,
 		Height : 		150,
-		//Age :			50,
 		DrugAllergy :		"ความดัน",
 		Chronicdisease : 	"ย่าฆ่าเชื้อ",
 		Tel :"0610000000",
@@ -120,6 +119,7 @@ func SetupDatabase() {
 		GenderID:1,
 		}
 	db.FirstOrCreate(&Patient3)
+	
 	//
 	Patient := &entity.Patient{
 		FirstName: 		"นรชาติ",
@@ -157,33 +157,7 @@ func SetupDatabase() {
 	
 	
 	
-	//ชำระเงิน
-	NowDate := time.Now()//เวลาปัจจุบัน
-	Payment:=entity.Payment{
-		Date :NowDate,
-		PaymentMethodID : 1,
-		EmployeeID : 1,
-	}
-	db.FirstOrCreate(&Payment)
-
-	record := entity.DentalRecord{
-		Date :NowDate,
-		Description :"ฟันพุ",
-		Fees :500,
-		Installment: 0,
-		NumberOfInstallment: "0/0",
-
-		PatientID :1,
-		
-		EmployeeID :1,
-
-		TreatmentID :1,
-		
-		StatusID :1,
-		PaymentID: nil,
-
-		}
-	db.FirstOrCreate(&record)
+	
 	//
 	hashedPassword, _ := HashPassword("123456")
 	BirthDay, _ := time.Parse("2006-01-02", "1988-11-12")
@@ -221,4 +195,113 @@ func SetupDatabase() {
 	db.FirstOrCreate(Employee2, &entity.Employee{
 		Email: 			"sa2@gmail.com",
 	})
+
+	// payment
+	//hashedPassword2, _ := HashPassword("123456")
+	//BirthDay2, _ := time.Parse("2006-01-02T00:00:00Z", "1988-11-12T00:00:00Z")
+	//พนักงาน
+	Employee := &entity.Employee{
+ 
+		FirstName: "สุขสมัย",
+ 
+		LastName:  "ใจสะอาด",
+ 
+		Email:     "sa@gmail.com",
+ 
+		Address: "โคราช",
+ 
+		Password: hashedPassword,
+ 
+		BirthDay:  BirthDay,
+ 
+		GenderID:  1,
+
+		JobPositionID: 1,
+		
+		Tel: "063-111-2222",
+ 
+	}
+	EmployeeDoctor := &entity.Employee{
+ 
+		FirstName: "สมชาย",
+ 
+		LastName:  "สายสุนทรีย์",
+ 
+		Email:     "doctor@gmail.com",
+ 
+		Address: "โคราช",
+ 
+		Password: hashedPassword,
+ 
+		BirthDay:  BirthDay,
+ 
+		GenderID:  2,
+
+		JobPositionID: 2,
+		
+		Tel: "063-111-4444",
+ 
+	}
+ 
+	db.FirstOrCreate(Employee, &entity.Employee{
+ 
+		Email: "sa@gmail.com",
+ 
+	})
+	db.FirstOrCreate(EmployeeDoctor, &entity.Employee{
+ 
+		Email: "doctor@gmail.com",
+ 
+	})
+
+
+	//Treatment
+	ScrapeWayTartar:= entity.Treatment{TreatmentName: "ขูดหินปูน" }
+	db.FirstOrCreate(&ScrapeWayTartar, &entity.Treatment{TreatmentName: "ขูดหินปูน"})
+	//คนไข้
+	Patient23:=entity.Patient{
+		FirstName :"สมหญิง",
+		LastName :"สุขขี",
+		Birthday :BirthDay,
+		Weight : 45,
+		Height : 150,
+		DrugAllergy :"ความดัน",
+		Chronicdisease : "ย่าฆ่าเชื้อ",
+		Tel :"061-000-0000",
+		BloodTypeID :1,
+		GenderID:1,
+		}
+	db.FirstOrCreate(&Patient23)
+
+	
+	
+	//ชำระเงิน
+	NowDate := time.Now()//เวลาปัจจุบัน
+	Payment:=entity.Payment{
+		Date :NowDate,
+
+		PaymentMethodID : 1,
+
+		EmployeeID : 2,
+	}
+	db.FirstOrCreate(&Payment)
+
+	record := entity.DentalRecord{
+		Date :NowDate,
+		Description :"ฟันพุเยอะมาก",
+		Fees :500.00,
+		Installment: 0,
+		NumberOfInstallment: "0/0",
+
+		PatientID :1,
+		
+		EmployeeID :1,
+
+		TreatmentID :1,
+		
+		StatusID :2,
+
+		PaymentID: nil,
+		}
+	db.FirstOrCreate(&record)
 }

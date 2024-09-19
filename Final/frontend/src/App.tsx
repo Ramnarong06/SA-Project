@@ -57,7 +57,13 @@ import PatientCreate from "./pages/individual/patient/create"
 import EmployeeCreate from "./pages/individual/employee/create"
 import EmployeeEdit from "./pages/individual/employee/edit"
 import PatientEdit from "./pages/individual/employee/edit"
-//
+
+// payment
+//import Htmlrecipt from '../Receipt/htmlRecipt';
+import PaymentPage from './pages/payment/payment/PaymentPage.tsx'
+import PaymentList from './pages/payment/PaymentList/PaymentList.tsx'
+import SavePayment from './pages/payment/SavePayment/SavePayment.tsx';
+import Dashbord from './pages/payment/dashbord/dashbord.tsx';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -115,7 +121,7 @@ const items: MenuItem[] = [
     icon: <UserOutlined />,
     children: [
       {
-        key: 'employee',
+        key: 'employeecreate',
         label: (
           <Link to="/employee/create">
             เพิ่มข้อมูลพนักงาน
@@ -123,10 +129,26 @@ const items: MenuItem[] = [
         ),
       },
       {
-        key: 'patient',
+        key: 'patientcreate',
         label: (
           <Link to="/patient/create">
             เพิ่มข้อมูลผู้ป่วย
+          </Link>
+        ),
+      },
+      {
+        key: 'employees',
+        label: (
+          <Link to="/employees">
+            employees
+          </Link>
+        ),
+      },
+      {
+        key: 'patients',
+        label: (
+          <Link to="/patients">
+            patients
           </Link>
         ),
       },
@@ -166,29 +188,22 @@ const items: MenuItem[] = [
     icon: <DollarOutlined />,
     children: [
       {
-        key: 'paymentlist',
+        key: 'paymentList',
         label: (
-          <Link to="paymentlist">
-            paymentlist
+          <Link to="/paymentList">
+            รอชำระเงิน
           </Link>
         ),
       },
       {
-        key: 'savepayment',
+        key: 'savePayment',
         label: (
-          <Link to="savepayment">
-            savepayment
+          <Link to="/savePayment">
+            บันทึกชำระเงิน
           </Link>
         ),
       },
-      {
-        key: 'payment',
-        label: (
-          <Link to="payment">
-            payment
-          </Link>
-        ),
-      },
+      
     ],
   },
 
@@ -360,6 +375,12 @@ const App: React.FC = () => {
                 <Route path="/patients" element={<Patient/>} />
                 <Route path="/patient/create" element={<PatientCreate/>} />
                 <Route path="/patient/edit/:id" element={<PatientEdit/>} />
+                //
+                <Route path="/dashbord" element={<Dashbord />} />{/*แก้ตรงนี้วันที่11/9/67*/}
+                <Route path="/paymentPage/:id" element={<PaymentPage />} />{/*แก้ตรงนี้วันที่11/9/67*/}
+                <Route path="/paymentList" element={<PaymentList />} />
+                <Route path="/buttonPay" element={<PaymentList />} />
+                <Route path="/savePayment" element={<SavePayment />} />
                 //
                 <Route path="/employee" element={<Employee />} />
                 <Route path="/patient" element={<Patient />} />

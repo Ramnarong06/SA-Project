@@ -1,5 +1,18 @@
 package controller
 
+// import (
+// 	"net/http"
+// 	"time"
+
+// 	"github.com/TOUCHTHANAWAT/sa-project/config"
+// 	"github.com/TOUCHTHANAWAT/sa-project/entity"
+// 	//"github.com/tanapon395/sa-67-example/config"
+// 	//"github.com/tanapon395/sa-67-example/entity"
+// 	"github.com/gin-gonic/gin"
+// )
+
+// package controllers
+
 import (
     "net/http"
     "time"
@@ -28,9 +41,9 @@ func CreatePayment(c *gin.Context) {
 	db := config.DB()
     // สร้างข้อมูลการชำระเงินใหม่
     payment := entity.Payment{
-        Date:           time.Now(),
+        Date:time.Now(),
         PaymentMethodID: input.PaymentMethodID,
-        EmployeeID:      input.EmployeeID,
+        EmployeeID:  input.EmployeeID,
         // CreatedAt:       time.Now(),
         // Fees:            input.Fees,
     }
@@ -73,6 +86,10 @@ func UpdateDentalRecordPayment(c *gin.Context) {
     }
 
     // อัปเดต PaymentID ใน DentalRecord
+    // if dentalRecord.NumberOfInstallment != "0/0"{
+    //     dentalRecord
+    // }
+  
     dentalRecord.PaymentID = &input.PaymentID
 	dentalRecord.StatusID = 1
 

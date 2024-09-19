@@ -5,6 +5,6 @@ import (
 
 type JobPosition struct{
 	gorm.Model
-	Job 		string 		`json:"job"`
+	Job 		string 		
 	Employee 	[]Employee	`gorm:"foriegnKey:JobPositionID"`
 }

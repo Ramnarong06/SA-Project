@@ -6,7 +6,7 @@ export interface PaymentDentalRecordInterface{
 	Tel?:string;
 	BloodGroup?:string;
 	DrugAllergy?:string; 
-	Choronicdisease?:string;
+	Chronicdisease?:string;
 	Description?:string;
 	Date?:string;
 	Efirstname?:string;
@@ -18,5 +18,6 @@ export interface PaymentDentalRecordInterface{
 	Date2?:string;
 	Pefirst_name?:string;
     Pelast_name?:string;
+	TreatmentName?:string;
 
 }

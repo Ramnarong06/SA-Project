@@ -47,17 +47,16 @@ func main() {
 		//----------------------------------------------------------
 		
 		// ระบบชำระเงิน
-		router2.GET("/record",controller.GetAllDentalRecord)
-		router2.GET("/saverecord",controller.GetSaveDentalRecord)
-		router2.GET("/PaymentRecord/:id",controller.PaymentDentalRecord)
-		router2.GET("/Receipt/:id",controller.GetReceipt)
-		router2.GET("/SaveRecord",controller.GetSaveDentalRecord)
-		router2.POST("/newPayment", controller.CreatePayment)
-		router2.POST("/newDentalRecord", controller.CreateDentalRecord)
-		router2.DELETE("/deleteDentalRecord/:id", controller.DeleteDentalRecord)
-		router2.DELETE("/deletePayment/:id", controller.DeletePayment)
-		router2.PATCH("/uprecord/:id", controller.UpdateDentalRecord)
-		router2.PUT("/uprecordpay/:id", controller.UpdateDentalRecordPayment)
+	   router2.GET("/record",controller.GetAllDentalRecord)
+	   router2.GET("/PaymentRecord/:id",controller.PaymentDentalRecord)
+	   router2.GET("/Receipt/:id",controller.GetReceipt)
+	   router2.GET("/SaveRecord",controller.GetSaveDentalRecord)
+	   router2.POST("/newPayment", controller.CreatePayment)
+	   router2.POST("/newDentalRecord", controller.CreateDentalRecord)
+	   router2.DELETE("/deleteDentalRecord/:id", controller.DeleteDentalRecord)
+	   router2.DELETE("/deletePayment/:id", controller.DeletePayment)
+	   router2.PATCH("/uprecord/:id", controller.UpdateDentalRecord)
+	   router2.PUT("/uprecordpay/:id", controller.UpdateDentalRecordPayment)
 		
 		// ระบบ stock
 

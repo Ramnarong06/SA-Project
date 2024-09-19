@@ -152,7 +152,7 @@ function Equipments() {
       {contextHolder}
       <div className="logo-container">
         <img src={new_logo} alt="logo" className="logo" />
-      </div>
+      </div>  
       <Row align="top">
         <Col>
           <div className="logo-icon">

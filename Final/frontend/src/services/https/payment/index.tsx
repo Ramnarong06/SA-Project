@@ -1,8 +1,8 @@
 
 import { PaymentInterface } from "../../../interfaces/payment/IPayment";
-const apiUrl = "http://localhost:8000";
 import axios from 'axios';
 
+const apiUrl = "http://localhost:8000";
 const Authorization = localStorage.getItem("token");
 const Bearer = localStorage.getItem("token_type");
 
@@ -17,7 +17,6 @@ const requestOptions = {
   },
 
 };
-
 
 async function GetAllDentalRecord() {
     return await axios
@@ -87,15 +86,34 @@ async function UpdateDentalRecordPayment(id: any, paymentID: any) {
     .catch((e) => e.response);
 }
 
-export {
- 
-  //
-  GetAllDentalRecord,
-  GetDentalRecordByID,
-  GetReceiptByID,
-  GetSavePayment,
-  CreatePayment,
-  UpdateDentalRecord,
-  UpdateDentalRecordPayment,
-  
+/*async function CreateDentalRecord() {
+    return await axios
+
+    .post(`${apiUrl}/newDentalRecord`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+}*/
+
+// async function CreatePayment(data:PaymentInterface) {
+//     return await axios
+
+//     .post(`${apiUrl}/newPayment`, data,requestOptions)
+
+//     .then((res) => res)
+
+//     .catch((e) => e.response);
+// }
+
+export{
+    GetAllDentalRecord,
+    GetDentalRecordByID,
+    GetReceiptByID,
+    GetSavePayment,
+    CreatePayment,
+    UpdateDentalRecord,
+    UpdateDentalRecordPayment,
+    //CreateDentalRecord,
+   
 };

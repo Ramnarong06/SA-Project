@@ -9,4 +9,5 @@ export interface ReceiptInterface{
     Fees?:number;
     Pefirst_name?:string;
     Pelast_name?:string;
-}//ไม่ได้ใช้
+    TreatmentName?:string;
+}

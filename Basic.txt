@@ -34,3 +34,6 @@ git branch -m main
 git push -u origin main
 //
 go get -u github.com/golang-jwt/jwt/v5
+// เพิมเติม backend
+npm install jspdf --save
+npm install jspdf jspdf-autotable

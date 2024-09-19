@@ -2,7 +2,6 @@ package entity
 
 import (
 	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -15,17 +14,17 @@ type DentalRecord struct {
 	NumberOfInstallment string    
 
 	PatientID   		uint
-	Patient     		Patient `gorm:"foriegnKey:PatientID"`
+	Patient     		Patient 	`gorm:"foreignKey:PatientID"`
 
 	EmployeeID 			uint     
-	Employee   			Employee `gorm:"foriegnKey:EmployeeID"`
+	Employee   			Employee 	`gorm:"foreignKey:EmployeeID"`
 
 	TreatmentID 		uint      
-	Treatment   		Treatment `gorm:"foriegnKey:TreatmentID"`
+	Treatment   		Treatment 	`gorm:"foreignKey:TreatmentID"`
 
 	StatusID 			uint   
-	Status   			Status `gorm:"foriegnKey:StatusID"`
+	Status   			Status 		`gorm:"foreignKey:StatusID"`
 
-	PaymentID 			*uint   `json:"paymentid"`
-	Payment   			*Payment `gorm:"foreignKey:PaymentID" json:"payment" constraint:"OnDelete:SET NULL"` // ความสัมพันธ์แบบหนึ่งต่อหนึ่ง
+	PaymentID 			*uint   	
+	Payment   			*Payment 	`gorm:"foreignKey:PaymentID" constraint:"OnDelete:SET NULL"` // ความสัมพันธ์แบบหนึ่งต่อหนึ่ง
 }

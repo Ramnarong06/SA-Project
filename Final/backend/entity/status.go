@@ -5,5 +5,5 @@ import "gorm.io/gorm"
 type Status struct{
 	gorm.Model
 	StatusName 		string  
-	DentalRecord 	[]DentalRecord	`gorm:"foriegnKey:StatusID"`
+	DentalRecord 	[]DentalRecord	`gorm:"foreignKey:StatusID"`
 }

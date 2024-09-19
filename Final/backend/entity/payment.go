@@ -11,11 +11,11 @@ type Payment struct {
 	Date 				time.Time
 
 	PaymentMethodID 	uint         
-	PaymentMethod   	PaymentMethod `gorm:"foriegnKey:PaymentMethodID"`
+	PaymentMethod   	PaymentMethod 	`gorm:"foriegnKey:PaymentMethodID"`
 
 	EmployeeID 			uint    
-	Employee   			Employee `gorm:"foriegnKey:EmployeeID"`
+	Employee   			Employee 		`gorm:"foriegnKey:EmployeeID"`
 
 	
-	DentalRecord 		*DentalRecord `gorm:"foreignKey:PaymentID"` // ความสัมพันธ์แบบหนึ่งต่อหนึ่ง
+	DentalRecord 		*DentalRecord 	`gorm:"foreignKey:PaymentID"` // ความสัมพันธ์แบบหนึ่งต่อหนึ่ง
 }

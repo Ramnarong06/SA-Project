@@ -8,18 +8,18 @@ import (
 
 type Employee struct {
 	gorm.Model
-	FirstName 	string 		`json:"first_name"`
-	LastName 	string		`json:"last_name"`
-	BirthDay 	time.Time 	`json:"birthday"`
-	Address 	string 		`json:"address"`
-	Tel 		string 		`json:"tel"`		
-	Email 		string 		`json:"email"`
-	Password 	string 		`json:"-"`
+	FirstName 	string 		
+	LastName 	string		
+	BirthDay 	time.Time 	
+	Address 	string 		
+	Tel 		string 				
+	Email 		string 		
+	Password 	string 		
 
-	GenderID 		uint 			`json:"gender_id"`
+	GenderID 		uint 			
 	Gender 			Gender			`gorm:"foriegnKey:GenderID"`
 
-	JobPositionID 	uint 			`json:"jobposition_id"`
+	JobPositionID 	uint 			
 	JobPosition 	JobPosition		`gorm:"foriegnKey:JobPositionID"`
 
 	DentalRecord 	[]DentalRecord	`gorm:"foriegnKey:EmployeeID"`
