@@ -8,7 +8,7 @@ import (
 func ListPatients(c *gin.Context) {
 	var patient []entity.Patient
 	db := config.DB()
-	db.Find(&patient)
+	db.Preload("Gender").Preload("BloodType").Find(&patient) 
 	c.JSON(http.StatusOK, &patient)
 }
 

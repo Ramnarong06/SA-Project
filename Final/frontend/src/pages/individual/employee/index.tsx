@@ -21,22 +21,26 @@ function Employees() {
       title: "ชื่อ",
       dataIndex: "FirstName",
       key: "firstname",
+      align: "center",
     },
     {
       title: "นามสกุล",
       dataIndex: "LastName",
       key: "lastname",
+      align: "center",
     },
     {
       title: "เพศ",
       dataIndex: "Gender",
       key: "gender",
+      align: "center",
       render: (gender) => Object.values(gender?.Sex),
     },// ? ไม่สนใจข้อมูล null
     {
       title: "ตำแหน่ง",
       dataIndex: "JobPosition",
       key: "่jobPosition",
+      align: "center",
       render: (job) => Object.values(job?.Job),
       //render: (record) => <p>{dayjs(record).format("dddd DD MMM YYYY")}</p>,
     },
@@ -44,11 +48,13 @@ function Employees() {
       title: "อีเมล",
       dataIndex: "Email",
       key: "email",
+      align: "center",
     },
     {
       title: "เบอร์โทร",
       dataIndex: "Tel",
       key: "tel",
+      align: "center",
       render: (tel) => {
         const formattedTel = `${tel.substring(0, 3)}-${tel.substring(3, 6)}-${tel.substring(6, 10)}`;
         return <p>{formattedTel}</p>;
@@ -57,6 +63,7 @@ function Employees() {
    
     {
       title: "จัดการ",
+      align: "center",
       // dataIndex: "Manage",
       // key: "manage",
       render: (record) => (
@@ -171,13 +178,12 @@ function Employees() {
     <>
       {contextHolder}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img src={logoSamgt} alt="logoSamgt" style={{ width: '25%', height: 'auto' }} />
+        <img src={logoSamgt} alt="logoSamgt" style={{ width: '10%', height: 'auto' }} />
       </div>
       <Row>
         
-        <Col span={12}>
+        <Col span={12} style={{  marginBottom: -10 }} >
           <h2>จัดการประวัติพนักงาน</h2>
-      
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>

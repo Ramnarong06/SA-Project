@@ -1,217 +1,280 @@
-import React, { useState, useEffect } from "react";
-import { Space, Table, Button, Col, Row, Divider, Modal, message ,Input } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined,SearchOutlined  } from "@ant-design/icons";
-import type { ColumnsType } from "antd/es/table";
-import { GetEmployees, DeleteEmployeeByID  } from "../../../../services/https/individual";
-import { EmployeesInterface } from "../../../../interfaces/individual/IEmployee";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import {
+  Space,
+  Button,
+  Col,
+  Row,
+  Divider,
+  Form,
+  Input,
+  Card,
+  message,
+  DatePicker,
+  Select,
+} from "antd";
 import dayjs from "dayjs";
+import { PlusOutlined } from "@ant-design/icons";
+import { EmployeesInterface } from "../../../../interfaces/individual/IEmployee";
+import { GendersInterface } from "../../../../interfaces/individual/IGender";
+import { JobPositionsInterface } from "../../../../interfaces/individual/IJobPosition";
+import { GetGenders, GetEmployeeById, UpdateEmployee, GetJobPositions } from "../../../../services/https/individual/index";
+import { useNavigate, useParams } from "react-router-dom";
+const { Option } = Select;
 
-import logoSamgt from '../../../../assets/logoSamgt.png';
-const { Search } = Input;
-
-
-function Employees() {
-  
-  const myId = localStorage.getItem("id");
-  const columns: ColumnsType<EmployeesInterface> = [
-    {
-      title: "ชื่อ",
-      dataIndex: "FirstName",
-      key: "firstname",
-    },
-    {
-      title: "นามสกุล",
-      dataIndex: "LastName",
-      key: "lastname",
-    },
-    {
-      title: "เพศ",
-      dataIndex: "Gender",
-      key: "gender",
-      render: (gender) => Object.values(gender?.Sex),
-    },// ? ไม่สนใจข้อมูล null
-    {
-      title: "ตำแหน่ง",
-      dataIndex: "JobPosition",
-      key: "่jobPosition",
-      render: (job) => Object.values(job?.Job),
-      //render: (record) => <p>{dayjs(record).format("dddd DD MMM YYYY")}</p>,
-    },
-    {
-      title: "อีเมล",
-      dataIndex: "Email",
-      key: "email",
-    },
-    {
-      title: "เบอร์โทร",
-      dataIndex: "Tel",
-      key: "tel",
-      render: (tel) => {
-        const formattedTel = `${tel.substring(0, 3)}-${tel.substring(3, 6)}-${tel.substring(6, 10)}`;
-        return <p>{formattedTel}</p>;
-      },
-    },
-   
-    {
-      title: "จัดการ",
-      // dataIndex: "Manage",
-      // key: "manage",
-      render: (record) => (
-        <>
-          <Button
-            onClick={() => navigate(`/employee/edit/${record.ID}`)}
-            shape="circle"
-            icon={<EditOutlined />}
-            size={"large"}
-          />
-          <Button
-            onClick={() => {
-              if (record) {
-                showModal(record);
-              } else {
-                console.error("Invalid record");
-              }
-            }}
-            //onClick={() => showModal(record)}
-            //onClick={() => DeleteEmployeeByID(record.Employee.ID)}
-            style={{ marginLeft: 10 }}
-            shape="circle"
-            icon={<DeleteOutlined />}
-            size={"large"}
-            danger
-          />
-        </>
-      ),
-    },
-  ];
-
+function EmployeeEdit() {
   const navigate = useNavigate();
-  const [employees, setEmployees] = useState<EmployeesInterface[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
-  // Model
-  const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  //const [modalText, setModalText] = useState<String>();
-  const [modalText, setModalText] = useState<string>("");
 
-  const [deleteId, setDeleteId] = useState<Number>();
+  const [employee, setEmployee] = useState<EmployeesInterface>();
+  const [genders, setGenders] = useState<GendersInterface[]>([]);
+  const [jobPositions, setJobPositions] = useState<JobPositionsInterface[]>([]);
 
-  const [searchText, setSearchText] = useState<string>("");
+  // รับข้อมูลจาก params
+  let { id } = useParams();
+  // อ้างอิง form กรอกข้อมูล
+  const [form] = Form.useForm();
 
-  const [filteredEmployees, setFilteredEmployees] = useState<EmployeesInterface[]>([]);
-
-  const getEmployees = async () => {
-    let res = await GetEmployees();
+  const onFinish = async (values: EmployeesInterface) => {
+    values.ID = employee?.ID;
+    let res = await UpdateEmployee(values);
     if (res) {
-      //console.log(res)
-      setEmployees(res);//เพื่อให้ค้นตัวใหม่ได้
-      setFilteredEmployees(res);
-    }
-  };
-
-  const handleSearch = (value: string) => {
-    const currValue = value.toLowerCase();
-    setSearchText(currValue);
-    const filteredData = employees.filter(entry =>
-      entry?.Tel?.includes(currValue)
-    );
-    // setEmployees(filteredData);
-    setFilteredEmployees(filteredData)
-  };
-
-  // const filteredEmployees = employees.filter(employee =>
-  //   employee.Tel?.toLowerCase().includes(searchText)
-  // );
-
-  const showModal = (val: EmployeesInterface) => {
-    setModalText(
-      `คุณต้องการลบข้อมูลผู้ใช้ "${val.FirstName} ${val.LastName}" หรือไม่ ?`
-    );
-    // if (!val || !val.FirstName || !val.LastName) {
-    //   console.error("Invalid data:", val);
-    //   return;
-    // }
-    // console.log("ข้อความในโมเดล:", modalText);
-    setDeleteId(val.ID);
-    setOpen(true);
-  };
-
-  const handleOk = async () => {
-    setConfirmLoading(true);
-    let res = await DeleteEmployeeByID(deleteId);
-    if (res) {
-      setOpen(false);
       messageApi.open({
         type: "success",
-        content: "ลบข้อมูลสำเร็จ",
+        content: res.message,
       });
-      getEmployees();
+      setTimeout(function () {
+        navigate("/employees");
+      }, 2000);
     } else {
-      setOpen(false);
       messageApi.open({
         type: "error",
-        content: "เกิดข้อผิดพลาด !",
+        content: res.message,
       });
     }
-    setConfirmLoading(false);
   };
 
-  const handleCancel = () => {
-    setOpen(false);
+  const getGender = async () => {
+    let res = await GetGenders();
+    if (res) {
+      setGenders(res);
+    }
+  };
+  const getJobPosition = async () => {
+    let res = await GetJobPositions();
+    if (res) {
+      setJobPositions(res);
+    }
+  };
+ 
+  const getEmployeeById = async () => {
+    let res = await GetEmployeeById(Number(id));
+    if (res) {
+      setEmployee(res);
+      // set form ข้อมูลเริ่มของผู่้ใช้ที่เราแก้ไข
+      form.setFieldsValue({
+        FirstName: res.FirstName,
+        LastName: res.LastName,
+        GenderID: res.GenderID,
+        Email: res.Email,
+        Birthday: dayjs(res.Birthday),
+
+        Address: res.Address,
+        Tel: res.Tel,
+        JobPositionID: res.JobPositionID,
+      });
+    }
+  };
+  const onCancel = () => {
+    navigate("/employees"); // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการเมื่อกดยกเลิก
   };
 
   useEffect(() => {
-    getEmployees();
+    getGender();
+    getEmployeeById();
+    getJobPosition();
   }, []);
 
   return (
-    <>
+    <div>
       {contextHolder}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img src={logoSamgt} alt="logoSamgt" style={{ width: '25%', height: 'auto' }} />
-      </div>
-      <Row>
-        
-        <Col span={12}>
-          <h2>จัดการประวัติพนักงาน</h2>
-      
-        </Col>
-        <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
-          <Space>
-            <Link to="/employee/create">
-              <Button type="primary" icon={<PlusOutlined />}>
-                เพิ่มพนักงาน
-              </Button>
-            </Link>
-          </Space>
-        </Col>
-      </Row>
-      <Divider />
-      <Row>
-        <Col span={24}>
-          <Search
-            placeholder="ค้นหาด้วยเบอร์โทร"
-            allowClear
-            onSearch={handleSearch}
-            style={{ width: 300, marginBottom: 20 }}
-          />
-        </Col>
-      </Row>
-      <div style={{ marginTop: 20 }}>
-        <Table rowKey="ID" columns={columns} dataSource={filteredEmployees} />
-      </div>
-      <Modal
-        title="ลบข้อมูล ?"
-        open={open}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        onCancel={handleCancel}
-      >
-        <p>{modalText}</p>
-      </Modal>
-    </>
+      <Card>
+        <h2> แก้ไขข้อมูลพนักงาน</h2>
+        <Divider />
+        <Form
+          name="basic"
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          autoComplete="off"
+          style={{
+            border: '2px solid #42C2C2', // เปลี่ยนสีกรอบที่นี่
+            borderRadius: '20px', // เปลี่ยนขอบมน
+            padding: '20px', // เพิ่มพื้นที่ภายใน
+          }}
+        >
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="ชื่อจริง"
+                name="FirstName"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอกชื่อ !",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="นามสกุล"
+                name="LastName"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอกนามสกุล !",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="อีเมล"
+                name="Email"
+                rules={[
+                  {
+                    type: "email",
+                    message: "รูปแบบอีเมลไม่ถูกต้อง !",
+                  },
+                  {
+                    required: true,
+                    message: "กรุณากรอกอีเมล !",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="วัน/เดือน/ปี เกิด"
+                name="Birthday"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณาเลือกวันเกิด !",
+                  },
+                ]}
+              >
+                <DatePicker style={{ width: "100%" }} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                name="GenderID"
+                label="เพศ"
+                rules={[{ required: true, message: "กรุณาระบุเพศ !" }]}
+              >
+                <Select allowClear>
+                  {genders.map((item) => (
+                    <Option value={item.ID} key={item.Sex}>
+                      {item.Sex}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                name="JobPositionID"
+                label="ตำแหน่ง"
+                rules={[{ required: true, message: "กรุณาระบุตำแหน่ง !" }]}
+              >
+                <Select allowClear>
+                  {jobPositions.map((item) => (
+                    <Option value={item.ID} key={item.Job}>
+                      {item.Job}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+            
+          <Row gutter={[16, 16]}>
+            
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="เบอร์โทร"
+                name="Tel"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณาระบุเบอร์โทร !",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+                  
+          <Row gutter={[16, 16]}>
+            
+            <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+              <Form.Item
+                label="ที่อยู่"
+                name="Address"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณาระบุที่อยู่ !",
+                  },
+                ]}
+              >
+                <Input.TextArea />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+        <Row justify="end">
+            <Col style={{ marginTop: "40px" ,marginLeft: "10px"}}>
+              <Form.Item>
+                <Space size="large">
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    // icon={<PlusOutlined />}
+                    style={{
+                      backgroundColor: "#42C2C2",
+                      borderColor: "#42C2C2",
+                      color: "#fff",
+                    }}
+                    form="basic"
+                  >
+                    ยืนยัน
+                  </Button>
+                  <Button htmlType="button" 
+                    style={{ marginRight: "10px",
+                      backgroundColor: "#d9d9d9",
+                      borderColor: "#d9d9d9",
+                      color: "#333", }}  
+                    onClick={onCancel}>
+                    ยกเลิก
+                  </Button>
+                  
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
+      </Card>
+    </div>
   );
 }
 
-export default Employees;
+export default EmployeeEdit;

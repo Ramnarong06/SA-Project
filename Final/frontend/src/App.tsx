@@ -56,7 +56,7 @@ import Patient  from "./pages/individual/patient/index.tsx"
 import PatientCreate from "./pages/individual/patient/create"
 import EmployeeCreate from "./pages/individual/employee/create"
 import EmployeeEdit from "./pages/individual/employee/edit"
-import PatientEdit from "./pages/individual/employee/edit"
+import PatientEdit from "./pages/individual/patient/edit"
 
 // payment
 //import Htmlrecipt from '../Receipt/htmlRecipt';
@@ -120,35 +120,43 @@ const items: MenuItem[] = [
     label: 'ทะเบียน',
     icon: <UserOutlined />,
     children: [
-      {
-        key: 'employeecreate',
-        label: (
-          <Link to="/employee/create">
-            เพิ่มข้อมูลพนักงาน
-          </Link>
-        ),
-      },
-      {
-        key: 'patientcreate',
-        label: (
-          <Link to="/patient/create">
-            เพิ่มข้อมูลผู้ป่วย
-          </Link>
-        ),
-      },
+      // {
+      //   key: 'employeecreate',
+      //   label: (
+      //     <Link to="/employee/create">
+      //       เพิ่มข้อมูลพนักงาน
+      //     </Link>
+      //   ),
+      // },
+      // {
+      //   key: 'patientcreate',
+      //   label: (
+      //     <Link to="/patient/create">
+      //       เพิ่มข้อมูลผู้ป่วย
+      //     </Link>
+      //   ),
+      // },
       {
         key: 'employees',
         label: (
           <Link to="/employees">
-            employees
+            พนักงาน
           </Link>
         ),
       },
+      // {
+      //   key: 'employeeEdit',
+      //   label: (
+      //     <Link to="/employee//edit/:id">
+      //       employeesEdit
+      //     </Link>
+      //   ),
+      // },
       {
         key: 'patients',
         label: (
           <Link to="/patients">
-            patients
+            ผู้ป่วย
           </Link>
         ),
       },

@@ -4,6 +4,7 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import "./create.css";
 import { TreatmentsInterface } from "../../../interfaces/schedule/ITreatment.ts";
 import { SchedulesInterface } from "../../../interfaces/schedule/ISchedule.ts";
+import PatientCreate  from "../../../pages/individual/patient/create/index.tsx";
 //import { ImageUpload } from "../../../interfaces/IUpload.ts";
 import { GetTreatment, GetPatients,CreateSchedule  } from "../../../services/https/schedule/index.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
@@ -147,7 +148,9 @@ function ScheduleCreate() {
         </div>
 
         <div className="patient-status">
-          <a href="#">สำหรับผู้ป่วยนอก</a>
+          <Link to="/patient/create">
+            สำหรับผู้ป่วยนอก
+          </Link>
         </div>
 
         <Form.Item>
@@ -166,6 +169,7 @@ function ScheduleCreate() {
       <Routes>
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/viewschedule" element={<ViewSchedule />} />
+        <Route path="/patient/create" element={<PatientCreate />} />
       </Routes>
     </div>
   );

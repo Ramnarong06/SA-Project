@@ -206,12 +206,12 @@ function Patients() {
     <>
       {contextHolder}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <img src={logoSamgt} alt="logoSamgt" style={{ width: '25%', height: 'auto' }} />
+          <img src={logoSamgt} alt="logoSamgt" style={{ width: '10%', height: 'auto' }} />
       </div>
       <Row>
         
-        <Col span={12}>
-          <h2>จัดการประวัติผู้ป่วย</h2>
+        <Col span={12} style={{  marginBottom: -10 }} >
+          <h2 >จัดการประวัติผู้ป่วย</h2>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>

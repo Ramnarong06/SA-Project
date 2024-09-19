@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  height: 100vh; /* Make the app take up the full height */
+  overflow-y: auto; /* Remove scrollbar here, use in content */
 }
 
 .App-logo {
@@ -22,6 +24,8 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  overflow-y: auto; /* Scroll only in header if content overflows */
+
 }
 
 .App-link {
@@ -63,8 +67,11 @@
 
 .card {
   padding: 2em;
+  max-height: 400px; /* Control height */
+  overflow-y: auto; /* Scrollable section */
 }
 
 .read-the-docs {
   color: #888;
 }
+

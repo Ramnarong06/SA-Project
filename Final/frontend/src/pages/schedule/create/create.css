@@ -77,15 +77,14 @@ h2 {
 
 .patient-status {
   font-family: 'Noto Sans Thai';
-  margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของลิงก์ผู้ป่วยนอก */
+  margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
   text-align: left; /* จัดลิงก์ให้ชิดซ้าย */
-  padding-left: 0px; /* ปรับระยะห่างจากขอบด้านซ้าย */
+  padding-left: -30px; /* ปรับระยะห่างจากขอบด้านซ้ายให้ติดขอบมากขึ้น */
   margin-top: 10px; /* เพิ่มระยะห่างด้านบน */
   position: relative;
 }
 
 .patient-status a {
-  
   color: #1890ff; /* กำหนดสีของลิงก์ */
   font-size: 14px; /* กำหนดขนาดของลิงก์ */
   position: relative; /* กำหนดตำแหน่งเป็น relative เพื่อให้สามารถปรับตำแหน่งได้ */
@@ -93,7 +92,6 @@ h2 {
   left: 10px; /* เลื่อนลิงก์ไปทางซ้าย 20px */
 }
 .form-actions {
-  
   display: flex; /* ใช้ Flexbox ในการจัดวางปุ่ม */
   justify-content: flex-start; /* จัดปุ่มให้อยู่ชิดซ้าย */
   gap: 10px; /* เพิ่มระยะห่างระหว่างปุ่ม */
@@ -107,6 +105,7 @@ h2 {
   font-family: 'Noto Sans Thai';
   width: 10%; /* กำหนดความกว้างของปุ่ม */
   min-width: 50px; /* กำหนดความกว้างขั้นต่ำเพื่อให้ปุ่มไม่เล็กเกินไป */
+  
 }
 
 .submit-button-schedule-create {
