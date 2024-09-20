@@ -5,7 +5,7 @@ import './PaymentPage.css';
 import { Modal,message} from 'antd';
 import {Link, useNavigate,useParams } from 'react-router-dom'; 
 import {generatePDF}from '../Receipt/Receipt'
-import Nologo from '../../../assets/payment/logo.jpg';
+import Nologo from '../../../assets/payment/nologo.png';
 import glogo from '../../../assets/payment/exchange.gif';
 import {LeftOutlined } from '@ant-design/icons';
 // import { PaymentDentalRecordInterface } from '../../interfaces/interfacePaymentDentalRecoed';

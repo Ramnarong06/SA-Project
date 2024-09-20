@@ -17,15 +17,15 @@
 }
 
 /* ปรับแต่งหัวข้อของหน้า */
-h1 {
-  color: #333333;
+/*h1 {
+  color: #10094d;
   font-weight: bold;
   text-align: left;
   margin-top: 10px; 
-  font-size: 22px; 
+  font-size: 28px; 
   margin-left: -9px;
   margin-right: 0; 
-}
+}*/
 
 
 /* ปรับแต่งพื้นที่ของปุ่มเพิ่มอุปกรณ์ */
@@ -39,44 +39,7 @@ h1 {
 .ant-divider {
     border-top: 2px solid #42C2C2;
     width: 100%;
-}
-
-button {
-    padding: 9px 15px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-left: 10px;
-    font-size: 16px;
-  }
-  
-  button.cancel {
-    background-color: #ffffff;
-    border: 1.5px solid #bdbdbd; /* Add a solid border */
-    color: black;
-  }
-  
-  
-  button.reset {
-    background-color: #FED635;
-    color: black;
-  }
-  
-  button.submit {
-    background-color: #42C2C2;
-    color: white;
-  }
-
-  button.delete {
-    background-color: #dedede;
-    border: 1.5px solid #dedede; /* Add a solid border */
-    color: black;
-  }
-  
-  button:hover {
-    opacity: 0.6;
-  }
-  
+} 
   .table-container {
     max-height: 2000px;   /* กำหนดความสูงสูงสุดให้กับตาราง */
     overflow-y: auto;    /* เลื่อนขึ้นลงได้ */
@@ -112,4 +75,12 @@ button {
 .custom-search input[type="text"]:hover,
 .custom-search input[type="text"]:focus {
   border-color: #0cdcdc !important; /* สีขอบเมื่อเมาส์ชี้หรือโฟกัส */
+}
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap');
+
+h2,table,button,h1,div{
+  font-family: 'Noto Sans Thai', sans-serif;
 }

@@ -15,36 +15,12 @@ import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
 import { useNavigate, Link } from "react-router-dom";
 //import { CreateEquipment } from "../../services/https";
 import { CreateEquipment } from "../../../services/https/storage";
-import new_logo from "../../../assets/new_logo.jpg";
+import new_logo from "../../../assets/new_logo.png";
 import "./CreateEq.css"; // Import the CSS file
 
 function EquipmentCreate() {
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-
-  /*const onFinish = async (values: EquipmentInterface) => {
-    
-    console.log(values)
-    let res = await CreateEquipment(values);
-    
-    if (res.status) {
-      messageApi.open({
-        type: "success",
-        content: "บันทึกข้อมูลสำเร็จ",
-      });
-      setTimeout(() => {
-        navigate("/equipments");
-      }, 500);
-    } else {
-      messageApi.open({
-        type: "error",
-        content: res.message,
-      });
-      setTimeout(() => {
-        navigate("/equipments");
-      }, 500);
-    }
-  };*/
 
   const onFinish = async (values: EquipmentInterface) => {
     try {

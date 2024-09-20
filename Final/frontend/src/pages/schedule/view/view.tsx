@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react
 import { GetSchedulesByDate, UpdateSchedule, UpdateScheduleStatus } from "../../../services/https/schedule/index.tsx";
 import { SchedulesInterface } from '../../../interfaces/schedule/ISchedule.ts';
 
+import check from '../../../assets/schedule/check.gif'
+
 const ScheduleView: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [appointments, setAppointments] = useState<any[]>([]);
@@ -64,13 +66,14 @@ const ScheduleView: React.FC = () => {
   return (
     
     <div>
+      {contextHolder}
       <div className="schedule-header">
         <CalendarOutlined className="schedule-icon" />
         <span className="schedule-title">Schedule</span>
         
       </div>
 
-      <div className="schedule-container">
+      {/* <div className="schedule-container">
         <div className="calendar-section">
           <Calendar fullscreen={false} onSelect={onDateChange} />
           <div className="add-button-container">
@@ -78,20 +81,19 @@ const ScheduleView: React.FC = () => {
               <Button className="add-button" type="primary" shape="circle" icon={<PlusOutlined />} />
             </Link>
           </div>
-        </div>
-        {/* <div className="schedule-container">
+        </div> */}
+        <div className="schedule-container">
           <div className="calendar-section">
             <Calendar fullscreen={false} onSelect={onDateChange} />
             <div className="add-button-container">
               <Link to="/schedule">
                 <button className="icon-btn add-btn">
                   <div className="add-icon"></div>
-                  <div className="btn-txt">Add Photo</div>
+                  <div className="btn-txt"> Add </div>
                 </button>
               </Link>
             </div>
-          </div> */}
-
+          </div>
       
 
         <div className="appointments-section">
@@ -112,18 +114,31 @@ const ScheduleView: React.FC = () => {
                     onClick={() => navigate(`/editschedule/edit/${item.ID}`)} 
                   />,
                   <Button
-                    onClick={() => {
-                      UpdateScheduleStatus(item.ID);
-                      setTimeout(() => {
-                        window.location.reload(); 
-                      }, 200);
-                    }}
-                    style={{ marginLeft: 0 }}
-                    shape="circle"
-                    icon={<DeleteOutlined />}
-                    size={"large"}
-                    //danger
-                  />
+                      onClick={() => {
+                        UpdateScheduleStatus(item.ID);
+
+                        // แสดงข้อความหลังจากลบสำเร็จ
+                        messageApi.open({
+                          type: "success",
+                          content: (
+                            <div style={{ display: 'flex', alignItems: 'center', fontSize: '15px', color: '#22225E' }}>
+                              <img src={`${check}?${Date.now()}`} alt="Success" style={{ width: '40px', height: '40px', marginRight: '8px' }} />
+                              <span>นัดหมายสำเร็จ</span>
+                            </div>
+                          ),
+                          icon: ' ', // ใช้ null เพื่อลบไอคอนเริ่มต้น
+                        });
+
+                        // ตั้งเวลา 2 วินาทีก่อนที่จะรีโหลดหน้าใหม่
+                        setTimeout(() => {
+                          window.location.reload();
+                        }, 3000);
+                      }}
+                      style={{ marginLeft: 0 }}
+                      shape="circle"
+                      icon={<CheckOutlined />}
+                      size={"large"}
+                    />
                   
                 ]}
                 style={{ borderBottom: 'none' }}

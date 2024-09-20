@@ -14,7 +14,7 @@
   //import { EquipmentInterface } from "../../interfaces/IEquipment";
   import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
   import { useNavigate, Link, useParams } from "react-router-dom";
-  import new_logo from "../../../assets/new_logo.jpg";
+  import new_logo from "../../../assets/new_logo.png";
   import "./EditEq.css";
 
   function EquipmentEdit() {

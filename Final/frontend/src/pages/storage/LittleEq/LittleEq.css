@@ -17,15 +17,6 @@
     border-radius: 50px;
 }
 
-/* ปรับแต่งหัวข้อของหน้า */
-h1 {
-    color: #333;
-    font-weight: bold;
-    text-align: left;
-    margin-top: 10px; /* ปรับค่าตามที่ต้องการ */
-    font-size: 25px;
-}
-
 /* ปรับแต่งพื้นที่ของปุ่มเพิ่มอุปกรณ์ */
 .space-align-container .ant-space {
     display: flex;
@@ -38,34 +29,3 @@ h1 {
     border-top: 2px solid #42C2C2;
     width: 100%;
 }
-
-
-button {
-    padding: 9px 15px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-left: 10px;
-    font-size: 16px;
-  }
-  
-  button.cancel {
-    background-color: #ffffff;
-    border: 1.5px solid #bdbdbd; /* Add a solid border */
-    color: black;
-  }
-  
-  
-  button.reset {
-    background-color: #FED635;
-    color: black;
-  }
-  
-  button.submit {
-    background-color: #42C2C2;
-    color: white;
-  }
-  
-  button:hover {
-    opacity: 0.6;
-  }

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, List, Button, message } from 'antd';
-import { EditOutlined, PlusOutlined, CalendarOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined, CalendarOutlined, DeleteOutlined,CheckOutlined } from '@ant-design/icons';
 import './view.css';
-import Schedule from "./create/create.tsx";
-import Schedule2 from "../../pages/schedule/view.tsx";
+import Schedule from "../create/create.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
-import { GetSchedulesByDate, UpdateSchedule, UpdateScheduleStatus } from '../../services/https/index.tsx';
-import { SchedulesInterface } from '../../interfaces/ISchedule.ts';
-import UpSchedule from "../schedule/update/update.css";
+import { GetSchedulesByDate, UpdateSchedule, UpdateScheduleStatus } from "../../../services/https/schedule/index.tsx";
+import { SchedulesInterface } from '../../../interfaces/schedule/ISchedule.ts';
+
+import check from '../../../assets/schedule/check.gif'
 
 const ScheduleView: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -41,27 +41,6 @@ const ScheduleView: React.FC = () => {
     
   };
 
-  //ฟังก์ชันอัปเดตสถานะ
-  // const handleStatusUpdate = async (ID: number) => {
-  //   const result = await UpdateScheduleStatus(ID, 2); // เปลี่ยนสถานะเป็น 2
-  //   if (result) {
-  //     messageApi.open({
-  //       type: "success",
-  //       content: "Status updated successfully",
-  //     });
-  //     // อัปเดตตารางใหม่หลังจากเปลี่ยนสถานะสำเร็จ
-  //     if (selectedDate) {
-  //       fetchAppointments(selectedDate);
-  //     }
-  //   } else {
-  //     messageApi.open({
-  //       type: "error",
-  //       content: "Failed to update status",
-  //     });
-  //   }
-  // };
-
-  
 
   const Finish = async (values: SchedulesInterface) => {
     let res = await UpdateSchedule(values); // ส่งค่า values ที่แก้ไขแล้ว
@@ -82,6 +61,8 @@ const ScheduleView: React.FC = () => {
   };
 
 
+
+
   return (
     
     <div>
@@ -91,7 +72,7 @@ const ScheduleView: React.FC = () => {
         
       </div>
 
-      <div className="schedule-container">
+      {/* <div className="schedule-container">
         <div className="calendar-section">
           <Calendar fullscreen={false} onSelect={onDateChange} />
           <div className="add-button-container">
@@ -99,53 +80,86 @@ const ScheduleView: React.FC = () => {
               <Button className="add-button" type="primary" shape="circle" icon={<PlusOutlined />} />
             </Link>
           </div>
-        </div>
-        
+        </div> */}
+        <div className="schedule-container">
+          <div className="calendar-section">
+            <Calendar fullscreen={false} onSelect={onDateChange} />
+            <div className="add-button-container">
+              <Link to="/schedule">
+                <button className="icon-btn add-btn">
+                  <div className="add-icon"></div>
+                  <div className="btn-txt"> Add </div>
+                </button>
+              </Link>
+            </div>
+          </div>
+      
+
         <div className="appointments-section">
         <List
             itemLayout="horizontal"
             dataSource={appointments}
-            renderItem={(item,record) => (
-              
+            renderItem={(item) => (
+              <>
               <List.Item
+              
                 actions={[
                   <Button 
                     icon={<EditOutlined />} 
+                    shape="circle"
+                    size={"large"}
                     key="edit"
+                    style={{ marginRight: 0 }}
                     onClick={() => navigate(`/editschedule/edit/${item.ID}`)} 
                   />,
                   <Button
-                    onClick={() => {
-                      UpdateScheduleStatus(item.ID);
-                      setTimeout(() => {
-                        window.location.reload(); 
-                      }, 200);
-                    }}
-                    style={{ marginLeft: 10 }}
-                    shape="circle"
-                    icon={<DeleteOutlined />}
-                    size={"large"}
-                    danger
-                  />
+                      onClick={() => {
+                        UpdateScheduleStatus(item.ID);
+
+                        // แสดงข้อความหลังจากลบสำเร็จ
+                        messageApi.open({
+                          type: "success",
+                          content: (
+                            <div style={{ display: 'flex', alignItems: 'center', fontSize: '15px', color: '#22225E' }}>
+                              <img src={`${check}?${Date.now()}`} alt="Success" style={{ width: '40px', height: '40px', marginRight: '8px' }} />
+                              <span>นัดหมายสำเร็จ</span>
+                            </div>
+                          ),
+                          icon: null, // ใช้ null เพื่อลบไอคอนเริ่มต้น
+                        });
+
+                        // ตั้งเวลา 2 วินาทีก่อนที่จะรีโหลดหน้าใหม่
+                        setTimeout(() => {
+                          window.location.reload();
+                        }, 2000);
+                      }}
+                      style={{ marginLeft: 0 }}
+                      shape="circle"
+                      icon={<DeleteOutlined />}
+                      size={"large"}
+                    />
                   
                 ]}
+                style={{ borderBottom: 'none' }}
               >
                 
                 <List.Item.Meta
-                  title={item.TreatmentName}
-                  description={`${item.FirstName} ${item.LastName}`}  // แสดงทั้งชื่อจริงและนามสกุล
+                    title={<span style={{ color: "#22225E" }}>{item.TreatmentName}</span>}  // เปลี่ยนสีเฉพาะ title
+                    description={`${item.FirstName} ${item.LastName} Tel.${item.Tel}`}  // แสดงทั้งชื่อจริงและนามสกุล
                 />
-              <p>{item.id}</p>
+
+              
               </List.Item>
+              </>
             )}
+            
             locale={{ emptyText: 'ไม่มีการนัดหมายในวันนี้' }}
           />
-      
+            
         </div>
 
         <Routes>
           <Route path="/schedule" element={<Schedule />} />
-          <Route path="/schedule2" element={<Schedule2 />} />
           
         </Routes>
       </div>

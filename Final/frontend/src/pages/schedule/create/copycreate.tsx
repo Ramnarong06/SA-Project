@@ -4,12 +4,12 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import "./create.css";
 import { TreatmentsInterface } from "../../../interfaces/schedule/ITreatment.ts";
 import { SchedulesInterface } from "../../../interfaces/schedule/ISchedule.ts";
-import { ImageUpload } from "../../../interfaces/IUpload.ts";
-import { GetTreatment, CreateUser } from "../../../services/https/payment/index.tsx";
+import PatientCreate  from "../../../pages/individual/patient/create/index.tsx";
+//import { ImageUpload } from "../../../interfaces/IUpload.ts";
+import { GetTreatment, GetPatients,CreateSchedule  } from "../../../services/https/schedule/index.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Schedule from "./create.tsx";
 import ViewSchedule from "../view/view.tsx";
-import { CreateSchedule } from "../../../services/https/payment/index.tsx";
 
 const { Option } = Select;
 
@@ -17,9 +17,10 @@ function ScheduleCreate() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [treatments, setTreatments] = useState<TreatmentsInterface[]>([]);
-  const [profile, setProfile] = useState<ImageUpload>();
+  const [patients, setPatients] = useState<{ value: string; label: string }[]>([]); // เพิ่ม state สำหรับผู้ป่วย
   const [messageApi, contextHolder] = message.useMessage();
 
+  // ฟังก์ชันดึงข้อมูลการรักษา
   const getTreatment = async () => {
     try {
       let res = await GetTreatment();
@@ -31,29 +32,46 @@ function ScheduleCreate() {
     }
   };
 
+  // ฟังก์ชันดึงข้อมูลผู้ป่วยจาก backend
+  const getPatients = async () => {
+    try {
+      let res = await GetPatients(); // เรียกใช้ service ที่ดึงข้อมูลจาก API
+      if (res) {
+        const patientOptions = res.map((patient: any) => ({
+          value: patient.Tel, // ใช้เบอร์โทรเป็น value
+          label: `${patient.Tel} ( ${patient.FirstName} ${patient.LastName} ) `, // แสดงชื่อและเบอร์ใน dropdown
+        }));
+        setPatients(patientOptions);
+      }
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    }
+  };
+
   const onFinish = async (values: SchedulesInterface) => {
     let res = await CreateSchedule(values);
     if (res.status) {
       messageApi.open({
-        type: "success",
-        content: "บันทึกข้อมูลสำเร็จ",
+        type: "error",
+        content: "บันทึกการนัดหมาย",
       });
       setTimeout(function () {
         navigate("/viewschedule");
       }, 2000);
     } else {
       messageApi.open({
-        type: "error",
+        type: "success",
         content: res.message,
       });
       setTimeout(function () {
         navigate("/viewschedule");
-      }, 200);
+      }, 2000);
     }
   };
 
   useEffect(() => {
     getTreatment();
+    getPatients(); // เรียก getPatients เพื่อดึงข้อมูลผู้ป่วยจาก backend
   }, []);
 
   const onFinishFailed = (errorInfo: any) => {
@@ -67,8 +85,8 @@ function ScheduleCreate() {
   return (
     <div className="appointment-form">
       {contextHolder}
-      <div className="header">
-        <ClockCircleOutlined className="icon" />
+      <div className="headercreateschedule">
+        <ClockCircleOutlined className="iconcreate" />
         <h2>นัดหมายผู้ป่วยใน</h2>
       </div>
 
@@ -86,7 +104,13 @@ function ScheduleCreate() {
             rules={[{ required: true, message: "กรุณากรอกเบอร์โทร!" }]}
             style={{ width: "100%" }}
           >
-            <Input placeholder="เบอร์โทร" />
+            <Select
+              showSearch
+              placeholder="ค้นหาเบอร์โทรหรือชื่อผู้ป่วย"
+              optionFilterProp="label" // ฟิลเตอร์ด้วย label (ค้นหาด้วยชื่อนามสกุล)
+              options={patients} // ใช้ข้อมูล patients ที่ดึงมาจาก backend
+              style={{ width: "100%", height: "40px", lineHeight: "40px" }}
+            />
           </Form.Item>
 
           <Form.Item
@@ -124,16 +148,18 @@ function ScheduleCreate() {
         </div>
 
         <div className="patient-status">
-          <a href="#">สำหรับผู้ป่วยนอก</a>
+          <Link to="/patient/create">
+            สำหรับผู้ป่วยนอก
+          </Link>
         </div>
 
         <Form.Item>
           <div className="form-actions">
-            <Button type="primary" htmlType="submit" className="submit-button">
+            <Button type="primary" htmlType="submit" className="submit-button-schedule-create">
               ยืนยัน
             </Button>
 
-            <Button htmlType="button" className="cancel-button" onClick={onCancel}>
+            <Button htmlType="button" className="cancel-button-schedule-create" onClick={onCancel}>
               ยกเลิก
             </Button>
           </div>
@@ -143,6 +169,7 @@ function ScheduleCreate() {
       <Routes>
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/viewschedule" element={<ViewSchedule />} />
+        <Route path="/patient/create" element={<PatientCreate />} />
       </Routes>
     </div>
   );

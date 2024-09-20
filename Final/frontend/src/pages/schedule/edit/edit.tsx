@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import ViewSchedule from "../view/view.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate,useParams } from "react-router-dom";
 
+import edit from '../../../assets/schedule/edit.gif'
 
 const { Option } = Select;
 
@@ -70,14 +71,20 @@ function ScheduleEdit() {
       
     } else {
       messageApi.open({
-        type: "success", // แก้เป็น error
-        content: res.message || "เกิดข้อผิดพลาดในการอัปเดตข้อมูล",
+        type: "success",
+        content: (
+          <div style={{ display: 'flex', alignItems: 'center', fontSize: '15px' ,color:'#22225E'}}>
+            <img src={`${edit}?${Date.now()}`}  alt="Success" style={{ width: '40px', height: '40px', marginRight: '8px' }}/>
+            <span>แก้ไขการนัดหมายสำเร็จ</span>
+          </div>
+           ),
+           icon: ' ',
       });
     }
     
     setTimeout(function () {
       navigate("/viewschedule");
-    }, 800);
+    }, 2000);
 
   };
 

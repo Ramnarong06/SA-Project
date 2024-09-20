@@ -5,11 +5,12 @@
 import axios from "axios";
 
 
+
 /**/
-//import { EquipmentInterface } from "../../interfaces/IEquipment";
 import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
 import { RestockInterface } from "../../../interfaces/storage/IRestock";
 import { RequisitionInterface } from "../../../interfaces/storage/IRequisition";
+
 
 
 
@@ -80,16 +81,6 @@ async function CreateEquipment(data: EquipmentInterface) {
 
 }
 
-/*async function UpdateEquipmentById(id: string, data: EquipmentInterface) {
-
-  return await axios
-
-    .put(`${apiUrl}/equipment/${id}`, data, requestOptions)
-
-    .then((res) => res)
-
-    .catch((e) => e.response);
-}*/
 
 async function UpdateEquipmentById(id: string, data: EquipmentInterface) {
   try {
@@ -123,7 +114,6 @@ async function DeleteEquipmentById(id: string) {
 
 }
 
-
 async function GetRequisitions() {
 
   return await axios
@@ -135,6 +125,32 @@ async function GetRequisitions() {
     .catch((e) => e.response);
 
 }
+
+
+async function GetRequisitionsDate(date: string) {
+  try {
+    // ส่งพารามิเตอร์ date ใน query string
+    const response = await axios.get(`${apiUrl}/requisitionsDate`, {
+      params: { date }, // ส่งพารามิเตอร์ date
+    });
+    return response;
+  } catch (error: any) {
+    // ตรวจสอบประเภทของข้อผิดพลาดและคืนค่าข้อมูลที่เหมาะสม
+    if (error.response) {
+      // ข้อผิดพลาดจากการตอบสนองของ API
+      return error.response;
+    } else if (error.request) {
+      // ข้อผิดพลาดจากการส่งคำขอ
+      console.error('Error request:', error.request);
+    } else {
+      // ข้อผิดพลาดทั่วไป
+      console.error('Error message:', error.message);
+    }
+    // คืนค่าเริ่มต้นหรือข้อผิดพลาดที่กำหนดเอง
+    return { status: 500, data: { error: 'Unknown error occurred' } };
+  }
+}
+
 
 async function CreateRequisition(data: RequisitionInterface) {
 
@@ -159,6 +175,30 @@ async function GetRestocks() {
 
 }
 
+async function GetRestocksDate(date: string) {
+  try {
+    // ส่งพารามิเตอร์ date ใน query string
+    const response = await axios.get(`${apiUrl}/restocksDate`, {
+      params: { date }, // ส่งพารามิเตอร์ date
+    });
+    return response;
+  } catch (error: any) {
+    // ตรวจสอบประเภทของข้อผิดพลาดและคืนค่าข้อมูลที่เหมาะสม
+    if (error.response) {
+      // ข้อผิดพลาดจากการตอบสนองของ API
+      return error.response;
+    } else if (error.request) {
+      // ข้อผิดพลาดจากการส่งคำขอ
+      console.error('Error request:', error.request);
+    } else {
+      // ข้อผิดพลาดทั่วไป
+      console.error('Error message:', error.message);
+    }
+    // คืนค่าเริ่มต้นหรือข้อผิดพลาดที่กำหนดเอง
+    return { status: 500, data: { error: 'Unknown error occurred' } };
+  }
+}
+
 async function CreateRestock(data: RestockInterface) {
 
   return await axios
@@ -180,9 +220,11 @@ export {
   GetEquipmentsLittle,
 
   GetRequisitions,
+  GetRequisitionsDate,
   CreateRequisition,
 
   GetRestocks,
+  GetRestocksDate,
   CreateRestock,
   
 };

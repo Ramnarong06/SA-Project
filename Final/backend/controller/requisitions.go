@@ -71,6 +71,73 @@ func GetAllRequisitions(c *gin.Context) {
 }
 
 
+/**/
+func GetAllRequisitionsDate(c *gin.Context) {
+    var requisitions []entity.Requisitions
+    db := config.DB()
+
+    // Get date query parameter
+    date := c.Query("date")
+
+    // Preload related data (Equipment and Employee)
+    query := db.Preload("Equipment").Preload("Employee")
+
+    if date != "" {
+        // Parse the date
+        parsedDate, err := time.Parse("2006-01-02", date)
+        if err != nil {
+            c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid date format"})
+            return
+        }
+
+        // Calculate the start and end of the day
+        startOfDay := parsedDate
+        endOfDay := parsedDate.AddDate(0, 0, 1).Add(-time.Nanosecond) // end of the day
+
+        // Filter requisitions by date range
+        query = query.Where("time BETWEEN ? AND ?", startOfDay, endOfDay)
+    }
+
+    // Execute the query
+    results := query.Find(&requisitions)
+
+    if results.Error != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+        return
+    }
+
+    // Create response
+    response := []map[string]interface{}{}
+
+    for _, requisition := range requisitions {
+        equipmentName := ""
+        if requisition.Equipment != nil {
+            equipmentName = requisition.Equipment.EquipmentName
+        }
+
+        employeeName := ""
+        if requisition.Employee != nil {
+            employeeName = requisition.Employee.FirstName + " " + requisition.Employee.LastName
+        } else {
+            fmt.Printf("EmployeeID: %d not found in Employee table\n", requisition.EmployeeID)
+        }
+
+        formattedTime := requisition.Time.Format("2006-01-02 15:04:05")
+
+        item := map[string]interface{}{
+            "ID":                 requisition.ID,
+            "RequisitionQuantity": requisition.RequisitionQuantity,
+            "Time":               formattedTime,
+            "Note":               requisition.Note,
+            "EquipmentName":      equipmentName,
+            "EmployeeName":       employeeName,
+        }
+
+        response = append(response, item)
+    }
+
+    c.JSON(http.StatusOK, response)
+}
 
 
 // RequisitionEquipment เป็นฟังก์ชันสำหรับเบิกอุปกรณ์

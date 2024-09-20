@@ -1,4 +1,4 @@
-html, body {
+html, body{
   height: 100%; /* กำหนดให้หน้า HTML และ body มีความสูง 100% */
   margin: 0;
   padding: 0;
@@ -71,6 +71,3 @@ html, body {
   color: #00be49;
 }
 
-img {
-  max-width: 25%;
-}

@@ -8,7 +8,7 @@ import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
 import { Link, useNavigate } from "react-router-dom";
 import "./Equipments.css"; 
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import new_logo from "../../../assets/new_logo.jpg";
+import new_logo from "../../../assets/new_logo.png";
 import stocks from "../../../assets/stocks.jpg";
 
 const { Search } = Input;
@@ -152,7 +152,7 @@ function Equipments() {
       {contextHolder}
       <div className="logo-container">
         <img src={new_logo} alt="logo" className="logo" />
-      </div>  
+      </div>
       <Row align="top">
         <Col>
           <div className="logo-icon">
@@ -160,26 +160,33 @@ function Equipments() {
           </div>
         </Col>
         <Col xs={24} sm={12} md={9} lg={9}>
-          <h1 style={{ marginTop: '-12px'}}>วัสดุอุปกรณ์</h1>
+          <h1 style={{ marginTop: '-15px'}}>วัสดุอุปกรณ์</h1>
         </Col>
-        <Divider style={{ marginTop: '-10px', marginBottom: '20px' }}  />
+        <Divider style={{ marginTop: '-20px', marginBottom: '20px' }}  />
       </Row>
 
-      <Row style={{ marginBottom: 12 }}>
+      <Row style={{ marginBottom: 16 }}>
       <Col span={1}></Col>
       <Col span={11}>
       {/* ช่องค้นหา */}
       <Search 
         placeholder="ค้นหาชื่ออุปกรณ์" 
         onSearch={onSearch} 
+        onChange={(e) => {
+        if (e.target.value === "") {
+          getEquipments(); // โหลดข้อมูลทั้งหมดเมื่อช่องค้นหาถูกล้าง
+        }
+      }}
+        allowClear // เปิดใช้งานปุ่มกากบาท
         enterButton 
         style={{ maxWidth: 300, backgroundColor: "#ffffff", borderColor: "#42C2C2" }} 
         className="custom-search"
       />
+
       </Col>
 
 
-        <Col span={11} style={{ textAlign: "end",marginTop: '-7px'}}>
+        <Col span={11} style={{ textAlign: "end",marginTop: '-6px'}}>
           <Space>
             <Link to="/CreateEq">
               <button className="submit">+ เพิ่มอุปกรณ์</button>
@@ -201,8 +208,8 @@ function Equipments() {
       style={{
       textAlign: 'right',
       position: 'fixed', 
-      bottom: '69px', 
-      left: '263px', 
+      bottom: '40px', 
+      left: '285px', 
       marginTop: '0', 
       backgroundColor: 'white',zIndex: 1000, 
       }}

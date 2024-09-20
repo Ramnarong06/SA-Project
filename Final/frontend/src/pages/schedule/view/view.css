@@ -73,99 +73,124 @@
 }
 
 
-/* From Uiverse.io by mrhyddenn */
+/* button */
+
 .icon-btn {
-  width: 25px;
-  height: 25px;
-  border: 1px solid #cdcdcd;
-  background: white;
-  border-radius: 25px;
-  overflow: hidden;
-  position: relative;
-  transition: width 0.2s ease-in-out;
-  font-weight: 500;
-  font-family: inherit;
+  width: 30px;                      /* กำหนดความกว้างของปุ่มเป็น 30px */
+  height: 30px;                     /* กำหนดความสูงของปุ่มเป็น 30px */
+  border: 0.25px solid rgba(0, 0, 0, 0.411);      /* กำหนดเส้นขอบของปุ่ม */
+  background: #42c2c2;            /* สีพื้นหลังของปุ่มเป็นสีขาว */
+  border-radius: 25px;              /* ทำให้ปุ่มเป็นวงกลม (ค่าเกินครึ่งของขนาด) */
+  overflow: hidden; /* ซ่อนส่วนที่เกินของเนื้อหาในปุ่ม */
+  position: relative; /* ใช้สำหรับจัดการตำแหน่งขององค์ประกอบภายใน */
+  transition: width 0.2s ease-in-out; /* เพิ่ม transition เมื่อขนาดปุ่มเปลี่ยน */
+  font-weight: 500; /* น้ำหนักของฟอนต์ */
+  font-family: inherit; /* ใช้ฟอนต์จาก parent */
 }
-
+.add-btn {
+  display: flex;
+  justify-content: center; /* จัดให้อยู่ตรงกลางแนวนอน */
+  align-items: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
+   /* ให้ข้อความขยายเต็มพื้นที่ปุ่ม */
+}
+/* เมื่อ hover บนปุ่ม เพิ่มความกว้าง */
 .add-btn:hover {
-  width: 120px;
+  width: 85px; /* ขยายปุ่มเมื่อ hover เป็น 120px */
 }
 
+/* สร้างเครื่องหมายขีดแนวนอนด้านในปุ่ม */
 .add-btn::before,
 .add-btn::after {
-  transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-  content: "";
-  position: absolute;
-  height: 4px;
-  width: 10px;
-  top: calc(50% - 2px);
-  background: seagreen;
+  transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out; /* การเปลี่ยนแปลงขนาดและรูปร่าง */
+  content:    "";               /* เพิ่มเนื้อหาว่างที่จะแสดงเป็นเส้น */
+  position:   absolute;         /* ตำแหน่งสัมพัทธ์กับปุ่ม */
+  height:     3px;              /* ความสูงของขีด */
+  width:      10px;             /* ความกว้างของขีด */
+  top:        calc(50% - 2px);  /* วางไว้ตรงกลางของปุ่ม */
+  background: white ; /* สีของขีด*/
 }
 
+/* ขีดแนวนอนด้านขวาของปุ่ม */
 .add-btn::after {
-  right: 6px;
-  overflow: hidden;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  right: 5px;                       /* วางไว้ทางขวาของปุ่ม */
+  overflow: hidden;                 /* ซ่อนส่วนเกินถ้ามี */
+  border-top-right-radius:    2px;  /* ทำให้มุมขวาด้านบนโค้ง */
+  border-bottom-right-radius: 2px;  /* ทำให้มุมขวาด้านล่างโค้ง */
 }
 
+/* ขีดแนวนอนด้านซ้ายของปุ่ม */
 .add-btn::before {
-  left: 6px;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  left: 5px;                        /* วางไว้ทางซ้ายของปุ่ม */
+  border-top-left-radius: 2px;      /* ทำให้มุมซ้ายด้านบนโค้ง */
+  border-bottom-left-radius: 2px;   /* ทำให้มุมซ้ายด้านล่างโค้ง */
 }
 
+/* เมื่อปุ่มถูกโฟกัสจะไม่มีเส้นขอบแบบ focus */
 .icon-btn:focus {
-  outline: none;
+  outline: none; /* ลบเส้นขอบที่มักปรากฏเมื่อโฟกัส */
 }
 
+/* ข้อความในปุ่ม */
 .btn-txt {
-  opacity: 0;
-  transition: opacity 0.2s;
+  opacity: 0;               /* เริ่มต้นด้วยความโปร่งใส */
+  transition: opacity 0.2s; /* การเปลี่ยนแปลงของความโปร่งใส */
+  font-size: 14px;
+  color: white;
+  text-align: center;
 }
 
+/* เมื่อ hover บนปุ่ม ลดขนาดขีดแนวนอน */
 .add-btn:hover::before,
 .add-btn:hover::after {
-  width: 4px;
-  border-radius: 2px;
+  width: 4px; /* ลดความกว้างของขีดเหลือ 4px */
+  border-radius: 2px; /* มุมขีดจะโค้งเล็กน้อย */
 }
 
+/* ทำให้ข้อความปรากฏเมื่อ hover */
 .add-btn:hover .btn-txt {
-  opacity: 1;
+  opacity: 1; /* แสดงข้อความในปุ่ม */
 }
 
+/* สัญลักษณ์บวก */
 .add-icon::after,
 .add-icon::before {
-  transition: all 0.2s ease-in-out;
-  content: "";
-  position: absolute;
-  height: 20px;
-  width: 2px;
-  top: calc(50% - 10px);
-  background: seagreen;
-  overflow: hidden;
+  transition: all 0.2s ease-in-out; /* การเปลี่ยนแปลงทั้งหมดเมื่อมีการ hover */
+  content: "";                      /* เพิ่มเนื้อหาว่างที่จะเป็นขีดของสัญลักษณ์บวก */
+  position: absolute;               /* ตำแหน่งสัมพัทธ์กับปุ่ม */
+  height: 18px;                     /* ความสูงของขีดบวก */
+  width: 2px;                       /* ความกว้างของขีดบวก */
+  top: calc(50% - 9px);             /* วางตรงกลางของปุ่ม */
+  background: white;              /* สีของขีดเป็น seagreen */
+  overflow: hidden;                 /* ซ่อนส่วนเกิน */
 }
 
+/* ขีดแนวตั้งด้านซ้ายของสัญลักษณ์บวก */
 .add-icon::before {
-  left: 22px;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  left: 13px; /* วางไว้ทางซ้ายของปุ่ม */
+  border-top-left-radius: 2px; /* ทำให้มุมซ้ายบนโค้ง */
+  border-bottom-left-radius: 2px; /* ทำให้มุมซ้ายล่างโค้ง */
 }
 
+/* ขีดแนวตั้งด้านขวาของสัญลักษณ์บวก */
 .add-icon::after {
-  right: 22px;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  right: 13px; /* วางไว้ทางขวาของปุ่ม */
+  border-top-right-radius: 2px; /* ทำให้มุมขวาบนโค้ง */
+  border-bottom-right-radius: 2px; /* ทำให้มุมขวาล่างโค้ง */
 }
 
+/* เมื่อ hover บนปุ่ม ลดขนาดขีดในสัญลักษณ์บวก */
 .add-btn:hover .add-icon::before {
-  left: 15px;
-  height: 4px;
-  top: calc(50% - 2px);
+  left: 15px; /* ลดตำแหน่งแนวซ้ายเมื่อ hover */
+  height: 4px; /* ลดความสูงของขีดเหลือ 4px */
+  top: calc(50% - 2px); /* ปรับให้เข้ากับตำแหน่งใหม่ */
+  background: rgba(255, 255, 255, 0); 
 }
 
+/* เมื่อ hover บนปุ่ม ลดขนาดขีดในสัญลักษณ์บวก */
 .add-btn:hover .add-icon::after {
-  right: 15px;
-  height: 4px;
-  top: calc(50% - 2px);
+  right: 15px; /* ลดตำแหน่งแนวขวาเมื่อ hover */
+  height: 4px; /* ลดความสูงของขีดเหลือ 4px */
+  top: calc(50% - 2px); /* ปรับให้เข้ากับตำแหน่งใหม่ */
+  background: rgba(255, 255, 255, 0); 
 }
+

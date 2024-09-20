@@ -16,7 +16,7 @@ import { RestockInterface } from "../../../interfaces/storage/IRestock";
 import { CreateRestock, GetEquipmentById } from "../../../services/https/storage";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-//import new_logo from "../../assets/new_logo.png";
+import new_logo from "../../../assets/new_logo.png";
 import "./AddEq.css";
 
 
@@ -26,14 +26,7 @@ function RestockCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [equipment, setEquipment] = useState<any>(null); // เก็บข้อมูลอุปกรณ์
   const [currentDate, setCurrentDate] = useState(dayjs()); // สร้าง state สำหรับเก็บเวลา ณ ปัจจุบัน
-
-  // อัพเดทเวลา ณ ปัจจุบันทุกวินาที
-  /*useEffect1(() => {
-    const interval = setInterval(() => {
-    setCurrentDate(dayjs()); // อัพเดทเวลาทุกวินาที
-  }, 1000); // อัพเดททุก 1 วินาที
-  return () => clearInterval(interval); // ล้าง interval เมื่อ component ถูก unmount
-  }, []);*/
+ 
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -107,7 +100,11 @@ function RestockCreate() {
       {contextHolder}
       <Card className="equipment-card">
         <div className="logo-container">
-          
+        <img
+            src={new_logo} // replace with the correct path to your logo
+            alt="logo"
+            className="logo"
+          />
         </div>
         <form className="formhAdd">
           <div className="label1Add">เติมอุปกรณ์</div>

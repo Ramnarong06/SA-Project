@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"fmt"
+	"regexp"
 )
 
 
@@ -111,10 +112,24 @@ func GetAllDentalRecord(c *gin.Context) {
 		payrecord[i].PrintFees = fmt.Sprintf("%.2f", payrecord[i].Fees)
 		payrecord[i].PrintInstallment = fmt.Sprintf("%.2f", payrecord[i].Installment)
 
+		payrecord[i].Tel = formatPhoneNumber(payrecord[i].Tel)
+
 		payrecord[i].Age = calculateAge(payrecord[i].Birthday)
 	}
 
 	c.JSON(http.StatusOK, payrecord)
+}
+
+func formatPhoneNumber(tel string) string {
+	// Remove non-numeric characters
+	re := regexp.MustCompile("[^0-9]")
+	cleaned := re.ReplaceAllString(tel, "")
+	
+	// Check length and format accordingly
+	if len(cleaned) == 10 {
+		return cleaned[:3] + "-" + cleaned[3:6] + "-" + cleaned[6:]
+	}
+	return tel // Return the original if not in the expected format
 }
 
 func GetReceipt(c *gin.Context) {
@@ -304,77 +319,6 @@ func calculateAge(BirthDay time.Time) int {
 //  }
 
 
-func CreateDentalRecord(c *gin.Context) {
-	var newDentalRecord entity.DentalRecord
-	// Bind the JSON request body to the newRecord variable
-	if err := c.ShouldBindJSON(&newDentalRecord); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request, unable to map payload"})
-		return
-	}
-
-	newDentalRecord.Date = time.Now()
-	newDentalRecord.StatusID = 2
-	newDentalRecord.PaymentID = nil
-	// Connect to the database
-	db := config.DB()
-	// Save the new record to the database
-	result := db.Create(&newDentalRecord)
-	// Error handling
-	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
-		return
-	}
-	// Return success response
-	c.JSON(http.StatusCreated, gin.H{"message": "Record created successfully", "data": newDentalRecord})
-}
-
-
-func UpdateDentalRecord(c *gin.Context) {
-	var uprecord entity.DentalRecord
-	ID := c.Param("id")
-	db := config.DB()
-	result := db.First(&uprecord,ID)
-	if result.Error != nil {
- 
-		c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
- 
-		return
- 
-	}
-	if err := c.ShouldBindJSON(&uprecord); err != nil {
- 
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request, unable to map payload"})
- 
-		return
- 
-	}
-	result = db.Save(&uprecord)
- 
-	if result.Error != nil {
- 
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
- 
-		return
- 
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Updated successful"})
- 
- }
-
- 
-func DeleteDentalRecord(c *gin.Context) {
-	ID := c.Param("id")
-	db := config.DB()
-	if tx := db.Exec("DELETE FROM dental_records WHERE id = ?", ID); tx.RowsAffected == 0 {
- 
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
- 
-		return
- 
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Deleted successful"})
- }
-
  func DeletePayment(c *gin.Context) {
 	ID := c.Param("id")
 	db := config.DB()
@@ -388,4 +332,182 @@ func DeleteDentalRecord(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Deleted successful"})
  }
 
- 
+ func CreateDentalRecord(c *gin.Context) {
+    var requestBody struct {
+        Date                time.Time `json:"date"`
+        Description         string    `json:"description"`
+        Fees                float32   `json:"fees"`
+        Installment         float32   `json:"Installment"` // เปลี่ยนเป็น float64
+        NumberOfInstallment string      `json:"NumberOfInstallment"` // เปลี่ยนเป็น uint
+        TreatmentID         uint      `json:"TreatmentID"`
+        StatusID            uint      `json:"status_id"`
+        PatientID           uint      `json:"patientID"`
+        EmployeeID          uint      `json:"employee_id"`
+    }
+
+    if err := c.ShouldBindJSON(&requestBody); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    db := config.DB()
+
+    requestBody.EmployeeID = 1;
+	requestBody.StatusID = 2;
+
+
+    var treatment entity.Treatment
+    if err := db.First(&treatment, requestBody.TreatmentID).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Treatment not found"})
+        return
+    }
+
+    var patient entity.Patient
+    if err := db.First(&patient, requestBody.PatientID).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Patient not found"})
+        return
+    }
+
+    var employee entity.Employee
+    if err := db.First(&employee, requestBody.EmployeeID).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
+        return
+    }
+	location, _ := time.LoadLocation("Asia/Bangkok")
+	adjustedDate := requestBody.Date.In(location)
+
+    dentalRecord := entity.DentalRecord{
+        Date:                 adjustedDate,
+        Description:          requestBody.Description,
+        Fees:                 requestBody.Fees,
+        Installment:          requestBody.Installment,
+        NumberOfInstallment: requestBody.NumberOfInstallment,
+        TreatmentID:          requestBody.TreatmentID,
+        StatusID:             requestBody.StatusID,
+        PatientID:            requestBody.PatientID,
+        EmployeeID:           requestBody.EmployeeID,
+        Treatment:            treatment,
+        Patient:              patient,
+        Employee:             employee,
+    }
+
+    if err := db.Create(&dentalRecord).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusCreated, gin.H{"message": "Created successfully", "data": dentalRecord})
+}
+
+// GET /dental_record/:id
+func GetDentalRecord(c *gin.Context) {
+    ID := c.Param("id")
+    var dentalRecord entity.DentalRecord
+
+    db := config.DB()
+    result := db.Preload("Treatment").Preload("Patient").Preload("Employee").First(&dentalRecord, ID)
+    if result.Error != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, dentalRecord)
+}
+
+// GET /dental_records
+func ListDentalRecords(c *gin.Context) {
+    var dentalRecords []entity.DentalRecord
+
+    db := config.DB()
+    result := db.Preload("Treatment").Preload("Status").Preload("Patient").Preload("Employee").Find(&dentalRecords)
+    if result.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, dentalRecords)
+}
+
+// DELETE /dental_record/:id
+func DeleteDentalRecord(c *gin.Context) {
+    id := c.Param("id")
+    db := config.DB()
+
+    var dentalRecord entity.DentalRecord
+    if err := db.First(&dentalRecord, id).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Dental record not found"})
+        return
+    }
+
+    if err := db.Delete(&dentalRecord).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "Deleted successfully"})
+}
+
+// PATCH /dental_record/:id
+// PATCH /dental_record/:id
+func UpdateDentalRecord(c *gin.Context) {
+    var updateData struct {
+        Date                 time.Time `json:"date"`
+        Description          string    `json:"description"`
+        Fees                 float32   `json:"fees"`
+        Installment          float32   `json:"Installment"`
+        NumberOfInstallment string      `json:"NumberOfInstallment"`
+        TreatmentID          uint      `json:"TreatmentID"`
+        StatusID             uint      `json:"status_id"`
+        PatientID            uint      `json:"patientID"`
+        EmployeeID           uint      `json:"employee_id"`
+    }
+
+    DentalRecordID := c.Param("id")
+    db := config.DB()
+
+    var dentalRecord entity.DentalRecord
+    if err := db.First(&dentalRecord, DentalRecordID).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบบันทึกการรักษา"})
+        return
+    }
+
+    if err := c.ShouldBindJSON(&updateData); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "คำขอไม่ถูกต้อง ไม่สามารถแมพข้อมูลได้"})
+        return
+    }
+
+    // ปรับปรุงข้อมูลที่เกี่ยวข้อง
+    dentalRecord.Date = updateData.Date
+    dentalRecord.Description = updateData.Description
+    dentalRecord.Fees = updateData.Fees
+    dentalRecord.Installment = updateData.Installment
+    dentalRecord.NumberOfInstallment = updateData.NumberOfInstallment
+    dentalRecord.TreatmentID = updateData.TreatmentID
+    dentalRecord.StatusID = updateData.StatusID
+    dentalRecord.PatientID = updateData.PatientID
+    dentalRecord.EmployeeID = updateData.EmployeeID
+
+    if err := db.Save(&dentalRecord).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "อัปเดตข้อมูลเรียบร้อยแล้ว", "data": dentalRecord})
+}
+
+
+
+// GET /dental_records/patient/:patientID
+func GetDentalRecordsByPatientID(c *gin.Context) {
+    var records []entity.DentalRecord
+    patientID := c.Param("patientID")
+
+    db := config.DB()
+
+    if err := db.Where("patient_id = ?", patientID).Find(&records).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "No dental records found"})
+        return
+    }
+
+    c.JSON(http.StatusOK, records)
+}

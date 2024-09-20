@@ -11,6 +11,10 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react
 import Schedule from "./create.tsx";
 import ViewSchedule from "../view/view.tsx";
 
+
+import save from '../../../assets/schedule/savecreate.gif'
+
+
 const { Option } = Select;
 
 function ScheduleCreate() {
@@ -53,7 +57,7 @@ function ScheduleCreate() {
     if (res.status) {
       messageApi.open({
         type: "error",
-        content: "บันทึกข้อมูลสำเร็จ",
+        content: res.message,
       });
       setTimeout(function () {
         navigate("/viewschedule");
@@ -61,7 +65,13 @@ function ScheduleCreate() {
     } else {
       messageApi.open({
         type: "success",
-        content: res.message,
+        content: (
+          <div style={{ display: 'flex', alignItems: 'center', fontSize: '15px' ,color:'#22225E'}}>
+            <img src={`${save}?${Date.now()}`}  alt="Success" style={{ width: '40px', height: '40px', marginRight: '8px' }}/>
+            <span>บันทึกการนัดหมายเสร็จสิ้น</span>
+          </div>
+           ),
+           icon: ' ',
       });
       setTimeout(function () {
         navigate("/viewschedule");

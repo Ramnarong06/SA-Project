@@ -73,6 +73,7 @@ type createEq struct {
     Quantity      uint    `json:"quantity"`
 }
 
+
 // ฟังก์ชัน CreateEq - สร้างอุปกรณ์ใหม่
 func CreateEq(c *gin.Context) {
     var payload createEq
@@ -92,9 +93,19 @@ func CreateEq(c *gin.Context) {
         return
     }
 
+    // หากมีอุปกรณ์และถูกลบ ให้ลบอุปกรณ์นั้นก่อน
     if equipmentCheck.ID != 0 {
-        c.JSON(http.StatusConflict, gin.H{"error": "อุปกรณ์นี้มีอยู่แล้ว"})
-        return
+        if !equipmentCheck.IsActive { // ถ้าอุปกรณ์ถูกลบ (IsActive = false)
+            // ลบอุปกรณ์เดิม
+            if err := db.Delete(&equipmentCheck).Error; err != nil {
+                c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                return
+            }
+        } else {
+            // ถ้าอุปกรณ์ยังอยู่และยัง Active
+            c.JSON(http.StatusConflict, gin.H{"error": "อุปกรณ์นี้มีอยู่แล้ว"})
+            return
+        }
     }
 
     // ปรับให้ค่า Cost มีทศนิยม 2 ตำแหน่ง
@@ -115,6 +126,7 @@ func CreateEq(c *gin.Context) {
 
     c.JSON(http.StatusCreated, gin.H{"message": "เพิ่มอุปกรณ์สำเร็จ"})
 }
+
 
 // ฟังก์ชัน UpdateEquipment - แก้ไขข้อมูลอุปกรณ์
 func UpdateEquipment(c *gin.Context) {
@@ -155,6 +167,7 @@ func DeleteEquipment(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"message": "ลบอุปกรณ์สำเร็จ (Soft Delete)"})
 }
+
 
 // ฟังก์ชัน GetLowStockEquipments - ดึงข้อมูลอุปกรณ์ที่มีจำนวนสต็อกน้อย
 func GetLowStockEquipments(c *gin.Context) {

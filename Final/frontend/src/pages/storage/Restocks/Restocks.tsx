@@ -1,22 +1,21 @@
 import { useState, useEffect } from "react";
-import { Table, Col, Row, Divider, message, Modal } from "antd";
+import { Table, Col, Row, Divider, message, Modal, DatePicker, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-//import { GetRestocks } from "../../services/https/index";
-import { GetRestocks } from "../../../services/https/storage/index";
+import { GetRestocksDate,GetRestocks } from "../../../services/https/storage/index";
 import "./Restocks.css"; // Import the CSS file
-//import { RestockInterface } from "../../interfaces/IRestock";
 import { RestockInterface } from "../../../interfaces/storage/IRestock";
-import new_logo from "../../../assets/new_logo.jpg";
+import new_logo from "../../../assets/new_logo.png";
 import restocks from "../../../assets/restocks.jpg";
+import moment, { Moment } from "moment";
+import { SearchOutlined } from '@ant-design/icons';
 
 function Restocks() {
   //const navigate = useNavigate();
   const [Restocks, setRestocks] = useState<RestockInterface[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Moment | null>(null);
   const [messageApi] = message.useMessage();
 
-  
   const [modal, contextHolder] = Modal.useModal();
-  
 
   const columns: ColumnsType<RestockInterface> = [
     {
@@ -42,6 +41,7 @@ function Restocks() {
       dataIndex: "ReceivingDate",
       key: "receiving_date",
       align: 'center',
+      render: (text: any) => moment(text).format('YYYY-MM-DD HH:mm:ss') // Display both date and time
     },
     {
       title: "ชื่อผู้เติม",
@@ -50,6 +50,20 @@ function Restocks() {
       align: 'center',
     },
   ];
+
+  const getRestocksDate = async (date: string) => {
+    try {
+      const res = await GetRestocksDate(date);
+      if (res.status === 200) {
+        setRestocks(res.data);
+      } else {
+        setRestocks([]);
+        messageApi.error("ไม่พบข้อมูล");
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
 
 
   const getRestocks = async () => {
@@ -75,6 +89,18 @@ function Restocks() {
     }
   };
   
+
+  const handleSearch = () => {
+    console.log('Value received from Select:', selectedDate);
+
+    if (selectedDate) {
+      const formattedDate = selectedDate.format("YYYY-MM-DD");
+      getRestocksDate(formattedDate);
+    } else {
+      getRestocks(); // Fetch all requisitions if no date is selected
+    }
+  };
+
   useEffect(() => {
     getRestocks();
   }, []);
@@ -100,8 +126,35 @@ function Restocks() {
         <Col xs={24} sm={12} md={9} lg={9}>
           <h1 style={{ marginTop: '-12px'}}>รายการเติมสำเร็จ</h1>
         </Col>
-        <Divider style={{ marginTop: '-35px', marginBottom: '30px' }}  />
+        <Divider style={{ marginTop: '-32px', marginBottom: '30px' }}  />
       </Row>
+
+
+      <Row gutter={0} style={{ marginBottom: 16, marginTop: -10 }} className="custom-search">
+        <Col span={1}></Col>
+          <Col>
+          <DatePicker
+          format="YYYY-MM-DD"
+          onChange={(value) => {
+            setSelectedDate(value ? (value as Moment) : null);
+          if (!value) {
+            getRestocks(); // ดึงข้อมูลทั้งหมดเมื่อกดกากบาท (ล้างวันที่)
+          }
+          }}
+            placeholder="เลือกวันที่"
+          />
+
+          </Col>
+          <Col>
+          <Button
+            type="primary"
+            onClick={handleSearch}
+            icon={<SearchOutlined />}
+            style={{ width: 40 }} // Adjust the width as needed
+          />
+          </Col>
+        </Row>
+
 
       <Row style={{ marginBottom: 1 }}>
         <Col span={24} style={{ textAlign: "end", alignSelf: "center" }}>
@@ -109,9 +162,9 @@ function Restocks() {
       </Row>
 
       <div style={{ marginTop: 1 }}>
-        <Table rowKey="ID" columns={columns} dataSource={Restocks} style={{ width: "95%", margin: "0 auto" }} 
+        <Table rowKey="ID" columns={columns} dataSource={Restocks} style={{ width: "91.5%", margin: "0 auto" }} 
         pagination={{ pageSize: 5 }} 
-        scroll={{ x: 1000 }}/>
+        />
       </div>
     </>
   );

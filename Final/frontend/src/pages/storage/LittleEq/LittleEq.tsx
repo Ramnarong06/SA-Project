@@ -8,7 +8,7 @@ import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
 import { useNavigate} from "react-router-dom";
 import "./LittleEq.css"; 
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import new_logo from "../../../assets/new_logo.jpg";
+import new_logo from "../../../assets/new_logo.png";
 
 function EquipmentsLittle() {
   
@@ -91,13 +91,13 @@ function EquipmentsLittle() {
         />
       </div>
       <Row>
-        <Col span={12}>
-          <h2>
+        <Col span={12} >
+          <h1 style={{ marginTop: '-15px'}} >
             <ExclamationCircleOutlined style={{ marginRight: 8 }} />
             อุปกรณ์เหลือน้อย
-          </h2>
+          </h1>
         </Col>
-        <Divider style={{ marginTop: 0, marginBottom: '16px' }} />
+        <Divider style={{ marginTop: -20, marginBottom: '16px' }} />
       </Row>
       <div style={{ marginTop: 20 }}>
         <Table 

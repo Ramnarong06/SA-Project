@@ -63,6 +63,74 @@ func GetAllRestocks(c *gin.Context) {
     c.JSON(http.StatusOK, response)
 }
 
+/**/
+func GetAllRestocksDate(c *gin.Context) {
+    var restocks []entity.Restocks
+    db := config.DB()
+
+    // Get date query parameter
+    date := c.Query("date")
+
+    // Preload related data (Equipment and Employee)
+    query := db.Preload("Equipment").Preload("Employee")
+
+    if date != "" {
+        // Parse the date
+        parsedDate, err := time.Parse("2006-01-02", date)
+        if err != nil {
+            c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid date format"})
+            return
+        }
+
+        // Calculate the start and end of the day
+        startOfDay := parsedDate
+        endOfDay := parsedDate.AddDate(0, 0, 1).Add(-time.Nanosecond) // end of the day
+
+        // Filter requisitions by date range
+        query = query.Where("receiving_date BETWEEN ? AND ?", startOfDay, endOfDay)
+    }
+
+    // Execute the query
+    results := query.Find(&restocks)
+
+    if results.Error != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+        return
+    }
+
+    // Create response
+    response := []map[string]interface{}{}
+
+    for _, restock := range restocks {
+        equipmentName := ""
+        if restock.Equipment != nil {
+            equipmentName = restock.Equipment.EquipmentName
+        }
+
+        employeeName := ""
+        if restock.Employee != nil {
+            employeeName = restock.Employee.FirstName + " " + restock.Employee.LastName
+        } else {
+            fmt.Printf("EmployeeID: %d not found in Employee table\n", restock.EmployeeID)
+        }
+
+        formattedReceivingDate := restock.ReceivingDate.Format("2006-01-02 15:04:05")
+
+        item := map[string]interface{}{
+            "ID":                 restock.ID,
+            "RestockQuantity":    restock.RestockQuantity,
+            "ReceivingDate":      formattedReceivingDate,
+            "EquipmentName":      equipmentName,
+            "EmployeeName":       employeeName,
+        }
+
+        response = append(response, item)
+    }
+
+    c.JSON(http.StatusOK, response)
+}
+
+
 
 // RequisitionEquipment เป็นฟังก์ชันสำหรับเติมอุปกรณ์
 func RestockEquipment(c *gin.Context) {

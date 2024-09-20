@@ -1,7 +1,7 @@
-import { UsersInterface } from "../../interfaces/IUser";
-import { DentalRecordInterface } from "../../interfaces/IDentalRecord";
-import { TreatmentsInterface } from "../../interfaces/ITreatment";
-import { PatientsInterface } from "../../interfaces/IPatient";
+import { UsersInterface } from "../../../interfaces/dental/IUser";
+import { DentalRecordInterface } from "../../../interfaces/dental/IDentalRecord";
+import { TreatmentsInterface } from "../../../interfaces/dental/ITreatment";
+import { PatientsInterface } from "../../../interfaces/dental/IPatient";
 
 const apiUrl = "http://localhost:8000";
 
@@ -45,7 +45,7 @@ async function GetGenders() {
 }
 
 async function DeleteUserByID(id: number | undefined) {
-  if (id === undefined) {
+  if (id == null || id === 0) { // ตรวจสอบว่าค่า id ไม่เป็น undefined หรือ 0
     console.error("Invalid ID");
     return false;
   }
@@ -55,6 +55,12 @@ async function DeleteUserByID(id: number | undefined) {
       method: "DELETE",
     });
 
+    if (response.ok) {
+      console.log(`User with ID ${id} deleted successfully.`);
+    } else {
+      console.error("Failed to delete user:", response.statusText);
+    }
+
     return response.ok;
   } catch (error) {
     console.error("Error deleting user:", error);
@@ -63,7 +69,7 @@ async function DeleteUserByID(id: number | undefined) {
 }
 
 async function GetUserById(id: number | undefined) {
-  if (id === undefined) {
+  if (id == null || id === 0) {
     console.error("Invalid ID");
     return false;
   }
@@ -146,7 +152,7 @@ async function GetDentalRecords() {
 }
 
 async function DeleteDentalRecordByID(id: number | undefined) {
-  if (id === undefined) {
+  if (id == null || id === 0) { // ตรวจสอบค่า id ให้แน่ใจว่าไม่เป็น undefined หรือ 0
     console.error("Invalid ID");
     return false;
   }
@@ -155,6 +161,12 @@ async function DeleteDentalRecordByID(id: number | undefined) {
     const response = await fetch(`${apiUrl}/dental_record/${id}`, {
       method: "DELETE",
     });
+
+    if (response.ok) {
+      console.log(`Dental record with ID ${id} deleted successfully.`);
+    } else {
+      console.error("Failed to delete dental record:", response.statusText);
+    }
 
     return response.ok;
   } catch (error) {
@@ -183,52 +195,63 @@ async function CreateDentalRecord(data: DentalRecordInterface) {
   }
 }
 
-async function UpdateDentalRecord(data: DentalRecordInterface) {
+// ในไฟล์เซอร์วิสของคุณ
+// services/https/index.ts
+async function UpdateDentalRecord(id: number, data: DentalRecordInterface) {
   try {
-    const response = await fetch(`${apiUrl}/dental_record/${data.ID}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch(`${apiUrl}/dental_records/${id}`, {
+      method: 'PATCH', // ใช้ 'PATCH' สำหรับการอัปเดตข้อมูล
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(data),
     });
 
     if (response.ok) {
-      return await response.json();
+      return await response.json(); // ส่งคืนข้อมูล JSON ถ้าอัปเดตสำเร็จ
     } else {
-      console.error("Failed to update dental record:", response.statusText);
-      return false;
+      const errorResult = await response.json(); // อ่านข้อความแสดงข้อผิดพลาดจากเซิร์ฟเวอร์
+      console.error('Failed to update dental record:', errorResult);
+      return { error: errorResult.error || 'Unknown error' }; // ส่งคืนข้อผิดพลาดหากไม่สำเร็จ
     }
   } catch (error) {
-    console.error("Error updating dental record:", error);
-    return false;
+    console.error('Error updating dental record:', error);
+    return { error: 'Network error' }; // ส่งคืนข้อความข้อผิดพลาดเครือข่าย
   }
 }
+
+
+
+
+
 
 // services/https.ts
 
 // Function to get all treatments
-async function GetTreatment(): Promise<TreatmentsInterface[]> {
-  try {
-    const response = await fetch(`${apiUrl}/treatments`, { // ตรวจสอบ URL ที่ถูกต้อง
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+async function GetTreatment() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/treatments`, requestOptions)
+    .then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
     });
 
-    if (response.ok) {
-      return await response.json();
-    } else {
-      console.error("Failed to fetch treatments:", response.statusText);
-      return [];
-    }
-  } catch (error) {
-    console.error("Error fetching treatments:", error);
-    return [];
-  }
+  return res;
 }
 
 // Function to get all patients
-async function GetPatients(): Promise<PatientsInterface[]> {
+async function GetPatients() {
   try {
-    const response = await fetch(`${apiUrl}/patients`, { // ตรวจสอบ URL ที่ถูกต้อง
+    const response = await fetch(`${apiUrl}/patients`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -236,12 +259,37 @@ async function GetPatients(): Promise<PatientsInterface[]> {
     if (response.ok) {
       return await response.json();
     } else {
-      console.error("Failed to fetch patients:", response.statusText);
-      return [];
+      console.error(`Failed to fetch patients with status: ${response.status} ${response.statusText}`);
+      return false;
     }
   } catch (error) {
     console.error("Error fetching patients:", error);
-    return [];
+    return false;
+  }
+}
+
+// Function to get a specific dental record by ID
+async function GetDentalRecordByID(id: number) {
+  if (id == null || id === 0) { // Validate that the ID is not null or 0
+    console.error("Invalid ID");
+    return false;
+  }
+
+  try {
+    const response = await fetch(`${apiUrl}/dental_record/${id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.ok) {
+      return await response.json(); // Return the JSON data
+    } else {
+      console.error(`Failed to fetch dental record with status: ${response.status} ${response.statusText}`);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching dental record:", error);
+    return false;
   }
 }
 
@@ -258,5 +306,6 @@ export {
   CreateDentalRecord,
   UpdateDentalRecord,
   GetTreatment,
-  GetPatients
+  GetPatients,
+  GetDentalRecordByID,
 };

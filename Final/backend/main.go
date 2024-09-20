@@ -27,6 +27,13 @@ func main() {
 	r.POST("/signin", employee.SignIn)
 
 	router := r.Group("")
+	{
+        router.GET("/dental_records", controller.ListDentalRecords)
+        router.GET("/dental_record/:id", controller.GetDentalRecord)
+        router.POST("/dental_records", controller.CreateDentalRecord)
+        router.PATCH("/dental_record/:id", controller.UpdateDentalRecord)
+        router.DELETE("/dental_record/:id", controller.DeleteDentalRecord)
+    }
 
 	
 	router2 := r.Group("api")
@@ -70,11 +77,13 @@ func main() {
 		
 		// requisitions Route
         router.GET("/requisitions", controller.GetAllRequisitions)
+		router.GET("/requisitionsDate", controller.GetAllRequisitionsDate)/**/
         router.PATCH("/requisitions", controller.RequisitionEquipment)     /*เบิกอุปกรณ์*/
 
 
         // restocks Route
         router.GET("/restocks", controller.GetAllRestocks)
+		router.GET("/restocksDate", controller.GetAllRestocksDate)/**/
         router.PATCH("/restocks", controller.RestockEquipment)   /*เติมอุปกรณ์*/
 		//-------------------------------------------------------------------
 		// Employee Routes

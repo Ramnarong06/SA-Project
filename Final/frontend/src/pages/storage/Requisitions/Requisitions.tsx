@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
-import {Table, Col, Row, Divider, message} from "antd";
+import { Table, Col, Row, Divider, message, DatePicker, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-//import { GetRequisitions} from "../../services/https/index";
-import { GetRequisitions} from "../../../services/https/storage";
-//import { RequisitionInterface } from "../../interfaces/IRequisition";
+import { GetRequisitionsDate, GetRequisitions } from "../../../services/https/storage/index"; // Update with the correct import path
 import { RequisitionInterface } from "../../../interfaces/storage/IRequisition";
-import "./Requisitions.css"; // Import the CSS file
-import new_logo from "../../../assets/new_logo.jpg";
+import "./Requisitions.css";
+import new_logo from "../../../assets/new_logo.png";
 import requisitionss from "../../../assets/requisitionss.jpg";
+import moment, { Moment } from "moment";
+import { SearchOutlined } from '@ant-design/icons';
+
 
 function Requisition() {
-  //const navigate = useNavigate();
-  const [equipments, setRequisitions] = useState<RequisitionInterface[]>([]);
+  const [requisitions, setRequisitions] = useState<RequisitionInterface[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Moment | null>(null);
   const [messageApi, contextHolder] = message.useMessage();
 
   const columns: ColumnsType<RequisitionInterface> = [
@@ -38,6 +39,7 @@ function Requisition() {
       dataIndex: "Time",
       key: "time",
       align: 'center',
+      render: (text: any) => moment(text).format('YYYY-MM-DD HH:mm:ss') // Display both date and time
     },
     {
       title: "บันทึกช่วยจำ",
@@ -53,59 +55,101 @@ function Requisition() {
     },
   ];
 
-  const getRequisitions = async () => {
-    let res = await GetRequisitions();
-    if (res.status === 200) {
-      setRequisitions(res.data);
-    } else {
-      setRequisitions([]);
+  const getRequisitionsDate = async (date: string) => {
+    try {
+      const res = await GetRequisitionsDate(date);
+      if (res.status === 200) {
+        setRequisitions(res.data);
+      } else {
+        setRequisitions([]);
+        messageApi.error("ไม่พบข้อมูล");
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
     }
-    };
-      useEffect(() => {
-      getRequisitions();
-    }, []);
+  };
+
+  const getRequisitions = async () => {
+    try {
+      const res = await GetRequisitions(); // Make sure this function is implemented in your service
+      if (res.status === 200) {
+        setRequisitions(res.data);
+      } else {
+        setRequisitions([]);
+        messageApi.error("ไม่พบข้อมูล");
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
+
+  const handleSearch = () => {
+    console.log('Value received from Select:', selectedDate);
+
+    if (selectedDate) {
+      const formattedDate = selectedDate.format("YYYY-MM-DD");
+      getRequisitionsDate(formattedDate);
+    } else {
+      getRequisitions(); // Fetch all requisitions if no date is selected
+    }
+  };
+
+  useEffect(() => {
+    getRequisitions(); // Fetch all requisitions on initial load
+  }, []);
 
   return (
     <>
       {contextHolder}
       <div className="logo-container">
-          <img
-            src={new_logo} // replace with the correct path to your logo
-            alt="logo"
-            className="logo"
-          />
+        <img src={new_logo} alt="logo" className="logo" />
       </div>
 
       <Row align="top">
         <Col>
           <div className="logo-icon">
-            <img src={requisitionss} alt="logo" style={{ marginTop: '-35px', width: '108px', marginLeft: '0px', /* ขยับไปทางขวา */}} />
+            <img src={requisitionss} alt="logo" style={{ marginTop: '-38px', width: '108px', marginLeft: '0px' }} />
           </div>
         </Col>
         <Col xs={24} sm={12} md={9} lg={9}>
-          <h1 style={{ marginTop: '-12px'}}>รายการเบิก</h1>
+          <h1 style={{ marginTop: '-12px' }}>รายการเบิก</h1>
         </Col>
-        <Divider style={{ marginTop: '-40px', marginBottom: '30px' }}  />
+        <Divider style={{ marginTop: '-35px', marginBottom: '30px' }} />
       </Row>
 
+      <Row gutter={0} style={{ marginBottom: 18, marginTop: -15 }} className="custom-search">
+        <Col span={1}></Col>
+          <Col>
+          <DatePicker
+          format="YYYY-MM-DD"
+          onChange={(value) => {
+            setSelectedDate(value ? (value as Moment) : null);
+          if (!value) {
+            getRequisitions(); // ดึงข้อมูลทั้งหมดเมื่อกดกากบาท (ล้างวันที่)
+          }
+          }}
+            placeholder="เลือกวันที่"
+          />
+          </Col>
+          <Col>
+          <Button
+            type="primary"
+            onClick={handleSearch}
+            icon={<SearchOutlined />}
+            style={{ width: 40 }} // Adjust the width as needed
+          />
+          </Col>
+        </Row>
 
-      {/*<Row style={{ marginBottom: 12 }}>
-      <Col span={1}></Col>
-      <Col span={22}>
-      <Search
-        placeholder="ค้นหาชื่ออุปกรณ์" 
-        onSearch={onSearch} 
-        enterButton 
-        style={{ maxWidth: 300, backgroundColor: "#ffffff", borderColor: "#42C2C2" }} 
-        className="custom-search"
-      />
-      </Col>*/}
-    
       <div style={{ marginTop: 1 }}>
-        <Table rowKey="ID" columns={columns} dataSource={equipments} style={{ width: "95%", margin: "0 auto" }} pagination={{ pageSize:5 }} 
-        scroll={{ x: 1000 }} />
+        <Table
+          rowKey="ID"
+          columns={columns}
+          dataSource={requisitions}
+          style={{ width: "91.5%", margin: "0 auto" }}
+          pagination={{ pageSize: 5 }}
+        />
       </div>
-
     </>
   );
 }

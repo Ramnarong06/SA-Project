@@ -15,7 +15,7 @@ import { RequisitionInterface } from "../../../interfaces/storage/IRequisition";
 import { useEffect, useState } from "react";
 //import { CreateRequisition, GetEquipmentById } from "../../services/https";
 import { CreateRequisition, GetEquipmentById } from "../../../services/https/storage";
-import new_logo from "../../../assets/new_logo.jpg";
+import new_logo from "../../../assets/new_logo.png";
 import dayjs from "dayjs";
 import "./RequestEq.css";
 
