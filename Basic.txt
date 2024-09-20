@@ -27,13 +27,15 @@ go run main.go
 npm run dev
 
 
-git init 
-git add . 
-git commit -m "my first commit" 
-git branch -m main 
-git push -u origin main
 //
 go get -u github.com/golang-jwt/jwt/v5
 // เพิมเติม backend
 npm install jspdf --save
 npm install jspdf jspdf-autotable
+
+//github
+git init 
+git add . 
+git commit -m "my first commit"
+git branch -m main 
+git push -u origin main
