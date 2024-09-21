@@ -5,7 +5,6 @@ import (
 
 	"example.com/project/config"
 	"example.com/project/controller"
-	"example.com/project/controller/employee"
 	"example.com/project/middlewares"
 	"github.com/gin-gonic/gin"
 )
@@ -23,8 +22,8 @@ func main() {
 	r := gin.Default()
 
 	r.Use(CORSMiddleware())
-	r.POST("/signup", employee.SignUp)
-	r.POST("/signin", employee.SignIn)
+	r.POST("/signup", controller.SignUp)
+	r.POST("/signin", controller.SignIn)
 
 	router := r.Group("")
 	{
@@ -105,21 +104,10 @@ func main() {
 		router.PATCH("/patients", controller.UpdatePatient)
 		router.DELETE("/patients/:id", controller.DeletePatient)
 		//--------------------------------------------------------------------
-		
-		
-		
-		
-		
-		
-		
-		
+			
 		//login employee
 		router.Use(middlewares.Authorizes())
-
-		//router.PATCH("/employee/:id", employee.Update)
-		//router.GET("/employees", employee.GetAll)
-		//router.GET("/employee/:id", employee.Get)
-		//router.DELETE("/employee/:id", employee.Delete)
+		router.GET("/employeeslogin", controller.EmployeesLogin)
 
 	}
 	//r.GET("/genders", controller.ListGenders)

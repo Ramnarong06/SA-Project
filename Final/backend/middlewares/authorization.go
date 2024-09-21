@@ -1,81 +1,43 @@
 package middlewares
 
-
 import (
+	"net/http"
+	"strings"
 
-   "net/http"
-
-   "strings"
-
-
-   "example.com/project/services"
-
-   "github.com/gin-gonic/gin"
-
+	"github.com/gin-gonic/gin"
+	"example.com/project/services" // ใช้ในการถอดรหัส JWT
 )
 
-
-var HashKey = []byte("very-secret")
-
-var BlockKey = []byte("a-lot-secret1234")
-
-
-// Authorization เป็นฟังก์ชั่นตรวจเช็ค Cookie
-
 func Authorizes() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
+			c.Abort()
+			return
+		}
 
-   return func(c *gin.Context) {
+		// ตรวจสอบว่า token มีคำว่า "Bearer " ขึ้นต้นหรือไม่
+		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+		if tokenString == authHeader {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization header format"})
+			c.Abort()
+			return
+		}
 
-       clientToken := c.Request.Header.Get("Authorization")
+		// ถอดรหัส JWT token
+		jwtWrapper := services.JwtWrapper{
+			SecretKey: "SvNQpBN8y3qlVrsGAYYWoJJk56LtzFHx",
+		}
+		claims, err := jwtWrapper.ValidateToken(tokenString)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			c.Abort()
+			return
+		}
 
-       if clientToken == "" {
-
-           c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "No Authorization header provided"})
-
-           return
-
-       }
-
-
-       extractedToken := strings.Split(clientToken, "Bearer ")
-
-
-       if len(extractedToken) == 2 {
-
-           clientToken = strings.TrimSpace(extractedToken[1])
-
-       } else {
-
-           c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Incorrect Format of Authorization Token"})
-
-           return
-
-       }
-
-
-       jwtWrapper := services.JwtWrapper{
-
-           SecretKey: "SvNQpBN8y3qlVrsGAYYWoJJk56LtzFHx",
-
-           Issuer:    "AuthService",
-
-       }
-
-
-       _, err := jwtWrapper.ValidateToken(clientToken)
-
-       if err != nil {
-
-           c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-
-           return
-
-
-       }
-
-       c.Next()
-
-   }
-
-
+		// ถอดรหัสสำเร็จ - ส่งข้อมูล user จาก token ไปยัง handler
+		c.Set("user", claims.Email) // หรือ id แล้วแต่ข้อมูลที่เก็บใน token
+		c.Next()
+	}
 }

@@ -47,7 +47,7 @@ func CreateEmployee(c *gin.Context) {
 		LastName:  employee.LastName,  // ตั้งค่าฟิลด์ LastName
 		Email:     employee.Email,     // ตั้งค่าฟิลด์ Email
 		Password:  hashedPassword,
-		BirthDay:  employee.BirthDay,
+		Birthday:  employee.Birthday,
 		GenderID:  employee.GenderID,
 		Gender:    gender, // โยงความสัมพันธ์กับ Entity Gender
 		JobPositionID: employee.JobPositionID,
@@ -96,6 +96,27 @@ func ListEmployees(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, employees)
 }
+
+func EmployeesLogin(c *gin.Context) {
+	// ดึง user จาก context ที่ middleware ส่งมา
+	userEmail, exists := c.Get("user")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	// ค้นหาพนักงานที่มี email ตรงกับที่ดึงจาก token
+	var employee entity.Employee
+	db := config.DB()
+	if err := db.Where("email = ?", userEmail).First(&employee).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"employee": employee})
+}
+
+
 
 // DELETE /employees/:id
 func DeleteEmployee(c *gin.Context) {

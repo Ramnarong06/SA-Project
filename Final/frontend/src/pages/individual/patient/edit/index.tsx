@@ -19,7 +19,7 @@ import { PatientsInterface } from "../../../../interfaces/individual/IPatient";
 import { GendersInterface } from "../../../../interfaces/individual/IGender";
 import { BloodTypesInterface } from "../../../../interfaces/individual/IBloodType";
 
-import { GetGenders, GetPatientById, UpdatePatient,GetBloodTypes } from "../../../../services/https/individual";
+import { GetGenders, GetPatientById, UpdatePatient,GetBloodTypes } from "../../../../services/https/individual"
 import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
@@ -46,7 +46,7 @@ function PatientEdit() {
         content: res.message,
       });
       setTimeout(function () {
-        navigate("/patients");
+        navigate("/patient");
       }, 2000);
     } else {
       messageApi.open({
@@ -92,7 +92,7 @@ function PatientEdit() {
     }
   };
   const onCancel = () => {
-    navigate("/patients"); // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการเมื่อกดยกเลิก
+    navigate("/patient"); // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการเมื่อกดยกเลิก
   };
 
   useEffect(() => {

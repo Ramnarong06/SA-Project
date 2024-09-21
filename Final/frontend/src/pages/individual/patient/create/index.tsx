@@ -40,7 +40,7 @@ function PatientCreate() {
         content: "บันทึกข้อมูลสำเร็จ",
       });
       setTimeout(function () {
-        navigate("/patients");
+        navigate("/patient");
       }, 2000);
     } else {
       messageApi.open({
@@ -63,7 +63,7 @@ function PatientCreate() {
     }
   };
   const onCancel = () => {
-    navigate("/patients"); // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการเมื่อกดยกเลิก
+    navigate("/patient"); // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการเมื่อกดยกเลิก
   };
   useEffect(() => {
     getGender();

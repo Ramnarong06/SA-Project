@@ -10,7 +10,7 @@ type Employee struct {
 	gorm.Model
 	FirstName 	string 		
 	LastName 	string		
-	BirthDay 	time.Time 	
+	Birthday 	time.Time 	
 	Address 	string 		
 	Tel 		string 				
 	Email 		string 		

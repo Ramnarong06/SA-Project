@@ -1,77 +1,42 @@
+body {
+  margin: 0;
+}
+
 .App {
   text-align: center;
-  height: 100vh; /* Make the app take up the full height */
-  overflow-y: auto; /* Remove scrollbar here, use in content */
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  height: 100vh;
+  width: 100%; /* Make it take full width */
+  overflow: hidden; /* Remove scrollbar */
+  background-color: #F5F5F5; /* Match background */
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: auto; /* Adjust to auto height */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  overflow-y: auto; /* Scroll only in header if content overflows */
-
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+  padding: 1rem;
 }
 
 .card {
   padding: 2em;
-  max-height: 400px; /* Control height */
-  overflow-y: auto; /* Scrollable section */
+  width: 70%; /* Adjust width like the login card */
+  height: auto;
+  max-height: 550px; /* Match the card max height */
+  overflow-y: scroll;
 }
 
-.read-the-docs {
-  color: #888;
+.logo {
+  width: 100%; /* Adjust width */
+  height: auto;
+  max-height: 400px; /* Match image max height */
+  object-fit: contain; /* Ensure it fits properly */
 }
 
+.login-form-button {
+  width: 100%;
+}

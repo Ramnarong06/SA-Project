@@ -165,7 +165,7 @@ func SetupDatabase() {
 	Employee1	:=	&entity.Employee{
 		FirstName: 		"รามณรงค์",
        	LastName:		"พันธเดช",
-		BirthDay:		BirthDay,
+		Birthday:		BirthDay,
 		Address:		"ประเทศไทย",
 		Tel:			"0822222222",
        	Email:     		"sa@gmail.com",
@@ -178,12 +178,12 @@ func SetupDatabase() {
 		Email: 			"sa@gmail.com",
 	})
 	hashedPassword2, _ := HashPassword("123456")
-	//BirthDay, _ := time.Parse("2006-01-02", "1988-11-12")
+	
 
 	Employee2	:=	&entity.Employee{
 		FirstName: 		"สมชาย",
        	LastName:		"ใจดี",
-		BirthDay:		BirthDay,
+		Birthday:		BirthDay,
 		Address:		"ประเทศไทย",
 		Tel:			"0811111111",
        	Email:     		"sa2@gmail.com",
@@ -212,7 +212,7 @@ func SetupDatabase() {
  
 		Password: hashedPassword,
  
-		BirthDay:  BirthDay,
+		Birthday:  BirthDay,
  
 		GenderID:  1,
 
@@ -233,7 +233,7 @@ func SetupDatabase() {
  
 		Password: hashedPassword,
  
-		BirthDay:  BirthDay,
+		Birthday:  BirthDay,
  
 		GenderID:  2,
 

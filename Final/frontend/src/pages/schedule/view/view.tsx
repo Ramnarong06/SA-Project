@@ -50,7 +50,7 @@ const ScheduleView: React.FC = () => {
         content: res.message,
       });
       setTimeout(function () {
-        navigate("/schedule");
+        navigate("/viewschedule/schedulecreate");
       }, 2000);
     } else {
       messageApi.open({
@@ -86,7 +86,7 @@ const ScheduleView: React.FC = () => {
           <div className="calendar-section">
             <Calendar fullscreen={false} onSelect={onDateChange} />
             <div className="add-button-container">
-              <Link to="/schedule">
+              <Link to="/viewschedule/schedulecreate">
                 <button className="icon-btn add-btn">
                   <div className="add-icon"></div>
                   <div className="btn-txt"> Add </div>
@@ -111,7 +111,8 @@ const ScheduleView: React.FC = () => {
                     size={"large"}
                     key="edit"
                     style={{ marginRight: 0 }}
-                    onClick={() => navigate(`/editschedule/edit/${item.ID}`)} 
+                    // onClick={() => navigate(`/editschedule/edit/${item.ID}`)} 
+                    onClick={() => navigate(`/viewschedule/editschedule/edit/${item.ID}`)} 
                   />,
                   <Button
                       onClick={() => {
@@ -160,7 +161,7 @@ const ScheduleView: React.FC = () => {
         </div>
 
         <Routes>
-          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/viewschedule/schedulecreate" element={<Schedule />} />
           
         </Routes>
       </div>

@@ -43,7 +43,7 @@ function EmployeeEdit() {
         content: res.message,
       });
       setTimeout(function () {
-        navigate("/employees");
+        navigate("/employee");
       }, 2000);
     } else {
       messageApi.open({
@@ -85,7 +85,7 @@ function EmployeeEdit() {
     }
   };
   const onCancel = () => {
-    navigate("/employees"); // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการเมื่อกดยกเลิก
+    navigate("/employee"); // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการเมื่อกดยกเลิก
   };
 
   useEffect(() => {

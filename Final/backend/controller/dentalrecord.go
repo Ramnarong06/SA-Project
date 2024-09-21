@@ -286,12 +286,12 @@ func GetSaveDentalRecord(c *gin.Context) {
 	c.JSON(http.StatusOK, &saverecord)
  }
 
-func calculateAge(BirthDay time.Time) int {
+func calculateAge(Birthday time.Time) int {
 	now := time.Now()
-	years := now.Year() - BirthDay.Year()
+	years := now.Year() - Birthday.Year()
 
 	// ตรวจสอบว่าเดือนและวันเกิดของปีนี้มาถึงหรือยัง ถ้ายังก็ลดอายุลง 1
-	if now.YearDay() < BirthDay.YearDay() {
+	if now.YearDay() < Birthday.YearDay() {
 		years--
 	}
 	return years

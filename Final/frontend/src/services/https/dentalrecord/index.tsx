@@ -1,4 +1,4 @@
-import { UsersInterface } from "../../../interfaces/dental/IUser";
+//import { UsersInterface } from "../../../interfaces/dental/IUser";
 import { DentalRecordInterface } from "../../../interfaces/dental/IDentalRecord";
 import { TreatmentsInterface } from "../../../interfaces/dental/ITreatment";
 import { PatientsInterface } from "../../../interfaces/dental/IPatient";
@@ -91,45 +91,45 @@ async function GetUserById(id: number | undefined) {
   }
 }
 
-async function CreateUser(data: UsersInterface) {
-  try {
-    const response = await fetch(`${apiUrl}/users`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+// async function CreateUser(data: UsersInterface) {
+//   try {
+//     const response = await fetch(`${apiUrl}/users`, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(data),
+//     });
 
-    if (response.ok) {
-      return await response.json();
-    } else {
-      console.error("Failed to create user:", response.statusText);
-      return false;
-    }
-  } catch (error) {
-    console.error("Error creating user:", error);
-    return false;
-  }
-}
+//     if (response.ok) {
+//       return await response.json();
+//     } else {
+//       console.error("Failed to create user:", response.statusText);
+//       return false;
+//     }
+//   } catch (error) {
+//     console.error("Error creating user:", error);
+//     return false;
+//   }
+// }
 
-async function UpdateUser(data: UsersInterface) {
-  try {
-    const response = await fetch(`${apiUrl}/users`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+// async function UpdateUser(data: UsersInterface) {
+//   try {
+//     const response = await fetch(`${apiUrl}/users`, {
+//       method: "PATCH",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(data),
+//     });
 
-    if (response.ok) {
-      return await response.json();
-    } else {
-      console.error("Failed to update user:", response.statusText);
-      return false;
-    }
-  } catch (error) {
-    console.error("Error updating user:", error);
-    return false;
-  }
-}
+//     if (response.ok) {
+//       return await response.json();
+//     } else {
+//       console.error("Failed to update user:", response.statusText);
+//       return false;
+//     }
+//   } catch (error) {
+//     console.error("Error updating user:", error);
+//     return false;
+//   }
+// }
 
 // DentalRecord related functions
 async function GetDentalRecords() {
@@ -296,11 +296,9 @@ async function GetDentalRecordByID(id: number) {
 
 export {
   GetUsers,
-  CreateUser,
   GetGenders,
   DeleteUserByID,
   GetUserById,
-  UpdateUser,
   GetDentalRecords,
   DeleteDentalRecordByID,
   CreateDentalRecord,

@@ -7,7 +7,7 @@ import { PatientsInterface } from "../../../interfaces/individual/IPatient";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-import logoSamgt from '../../../assets/logoSamgt.png';
+import logoSamgt from '../../../assets/logo.png';
 
 const { Search } = Input;
 // const employee :EmployeesInterface[] = []
@@ -16,31 +16,46 @@ function Patients() {
   
   const myId = localStorage.getItem("id");
   const columns: ColumnsType<PatientsInterface> = [
-
+    // {
+    //   title: "ลำดับ",
+    //   dataIndex: "ID",
+    //   key: "id",
+    // },
     {
       title: "ชื่อ",
       dataIndex: "FirstName",
       key: "firstname",
-      align: "center",
     },
     {
       title: "นามสกุล",
       dataIndex: "LastName",
       key: "lastname",
-      align: "center",
     },
     {
       title: "เพศ",
       dataIndex: "Gender",
       key: "gender",
-      align: "center",
       render: (gender) => Object.values(gender?.Sex),
     },
+    // ? ไม่สนใจข้อมูล null
+    // {
+    //   title: "ตำแหน่ง",
+    //   dataIndex: "JobPosition",
+    //   key: "่jobPosition",
+    //   render: (job) => Object.values(job?.Job),
+    //   //render: (record) => <p>{dayjs(record).format("dddd DD MMM YYYY")}</p>,
+    // },
+ 
+    // {
+    //   title: "วันเกิด",
+    //   dataIndex: "Birthday",
+    //   key: "birthday",
+    //   render: (record) => <p>{dayjs(record).format("dddd DD MMM YYYY")}</p>,
+    // },// record ใช้ record.gender?.Sex
     {
       title: "เบอร์โทร",
       dataIndex: "Tel",
       key: "tel",
-      align: "center",
       render: (tel) => {
         const formattedTel = `${tel.substring(0, 3)}-${tel.substring(3, 6)}-${tel.substring(6, 10)}`;
         return <p>{formattedTel}</p>;
@@ -50,28 +65,24 @@ function Patients() {
       title: "หมู่เลือด",
       dataIndex: "BloodType",
       key: "bloodType",
-      align: "center",
       render: (BloodType) => Object.values(BloodType?.BloodGroup),
     },
     {
       title: "แพ้ยา",
       dataIndex: "DrugAllergy",
       key: "drugAllergy",
-      align: "center",
     },
    
     {
       title: "โรคประจำตัว",
       dataIndex: "Chronicdisease",
       key: "chronicdisease",
-      align: "center",
       
     },
    
    
     {
       title: "จัดการ",
-      align: "center",
       // dataIndex: "Manage",
       // key: "manage",
       render: (record) => (
@@ -206,12 +217,12 @@ function Patients() {
     <>
       {contextHolder}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <img src={logoSamgt} alt="logoSamgt" style={{ width: '10%', height: 'auto' }} />
+          <img src={logoSamgt} alt="logoSamgt" style={{ width: '25%', height: 'auto' }} />
       </div>
       <Row>
         
-        <Col span={12} style={{  marginBottom: -10 }} >
-          <h2 >จัดการประวัติผู้ป่วย</h2>
+        <Col span={12}>
+          <h2>จัดการประวัติผู้ป่วย</h2>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
