@@ -6,6 +6,7 @@ import {
   DollarOutlined,
   ProductOutlined,
   HeartOutlined,
+  LogoutOutlined
 } from "@ant-design/icons";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -202,14 +203,43 @@ const App: React.FC = () => {
   };
 
   const menu = (
-    <Menu>
-      <Menu.Item key="profile">
-        <Link to="/profile">โปรไฟล์</Link>
-      </Menu.Item>
-      <Menu.Item key="logout">
-        <Button onClick={() => console.log("Logout")}>ออกจากระบบ</Button>
+    <Menu style={{ width: "200px", marginRight: "30px", paddingLeft: "10px" , paddingRight: "10px", paddingBottom: "10px"}}>
+      <div 
+        style={{ 
+          textAlign: "center", 
+          display: "flex", 
+          justifyContent: "left", 
+          alignItems: "center", // จัดแนวกลางแนวตั้ง
+          fontSize: 16,
+          fontFamily: 'Noto Sans Thai',
+          paddingTop: "10px",
+          paddingBottom: "10px",
+          paddingLeft: "12px"
+        }}
+      >
+        <UserOutlined style={{ marginRight: "12px" }} /> {/* เพิ่ม margin */}
+        {employeeName}
+      </div>
+      
+      <Menu.Item 
+        key="logout" 
+        onClick={Logout} 
+        style={{ 
+          textAlign: "left", 
+          display: "flex", 
+          justifyContent: "left", // เปลี่ยนเป็น left เพื่อให้ตรงกัน 
+          alignItems: "center", // จัดให้ icon และข้อความอยู่กลาง
+          fontSize: 16,
+          fontFamily: 'Noto Sans Thai', 
+          color: "red"
+          
+        }}
+      >
+        <LogoutOutlined style={{ marginRight: "8px" }} /> {/* เพิ่ม margin */}
+        ออกจากระบบ
       </Menu.Item>
     </Menu>
+
   );
 
   useEffect(() => {
@@ -280,9 +310,9 @@ const App: React.FC = () => {
               }}
             />
           </div>
-          <Button onClick={Logout} style={{ margin: 16, marginTop: "auto" }}>
+          {/* <Button onClick={Logout} style={{ margin: 16, marginTop: "auto" }}>
             ออกจากระบบ
-          </Button>
+          </Button> */}
         </Sider>
         <Layout>
         <Header
@@ -295,7 +325,7 @@ const App: React.FC = () => {
           }}
         >
           {/* แสดงชื่อ Employee ที่ล็อกอิน */}
-          <div>ยินดีต้อนรับ, {employeeName}</div>
+          <div></div>
 
           <div>
             {/* Avatar อยู่ใน Dropdown */}
