@@ -6,7 +6,7 @@ import Schedule from "../create/create.tsx";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import { GetSchedulesByDate, UpdateSchedule, UpdateScheduleStatus } from "../../../services/https/schedule/index.tsx";
 import { SchedulesInterface } from '../../../interfaces/schedule/ISchedule.ts';
-
+import new_logo from "../../../assets/stock/new_logo.png";
 import check from '../../../assets/schedule/check.gif'
 
 const ScheduleView: React.FC = () => {
@@ -65,8 +65,14 @@ const ScheduleView: React.FC = () => {
 
   return (
     
+    
     <div>
+      
+      
       {contextHolder}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <img src={new_logo} alt="logo" className="logo1" />
+      </div>
       <div className="schedule-header">
         <CalendarOutlined className="schedule-icon" />
         <span className="schedule-title">Schedule</span>

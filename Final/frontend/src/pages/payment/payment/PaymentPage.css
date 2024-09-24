@@ -8,13 +8,13 @@
   padding: 20px;
   font-family: Arial, sans-serif;
   box-sizing: border-box; /* Ensure padding is included in the total width */
-  background-color: #f5f4f4;
+  background-color: #ffffff;
   min-height: 650px;
 
 }
 
 .header2 {
-  background-color: #f5f4f4;
+  background-color: #ffffff;
   width: 100;
   margin-left: 1px;
   text-align: left;
@@ -61,7 +61,7 @@
   background-color: #ffffff;
   box-sizing: border-box; /* Ensure padding is included in the total width */
   overflow: hidden; /* Prevent content from overflowing */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.206);
   
 }
 .mainright-panel{ 
@@ -80,7 +80,7 @@
   background-color: #ffffff;
   box-sizing: border-box; /* Ensure padding is included in the total width */
   overflow: hidden; /* Prevent content from overflowing */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.206);
   /*background-color: #007500;*/
   margin-top: 10px;
   min-height: 365px;
@@ -164,7 +164,7 @@
   color: #ffffff;
   margin-left: 5px;
   background:linear-gradient(90deg, #27a778, #51daa8);
-  box-shadow: 0px 4px 15px rgba(5, 0, 0, 0.165);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.300);
 }
 
 .summary-item.installment {
@@ -173,7 +173,7 @@
   width: 290px;
   margin-right: 5px;
   background:linear-gradient(90deg, #a72761, #df5e98);
-  box-shadow: 0px 4px 15px rgba(5, 0, 0, 0.165);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.300);
 }
 .summary-item div {
   display: flex;
@@ -318,7 +318,7 @@
 }
 
 
-.cancel-button {
+.paycancel-button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -328,11 +328,11 @@
   color: white;
 }
 
-.cancel-button:hover{
+.paycancel-button:hover{
   background-color: #b2b2b2aa;
 }
 
-.confirm-button {
+.payconfirm-button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -342,7 +342,7 @@
   color: white;
 }
 
-.confirm-button:hover{
+.payconfirm-button:hover{
   background-color: #42c2c2aa;
 }
 

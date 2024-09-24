@@ -28,7 +28,7 @@ const PaymentList: React.FC = () => {
 
   // Function to navigate to payment page
   const Clist = (id?:number) => {
-    navigate(`/paymentPage/${id}`);
+    navigate(`/paymentList/paymentPage/${id}`);
   };
 
   // Function to fetch all dental records from API

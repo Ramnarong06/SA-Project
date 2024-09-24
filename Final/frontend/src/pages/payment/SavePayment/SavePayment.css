@@ -12,19 +12,27 @@ html, body{
   padding: 20px;
   font-family: Arial, sans-serif;
   box-sizing: border-box; /* รวม padding ในการคำนวณขนาด */
-  background-color: #f5f4f4;
+  background-color: #ffffff;
   min-height: 100vh; /* ความสูงขั้นต่ำเท่ากับความสูงของหน้าจอ */
   overflow-y: visible; /* ให้แน่ใจว่าสามารถเลื่อนได้หากเนื้อหาเกินหน้าจอ */
 }
 
 .saveheader {
-  background-color: #f5f4f4;
+  background-color: #ffffff;
   width: 100%;
   margin-left: 1px;
   text-align: left;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   border-bottom: 2px solid #22225E;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* เพื่อจัดแนวให้อยู่กึ่งกลางแนวตั้ง */
 }
+
+.appointment:hover{
+  text-decoration: underline;
+}
+
 
 .savepaymentlist-table {
   width: 100%;

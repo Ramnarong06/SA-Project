@@ -1,0 +1,153 @@
+.dental-record-details {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow */
+    font-family: 'Noto Sans Thai', sans-serif;
+    color: #333;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-item {
+    margin-bottom: 20px;
+}
+
+.form-item label {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-item input, 
+.form-item select, 
+.form-item textarea, 
+.form-item .ant-picker {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.form-item textarea {
+    height: 100px;
+}
+
+.form-item .ant-picker {
+    width: 100%;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.button-confirm {
+    background-color: #00c1a4;
+    color: white;
+}
+
+.button-reset {
+    background-color: #ffcc00;
+    color: white;
+}
+
+.button-cancel {
+    background-color: #d9d9d9;
+    color: #333;
+}
+
+.button:hover {
+    opacity: 0.9;
+}
+
+.form-item-required {
+    color: red;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .form-item {
+        margin-bottom: 15px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button {
+        width: 100%;
+    }
+}
+
+.dental-record-details .ant-descriptions-item {
+    width: 250px; /* กำหนดความกว้างให้แน่นอน */
+    margin: 10px 0; /* เพิ่ม margin ด้านบนและด้านล่าง */
+}
+
+.dental-record-details .ant-descriptions-item-label {
+    min-width: 150px; /* กำหนดความกว้างขั้นต่ำสำหรับ label */
+    white-space: nowrap; /* ไม่ให้ข้อความใน label ไหลลงบรรทัดใหม่ */
+}
+
+.dental-record-details .ant-descriptions-item-content {
+    word-break: break-word; /* แก้ไขให้ข้อความไม่ล้น */
+    overflow: hidden; /* ซ่อนเนื้อหาที่เกิน */
+    text-overflow: ellipsis; /* แสดง ... เมื่อข้อความยาวเกินไป */
+}
+
+/* ปรับให้แต่ละ item มีความกว้างที่สามารถเปลี่ยนแปลงได้ */
+.dental-record-details .ant-descriptions {
+    display: flex;
+    flex-wrap: wrap; /* ทำให้ wrap ถ้ามีหลายบรรทัด */
+    gap: 10px; /* ระยะห่างระหว่างช่อง */
+}
+
+.dental-record-details .ant-descriptions-item:last-child {
+    margin-right: 0; /* ไม่ต้องการระยะห่างที่ด้านขวาของ item สุดท้าย */
+}
+.description {
+    max-height: 120px; /* เพิ่มความสูงสูงสุดให้มากขึ้นเพื่อแสดงเนื้อหาได้มากขึ้น */
+    overflow: auto; /* ทำให้มี scrollbar ถ้าเนื้อหายาวเกิน */
+    word-break: break-word; /* แก้ไขให้ข้อความไม่ล้น */
+    margin: 0; /* ปรับขนาด margin ให้เหมาะสม */
+    padding: 5px; /* เพิ่ม padding เพื่อให้มีระยะห่างจากขอบ */
+    line-height: 1.5; /* เพิ่ม line-height เพื่อให้ดูไม่แน่นเกินไป */
+}
+
+  

@@ -19,9 +19,23 @@ import { ReceiptInterface } from '../../../interfaces/payment/IReceipt';
 import choosepayment from '../../../assets/payment/online-payment.gif'
 import creditcard from '../../../assets/payment/credit-card.gif'
 
+import { GetLoggedInEmployee } from "../../../services/https/login/index";
 
 const PaymentPage: React.FC = () => {
   
+  const [employeeName, setEmployeeName] = useState(""); // เก็บชื่อ Employee ที่ล็อกอิน
+
+  useEffect(() => {
+    // เรียกใช้ service เพื่อดึงข้อมูลพนักงานที่ล็อกอิน
+    GetLoggedInEmployee().then((res) => {
+      if (res && res.employee) {
+        setEmployeeName(res.employee.ID); // สมมติว่ามี FirstName และ LastName
+      } else {
+        setEmployeeName("Guest"); // ถ้าไม่มีข้อมูล
+      }
+    });
+  }, []);
+
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null); // State for selected payment method
@@ -50,16 +64,18 @@ const PaymentPage: React.FC = () => {
          duration:4.5, });
       return;
     }
+
+    const employeeID = employeeName;   
     const paymentMethodID = getPaymentMethodID(selectedPaymentMethod);
     try {
       // ขั้นตอนที่ 1: สร้าง Payment ใหม่
       const data = {
         //date: "2006-06-25T09:00:00Z", // วันที่ปัจจุบัน
         paymentmethodid: paymentMethodID, // แปลงวิธีการชำระเงินที่เลือกเป็น ID
-        EmployeeID: 2, // รับค่า Employee ID จาก dental record
+        EmployeeID: employeeID, // รับค่า Employee ID จาก dental record
        // Fees: payment.PrintFees, // สมมติว่า Fees ถูกส่งผ่าน payment.PrintFees
       };
-  
+      console.log("Sending data to API:", data); // ล็อกข้อมูลที่ส่งไป
       const paymentResponse = await CreatePayment(data); // เรียก API เพื่อสร้างรายการ Payment
   
       if (paymentResponse.status === 200) {
@@ -77,6 +93,7 @@ const PaymentPage: React.FC = () => {
               <span>ชำระเงินเสร็จสิ้น</span>
             </div>
              ),
+             icon: ' ',
              duration:4.5, });
           navigate('/savePayment');
           setreceipt(receiptResponse.data[0]);
@@ -178,7 +195,7 @@ const PaymentPage: React.FC = () => {
             <div className="medical-info">
               <p><strong>โรคประจำตัว</strong></p>
               <ul>
-                <li>{payment?.DrugAllergy}</li>
+                <li>{payment?.Chronicdisease}</li>
               </ul>
             </div>
           </div>
@@ -186,7 +203,7 @@ const PaymentPage: React.FC = () => {
             <div className="allergy-section">
               <p><strong>ประวัติแพ้ยา</strong></p>
               <ul>
-                <li>{payment?.Chronicdisease}</li>
+                <li>{payment?.DrugAllergy}</li>
               </ul>
             </div>
           </div>
@@ -261,8 +278,8 @@ const PaymentPage: React.FC = () => {
           </table>
         </div>
         <div className="payment-confirmation">
-          <button className="cancel-button" onClick={handleCancel}>ยกเลิก</button>
-          <button className="confirm-button" onClick={handleOk} >ยืนยันการชำระเงิน</button>
+          <button className="paycancel-button" onClick={handleCancel}>ยกเลิก</button>
+          <button className="payconfirm-button" onClick={handleOk} >ยืนยันการชำระเงิน</button>
         </div>
       </Modal>
     </div>

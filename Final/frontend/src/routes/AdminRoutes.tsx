@@ -19,7 +19,7 @@ const ScheduleCreate = Loadable(lazy(() => import("../pages/schedule/create/crea
 const ScheduleEdit = Loadable(lazy(() => import("../pages/schedule/edit/edit")));
 const ScheduleRecord = Loadable(lazy(() => import("../pages/schedule/record/record")));
 //
-const DentalRecord = Loadable(lazy(() => import("../pages/Record/DentalRecord")));
+//const DentalRecord = Loadable(lazy(() => import("../pages/Record/DentalRecord")));
 
 //
 const CreateEq = Loadable(lazy(() => import("../pages/storage/CreateEq/CreateEq")));
@@ -31,7 +31,16 @@ const RequestEq = Loadable(lazy(() => import("../pages/storage/RequestEq/Request
 const Requisitions = Loadable(lazy(() => import("../pages/storage/Requisitions/Requisitions")));
 const Restocks = Loadable(lazy(() => import("../pages/storage/Restocks/Restocks")));
 //
+const PaymentList = Loadable(lazy(() => import("../pages/payment/PaymentList/PaymentList")));
+const PaymentPage = Loadable(lazy(() => import("../pages/payment/payment/PaymentPage")));
+const SavePayment = Loadable(lazy(() => import("../pages/payment/SavePayment/SavePayment")));
+//
+const DentalRecord = Loadable(lazy(() => import("../pages/Record/DentalRecord")));
+const AddDentalRecord = Loadable(lazy(() => import("../pages/Record/AddDentalRecord")));
+const EditRecord = Loadable(lazy(() => import("../pages/Record/EditRecord")));
+const DentalRecordDetails = Loadable(lazy(() => import("../pages/Record/DentalRecordDetails")));
 
+//
 const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
   return {
     path: "/",
@@ -172,8 +181,48 @@ const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
         path: "/Restocks",
       },
       //
-     
-      
+      {
+        path:"/paymentList",
+        children:[
+            {
+              path:"paymentPage/:id",
+              element: <PaymentPage/>,
+              // children:[
+              //   {
+              //     path:"savePayment",
+              //     element:<SavePayment/>
+              //   }
+              // ],
+            },
+          ],
+        },
+        {
+          path:"/savePayment",
+        },
+        {
+          path: "/dentalrecord",
+        },
+        {
+          path: "/AddDentalRecord",
+          children: [
+            {
+              path: "AddDentalRecord", // ใช้ path นี้สำหรับเพิ่มบันทึก
+              element: <AddDentalRecord />, // component สำหรับเพิ่มบันทึก
+            }
+          ],
+        },
+        {
+          path: "/DentalRecordDetails/:id",
+        },
+        {
+          path: "/EditRecord/:id",
+          children: [
+            {
+              path: "EditRecord/:id", // ใช้ path นี้สำหรับแก้ไขบันทึก
+              element: <EditRecord />, // component สำหรับแก้ไขบันทึก
+            },
+          ],
+        },
 
       
     ],

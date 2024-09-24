@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, DatePicker, Select, message } from "antd";
-import moment from "moment";
 import { TreatmentsInterface } from "../../../interfaces/dental/ITreatment";
 import { GetTreatment, GetPatients, GetDentalRecordByID } from "../../../services/https/dentalrecord/index";
 import { useParams, useNavigate } from "react-router-dom";
 import { PatientsInterface } from "../../../interfaces/dental/IPatient";
-import './AddTreatmentRecord.css';
+import './EditTreatmentRecord.css';
 import { DentalRecordInterface } from "../../../interfaces/dental/IDentalRecord";
+import dayjs from "dayjs";
+import { GetLoggedInEmployee } from "../../../services/https/login/index.tsx";
 
 const { Option } = Select;
 
 interface FormValues {
-  date: moment.Moment | null;
+  date: dayjs.Dayjs;
   description?: string;
   fees: number;
   installment?: number; // เปลี่ยนเป็น optional
   numberOfInstallment?: string; // เปลี่ยนเป็น string
+  employee_id?: number
 }
 
 function EditDentalRecord() {
@@ -25,7 +27,24 @@ function EditDentalRecord() {
   const [treatments, setTreatments] = useState<TreatmentsInterface[]>([]);
   const [patients, setPatients] = useState<{ value: number; label: string }[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
+  const [employeeName, setEmployeeName] = useState<string>(""); // เก็บชื่อ Employee ที่ล็อกอิน
+  const [employeeId, setEmployeeId] = useState<number | null>(null); // เพิ่ม state สำหรับ employee ID
 
+  // ดึงข้อมูลพนักงานที่ล็อกอิน
+  useEffect(() => {
+    GetLoggedInEmployee().then((res) => {
+      if (res && res.employee) {
+        setEmployeeName(res.employee.FirstName + " " + res.employee.LastName);
+        setEmployeeId(res.employee.ID); // ใช้ res.employee
+        console.log("Employee ID:", res.employee.ID); // ตรวจสอบค่า Employee ID
+      } else {
+        setEmployeeName("Guest");
+        setEmployeeId(null);
+      }
+    });
+  }, []);
+
+  // ดึงข้อมูลการรักษาและผู้ป่วย
   useEffect(() => {
     getTreatment();
     getPatients();
@@ -60,6 +79,7 @@ function EditDentalRecord() {
     }
   };
 
+  // โหลดข้อมูลบันทึกการรักษา
   const loadDentalRecord = async (recordID: string) => {
     try {
       const id = parseInt(recordID, 10); // แปลง recordID เป็นตัวเลข
@@ -68,11 +88,11 @@ function EditDentalRecord() {
         form.setFieldsValue({
           patientID: record.PatientID,
           TreatmentID: record.TreatmentID,
-          date: moment(record.Date),
+          date: dayjs(record.Date),
           description: record.Description,
           fees: record.Fees,
-          installment: record.Installment,
-          numberOfInstallment: record.NumberOfInstallment,
+          installment: parseFloat(record.Installment), // Ensure it's a number
+          numberOfInstallment: record.NumberOfInstallment.toString(), // Ensure it's a string
         });
       }
     } catch (error) {
@@ -92,8 +112,17 @@ function EditDentalRecord() {
         });
         return;
       }
+
+      // ตรวจสอบว่ามี employeeId หรือไม่
+      if (!employeeId || employeeId === 0) {
+        messageApi.open({
+          type: 'error',
+          content: 'ไม่พบข้อมูลพนักงานที่ล็อกอิน กรุณาล็อกอินใหม่',
+        });
+        return;
+      }
   
-      const payload: DentalRecordInterface = {
+      const payload = {
         ID: id ? parseInt(id) : 0, // ใช้ ID จาก URL params
         Date: values.date ? values.date.format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") : '',
         Description: values.description || '',
@@ -103,7 +132,7 @@ function EditDentalRecord() {
         TreatmentID: form.getFieldValue('TreatmentID'),
         StatusID: 1,
         PatientID: form.getFieldValue('patientID'),
-        EmployeeID: 1,
+        employee_id: employeeId, // ใช้ employee ID จากพนักงานที่ล็อกอิน
         Treatment: {
           ID: form.getFieldValue('TreatmentID'),
           Name: '',
@@ -114,11 +143,6 @@ function EditDentalRecord() {
         },
         Patient: {
           ID: form.getFieldValue('patientID'),
-          FirstName: '',
-          LastName: '',
-        },
-        Employee: {
-          ID: 1,
           FirstName: '',
           LastName: '',
         },
@@ -156,7 +180,7 @@ function EditDentalRecord() {
       console.error('Request error:', error);
     }
   };
-  
+
   return (
     <div className="add-treatment-record">
       {contextHolder}
@@ -193,7 +217,6 @@ function EditDentalRecord() {
               name="TreatmentID"
               label="การรักษา"
               rules={[{ required: true, message: "กรุณาเลือกการรักษา!" }]}
-
               style={{ width: "100%" }}
             >
               <Select
@@ -213,36 +236,60 @@ function EditDentalRecord() {
         <Form.Item
           label="วันที่รักษา"
           name="date"
+          className="form-item date"  // Add the class here
           rules={[{ required: true, message: 'กรุณาเลือกวันที่!' }]}
-
         >
-          <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
+          <DatePicker format="DD/MM/YYYY" style={{ width: '50%', height: "40px" }} />
         </Form.Item>
         <Form.Item
           label="รายละเอียด"
           name="description"
-        >
-          <Input.TextArea rows={4} />
+          className="form-item description"  // Add the class here
+          >
+          <Input.TextArea style={{ width: '100%',height: "77px"}} />
         </Form.Item>
-        <Form.Item
-          label="ค่ารักษา"
-          name="fees"
-          rules={[{ required: true, message: 'กรุณากรอกค่ารักษา!' }]}
-        >
-          <Input type="number" step="0.01" />
-        </Form.Item>
+
+        {/* ส่วนนี้คือการจัดฟอร์มในแถวเดียวกัน */}
+        <div className="form-row">
+        <div className="form-group">
+          <Form.Item
+            style={{ width: '100%' }}
+            label="ค่ารักษา"
+            name="fees"
+            rules={[{ required: true, message: 'กรุณากรอกค่ารักษา!' }]}
+            initialValue={0} // เพิ่มค่าเริ่มต้นสำหรับ fees เป็น 0
+          >
+            <Input 
+              type="number" 
+              style={{ height: "40px" }} 
+              min={0} // ป้องกันการกรอกค่าติดลบ
+              step="0.01" // เพิ่มความละเอียดของค่าทศนิยม ถ้าจำเป็น
+            />
+          </Form.Item>
+        </div>
+        <div className="form-group">
         <Form.Item
           label="ค่างวด"
           name="installment"
+          initialValue={0} // เพิ่มค่าเริ่มต้นสำหรับ installment เป็น 0
         >
-          <Input type="number" step="0.01" min="0" />
+          <Input 
+            type="number" 
+            style={{ height: "40px" }} 
+            min={0} // ป้องกันการกรอกค่าติดลบ
+            step="0.01" // เพิ่มความละเอียดของค่าทศนิยม ถ้าจำเป็น
+          />
         </Form.Item>
-        <Form.Item
-          label="จำนวนงวด"
-          name="numberOfInstallment"
-        >
-          <Input type="text" /> {/* ใช้ type="text" สำหรับค่าที่เป็น string */}
-        </Form.Item>
+      </div>
+          <div className="form-group">
+            <Form.Item
+              label="จำนวนงวด"
+              name="numberOfInstallment"
+            >
+              <Input type="text" style={{ width: '100%', height: "40px" }} />
+            </Form.Item>
+          </div>
+        </div>
         <Form.Item>
           <div className="form-buttons">
             <Button type="primary" htmlType="submit" className="submit-button">ยืนยัน</Button>

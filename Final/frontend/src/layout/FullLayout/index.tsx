@@ -44,11 +44,13 @@ import SavePayment from '../../pages/payment/SavePayment/SavePayment.tsx';
 import Dashbord from '../../pages/payment/dashbord/dashbord.tsx';
 
 //Dental
+
 import DentalRecord from "../../pages/Record/DentalRecord";
 import Customer from "../../pages/Record/EditRecord";
-import CustomerCreate from "../../pages/Record/EditRecord";
-import CustomerEdit from "../../pages/Record/EditRecord";
+import EditRecord from "../../pages/Record/EditRecord";
 import AddDentalRecord from "../../pages/Record/AddDentalRecord";
+import DentalRecordDetails from "../../pages/Record/DentalRecordDetails";
+
 
 // login
 // Import service สำหรับดึงข้อมูลพนักงานที่ล็อกอิน
@@ -438,17 +440,21 @@ const items = [
                 <Route path="/patient/create" element={<PatientCreate/>} />
                 <Route path="/patient/edit/:id" element={<PatientEdit/>} />
                 //
+                {/*ระบบ payment*/}
                 <Route path="/dashbord" element={<Dashbord />} />{/*แก้ตรงนี้วันที่11/9/67*/}
-                <Route path="/paymentPage/:id" element={<PaymentPage />} />{/*แก้ตรงนี้วันที่11/9/67*/}
                 <Route path="/paymentList" element={<PaymentList />} />
                 <Route path="/buttonPay" element={<PaymentList />} />
+                <Route path="/paymentList/paymentPage/:id" element={<PaymentPage/>} />{/*แก้ตรงนี้วันที่11/9/67*/}
+          
                 <Route path="/savePayment" element={<SavePayment />} />
                 //
                 <Route path="/DentalRecord" element={<DentalRecord />} />
                 <Route path="/EditRecord" element={<Customer />} />
-                <Route path="/EditRecord" element={<CustomerCreate />} />
-                <Route path="/EditRecord/:id" element={<CustomerEdit />} />
+                <Route path="/EditRecord" element={<EditRecord />} />
+                <Route path="/EditRecord/:id" element={<EditRecord />} />
                 <Route path="/AddDentalRecord" element={<AddDentalRecord />} />
+                <Route path="/DentalRecordDetails/:id" element={<DentalRecordDetails />} />
+                
                 //
                 <Route path="/employee" element={<Employee />} />
                 <Route path="/patient" element={<Patient />} />

@@ -1,36 +1,39 @@
-.add-dental-record {
-  max-width: 600px; /* ลดความกว้างของฟอร์ม */
-  margin: 0 auto; /* จัดกลาง */
-  padding: 30px; /* ลด padding */
-  background-color: #fff; /* พื้นหลังสีขาว */
-  border-radius: 8px; /* มุมโค้งมน */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* เงา */
+.add-treatment-record {
+  max-width: 900px; /* Increase the width for a much wider form */
+  max-height: 650px;
+  margin: 0 auto; /* Center the form */
+  padding: 50px; /* Increased padding for better spacing */
+  background-color: #fff; /* White background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow */
   font-family: 'Noto Sans Thai', sans-serif;
   color: #333;
 }
 
 header h1 {
-  font-size: 28px; /* ลดขนาดตัวอักษร */
-  color: #22225E; /* สีฟ้าเข้ม */
-  margin-bottom: 20px; /* ลดระยะห่างด้านล่าง */
+  font-size: 28px; /* Increased font size */
+  color: #22225E; /* Dark blue color */
+  margin-bottom: 20px; /* Space below the header */
   display: flex;
   align-items: center;
+  font-family: 'Noto Sans Thai', sans-serif;
 }
 
 header h1::before {
-  content: '💉'; /* ไอคอน */
-  margin-right: 8px; /* ระยะห่างระหว่างไอคอนและข้อความ */
+  content: '💉'; /* Icon for the header */
+  margin-right: 8px; /* Space between icon and text */
 }
 
 .form-row {
   display: flex;
-  justify-content: space-between; /* จัดให้มีระยะห่าง */
-  margin-bottom: 15px; /* ลดระยะห่างระหว่างแถว */
+  justify-content: space-between; /* Ensure fields are well spaced */
+  margin-bottom: 0.2px; /* More space between rows */
+  gap: 20px; /* กำหนดช่องว่างระหว่างฟิลด์ */
 }
 
 .form-group {
   flex: 1;
-  margin-right: 15px; /* ลดระยะห่างระหว่างฟิลด์ */
+  margin-right: 10px; /* Increase margin for more spacing between inputs */
 }
 
 .form-group:last-child {
@@ -38,21 +41,22 @@ header h1::before {
 }
 
 .form-group label {
+  width: 100%;
   display: block;
-  font-size: 16px; /* ลดขนาดตัวอักษร */
-  margin-bottom: 8px; /* ลดระยะห่างระหว่างป้ายและช่องกรอก */
+  font-size: 14px; /* Larger font size for labels */
+  margin-bottom: 9px; /* Increase space between label and input */
   color: #333;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%;
-  padding: 8px; /* ลด padding ในช่องกรอก */
+  width: 90%;
+  padding: 12px; /* Increased padding inside inputs */
   border: 1px solid #ddd;
-  border-radius: 4px; /* มุมโค้งมน */
-  margin-top: 6px; /* ลดระยะห่างด้านบน */
-  font-size: 14px; /* ลดขนาดตัวอักษรในช่องกรอก */
+  border-radius: 5px;
+  margin-top: 1px;
+  font-size: 16px; /* Increased font size inside inputs */
   box-sizing: border-box;
 }
 
@@ -62,37 +66,63 @@ textarea {
 
 .form-buttons {
   display: flex;
-  gap: 10px; /* ลดระยะห่างระหว่างปุ่ม */
-  margin-top: 20px; /* ลดระยะห่างด้านบน */
+  gap: 15px; /* More space between the buttons */
+  margin-top: 0.5px;
   justify-content: flex-start;
 }
 
 .submit-button,
 .reset-button,
 .cancel-button {
-  padding: 20px 25px; /* ลด padding ของปุ่ม */
-  font-size: 16px; /* ลดขนาดตัวอักษร */
+  width: 9%; /* กำหนดความกว้างของปุ่ม */
+  min-width: 50px; /* Buttons will size automatically based on text */
+  padding: 12px 25px; /* Increased padding to match larger buttons */
+  font-size: 14px; /* Larger font size for buttons */
   border: none;
-  border-radius: 4px; /* มุมโค้งมน */
+  border-radius: 5px;
   cursor: pointer;
+  font-family: 'Noto Sans Thai', sans-serif;
 }
 
 .submit-button {
-  background-color: #42C2C2; /* สีปุ่มยืนยัน */
+  background-color: #42C2C2; /* Original confirm button color */
   color: white;
+  border-color: #42C2C2;
+  font-family: 'Noto Sans Thai', sans-serif;
 }
 
 .cancel-button {
-  background-color: #d9d9d9; /* สีปุ่มยกเลิก */
+  background-color: #d9d9d9; /* Original cancel button background color */
   color: #333;
+  border-color: #d9d9d9;
+  font-family: 'Noto Sans Thai', sans-serif;
 }
 
 .reset-button {
-  background-color: #ffcc00; /* สีปุ่มรีเซ็ต */
+  background-color: #ffcc00; /* Yellow reset button */
   color: white;
+  border-color: #ffcc00;
+  font-family: 'Noto Sans Thai', sans-serif;
+}
+/* Add more margin below the form items to create space */
+.form-item {
+  margin-bottom: 28px; /* Increased margin to create more space */
+  font-family: 'Noto Sans Thai', sans-serif;
+  font-size: 16px;
+  font-weight: normal;
 }
 
-/* เพิ่มเอฟเฟกต์เมื่อชี้ที่ปุ่ม */
+.form-item.description label,
+.form-item.date label {
+  font-weight: normal; /* กำหนดให้เป็นตัวปกติสำหรับเฉพาะ description และ date */
+}
+
+/* Adjust the spacing for a cleaner look */
+.form-group {
+  margin-bottom: 28px; /* Increased margin between input fields */
+}
+
+/* Optional: Add hover effects for the buttons */
 .submit-button:hover,
 .reset-button:hover,
 .cancel-button:hover {

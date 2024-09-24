@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, message, Select } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button, Modal, message, Select, Pagination } from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined, FileSearchOutlined } from "@ant-design/icons";
 import { GetDentalRecords, GetPatients, DeleteDentalRecordByID } from "../../../services/https/dentalrecord";
 import { DentalRecordInterface } from "../../../interfaces/dental/IDentalRecord";
 import { PatientsInterface } from "../../../interfaces/dental/IPatient";
@@ -19,6 +19,10 @@ const DentalRecord: React.FC = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState<string>("");
   const [deleteId, setDeleteId] = useState<number>();
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const recordsPerPage = 6; // จำนวน record ที่จะแสดงต่อหน้า
 
   const getDentalRecords = async () => {
     try {
@@ -55,11 +59,13 @@ const DentalRecord: React.FC = () => {
       const filteredData = dentalRecords.filter(record => record.PatientID === value);
       setFilteredRecords(filteredData);
     }
+
+    setCurrentPage(1); // รีเซ็ตหน้าหลังการกรองข้อมูลใหม่
   };
 
   useEffect(() => {
-    getDentalRecords(); // ดึงข้อมูลบันทึกการรักษาเมื่อ component โหลด
-    getPatients(); // ดึงข้อมูลผู้ป่วยเมื่อ component โหลด
+    getDentalRecords();
+    getPatients();
   }, []);
 
   const showModal = (record: DentalRecordInterface) => {
@@ -74,7 +80,7 @@ const DentalRecord: React.FC = () => {
       let res = await DeleteDentalRecordByID(deleteId);
       if (res) {
         messageApi.success("ลบข้อมูลสำเร็จ");
-        getDentalRecords(); // ดึงข้อมูลใหม่หลังจากการลบ
+        getDentalRecords();
       } else {
         messageApi.error("เกิดข้อผิดพลาดในการลบข้อมูล");
       }
@@ -88,6 +94,23 @@ const DentalRecord: React.FC = () => {
 
   const handleCancel = () => {
     setOpen(false);
+  };
+  const maxDescriptionLength = 50; // กำหนดความยาวสูงสุดที่จะแสดง
+
+const truncateDescription = (description: string) => {
+  if (description.length > maxDescriptionLength) {
+    return description.substring(0, maxDescriptionLength) + "..."; // ตัดข้อความและเพิ่ม "..."
+  }
+  return description; // ถ้าไม่ยาวเกินไปก็แสดงข้อความทั้งหมด
+};
+
+  // คำนวณ index ของข้อมูลที่จะแสดงในหน้า
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = filteredRecords.slice(indexOfFirstRecord, indexOfLastRecord);
+
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -129,51 +152,66 @@ const DentalRecord: React.FC = () => {
         </div>
       </header>
 
-      <table className="records-table">
+      <table className="records-table" >
         <thead>
           <tr>
-            <th>Record ID</th>
-            <th>Patient ID</th>
+            <th>RecordID</th>
+            <th>PatientID</th>
             <th>Date</th>
             <th>Description</th>
             <th>Fees</th>
-            <th>Treatment ID</th>
-            <th>Actions</th>
+            <th>TreatmentID</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {filteredRecords.map(record => (
+          {currentRecords.map(record => (
             <tr key={record.ID}>
               <td>{record.ID}</td>
               <td>{record.PatientID}</td>
-              <td>{dayjs(record.Date).format("YYYY-MM-DD")}</td>
-              <td>{record.Description}</td>
+              <td>{dayjs(record.Date).format("DD-MM-YYYY")}</td>
+              <td>{truncateDescription(record.Description)}</td>
               <td>{record.Fees}</td>
               <td>{record.TreatmentID}</td>
               <td>
+              <Button
+        icon={<FileSearchOutlined />} // ไอคอนแว่นขยาย
+        onClick={() => navigate(`/DentalRecordDetails/${record.ID}`)} // ไปยังหน้ารายละเอียดด้วย ID
+        shape="circle"
+        size={"large"}>
+      </Button>
                 <Button
                   onClick={() => navigate(`/EditRecord/${record.ID}`)}
+                  style={{ marginLeft: 13 }}
                   shape="circle"
                   icon={<EditOutlined />}
                   size={"large"}
                 />
-                <Button
+                {/* <Button
                   onClick={() => showModal(record)}
                   style={{ marginLeft: 10 }}
                   shape="circle"
                   icon={<DeleteOutlined />}
                   size={"large"}
                   danger
-                />
+                /> */}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
+      {/* Pagination */}
+      <Pagination
+      current={currentPage}
+      pageSize={recordsPerPage}
+      total={filteredRecords.length}
+      onChange={handleChangePage}
+      style={{ marginTop: "20px", float: "right" }} // ใช้ float: right เพื่อย้ายปุ่มไปด้านขวา
+      />
       {contextHolder}
 
-      <Modal
+      {/* <Modal
         title="ยืนยันการลบ"
         open={open}
         onOk={handleOk}
@@ -181,7 +219,7 @@ const DentalRecord: React.FC = () => {
         onCancel={handleCancel}
       >
         <p>{modalText}</p>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

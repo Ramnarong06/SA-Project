@@ -44,7 +44,7 @@ func GetAllDentalRecord(c *gin.Context) {
 
    }
    for i := range record {
-	record[i].FormattedDate = record[i].Date.Format("2006-01-02 15:04:05") // Change this format to your preferred style
+	record[i].FormattedDate = record[i].Date.Format("02-01-2006") // Change this format to your preferred style
 	
 	record[i].PrintFees = fmt.Sprintf("%.2f",record[i].Fees)
 
@@ -105,8 +105,8 @@ func GetAllDentalRecord(c *gin.Context) {
 
 	for i := range payrecord {
 		// Format dates
-		payrecord[i].FormattedDate2 = payrecord[i].Date.Format("2006-01-02")
-		payrecord[i].FormattedDate = payrecord[i].Date.Format("2006-01-02 15:04:05")
+		payrecord[i].FormattedDate2 = payrecord[i].Date.Format("02-01-2006")
+		payrecord[i].FormattedDate = payrecord[i].Date.Format("02-01-2006")
 		
 		// // Format fees and installment to always show 2 decimal places
 		payrecord[i].PrintFees = fmt.Sprintf("%.2f", payrecord[i].Fees)
@@ -181,8 +181,8 @@ func GetReceipt(c *gin.Context) {
 
 	for i := range payrecord {
 		// Format dates
-		payrecord[i].FormattedDate2 = payrecord[i].Date.Format("2006-01-02")
-		payrecord[i].FormattedDate = payrecord[i].Date.Format("2006-01-02 15:04:05")
+		payrecord[i].FormattedDate2 = payrecord[i].Date.Format("02-01-2006")
+		payrecord[i].FormattedDate = payrecord[i].Date.Format("02-01-2006")
 		
 		// // Format fees and installment to always show 2 decimal places
 		payrecord[i].PrintFees = fmt.Sprintf("%.2f", payrecord[i].Fees)
@@ -251,6 +251,7 @@ func GetSaveDentalRecord(c *gin.Context) {
 		MethodName 				string
 		Date 					time.Time `json:"-"` //่`json:"-"`ไม่ให้แสดงออกOut put
 		FormattedDate 			string `json:"Date"`
+		FormattedDate2 			string `json:"Date2"`
 		StatusName 				string
 		Efirst_name 			string
 		Elast_name 				string
@@ -264,6 +265,7 @@ func GetSaveDentalRecord(c *gin.Context) {
 	Joins("inner join payments on dental_records.payment_id = payments.id").
 	Joins("inner join employees as payment_employee on payments.employee_id = payment_employee.id").
 	Joins("inner join payment_methods on payments.payment_method_id = payment_methods.id").
+	Order("payments.date DESC").
 	Where("dental_records.payment_id IS NOT NULL").Find(&saverecord)
 
    if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -278,7 +280,8 @@ func GetSaveDentalRecord(c *gin.Context) {
 		// อัปเดตฟิลด์ StatusID ของแต่ละเรคอร์ดที่ดึงมา
 		db.Model(&entity.DentalRecord{}).Where("id = ?", saverecord[i].ID).Update("StatusID", 1)
 		// จัดรูปแบบวันที่ให้เป็นไปตามที่ต้องการ
-		saverecord[i].FormattedDate = saverecord[i].Date.Format("2006-01-02 15:04:05")
+		saverecord[i].FormattedDate = saverecord[i].Date.Format("02-01-2006 15:04:05")
+		saverecord[i].FormattedDate2 = saverecord[i].Date.Format("02-01-2006")
 		saverecord[i].PrintFees = fmt.Sprintf("%.2f", saverecord[i].Fees)
 
 		saverecord[i].Age = calculateAge(saverecord[i].Birthday)
@@ -333,181 +336,189 @@ func calculateAge(Birthday time.Time) int {
  }
 
  func CreateDentalRecord(c *gin.Context) {
-    var requestBody struct {
-        Date                time.Time `json:"date"`
-        Description         string    `json:"description"`
-        Fees                float32   `json:"fees"`
-        Installment         float32   `json:"Installment"` // เปลี่ยนเป็น float64
-        NumberOfInstallment string      `json:"NumberOfInstallment"` // เปลี่ยนเป็น uint
-        TreatmentID         uint      `json:"TreatmentID"`
-        StatusID            uint      `json:"status_id"`
-        PatientID           uint      `json:"patientID"`
-        EmployeeID          uint      `json:"employee_id"`
-    }
+	var requestBody struct {
+		Date                time.Time `json:"date"`
+		Description         string    `json:"description"`
+		Fees                float32   `json:"fees"`
+		Installment         float32   `json:"Installment"`
+		NumberOfInstallment string    `json:"NumberOfInstallment"`
+		TreatmentID         uint      `json:"TreatmentID"`
+		StatusID            uint      `json:"status_id"`
+		PatientID           uint      `json:"patientID"`
+		EmployeeID          uint      `json:"employee_id"` // ใช้ EmployeeID จาก request
+	}
 
-    if err := c.ShouldBindJSON(&requestBody); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-        return
-    }
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-    db := config.DB()
+	db := config.DB()
 
-    requestBody.EmployeeID = 1;
-	requestBody.StatusID = 2;
+	// ตรวจสอบข้อมูลการรักษา
+	var treatment entity.Treatment
+	if err := db.First(&treatment, requestBody.TreatmentID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Treatment not found"})
+		return
+	}
 
+	// ตรวจสอบข้อมูลผู้ป่วย
+	var patient entity.Patient
+	if err := db.First(&patient, requestBody.PatientID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Patient not found"})
+		return
+	}
 
-    var treatment entity.Treatment
-    if err := db.First(&treatment, requestBody.TreatmentID).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Treatment not found"})
-        return
-    }
+	// ตรวจสอบข้อมูลพนักงาน
+	var employee entity.Employee
+	if err := db.First(&employee, requestBody.EmployeeID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
+		return
+	}
 
-    var patient entity.Patient
-    if err := db.First(&patient, requestBody.PatientID).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Patient not found"})
-        return
-    }
-
-    var employee entity.Employee
-    if err := db.First(&employee, requestBody.EmployeeID).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
-        return
-    }
 	location, _ := time.LoadLocation("Asia/Bangkok")
 	adjustedDate := requestBody.Date.In(location)
 
-    dentalRecord := entity.DentalRecord{
-        Date:                 adjustedDate,
-        Description:          requestBody.Description,
-        Fees:                 requestBody.Fees,
-        Installment:          requestBody.Installment,
-        NumberOfInstallment: requestBody.NumberOfInstallment,
-        TreatmentID:          requestBody.TreatmentID,
-        StatusID:             requestBody.StatusID,
-        PatientID:            requestBody.PatientID,
-        EmployeeID:           requestBody.EmployeeID,
-        Treatment:            treatment,
-        Patient:              patient,
-        Employee:             employee,
-    }
+	// บันทึกข้อมูลบันทึกการรักษา
+	dentalRecord := entity.DentalRecord{
+		Date:                adjustedDate,
+		Description:         requestBody.Description,
+		Fees:                requestBody.Fees,
+		Installment:         requestBody.Installment,
+		NumberOfInstallment: requestBody.NumberOfInstallment,
+		TreatmentID:         requestBody.TreatmentID,
+		StatusID:            2, // กำหนด status ID เป็น 2 ตาม requirement
+		PatientID:           requestBody.PatientID,
+		EmployeeID:          requestBody.EmployeeID,
+		Treatment:           treatment,
+		Patient:             patient,
+		Employee:            employee,
+	}
 
-    if err := db.Create(&dentalRecord).Error; err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-        return
-    }
+	if err := db.Create(&dentalRecord).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-    c.JSON(http.StatusCreated, gin.H{"message": "Created successfully", "data": dentalRecord})
+	c.JSON(http.StatusCreated, gin.H{"message": "Created successfully", "data": dentalRecord})
 }
 
 // GET /dental_record/:id
 func GetDentalRecord(c *gin.Context) {
-    ID := c.Param("id")
-    var dentalRecord entity.DentalRecord
+	ID := c.Param("id")
+	var dentalRecord entity.DentalRecord
 
-    db := config.DB()
-    result := db.Preload("Treatment").Preload("Patient").Preload("Employee").First(&dentalRecord, ID)
-    if result.Error != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
-        return
-    }
+	db := config.DB()
+	result := db.Preload("Treatment").Preload("Patient").Preload("Employee").First(&dentalRecord, ID)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
+		return
+	}
 
-    c.JSON(http.StatusOK, dentalRecord)
+	c.JSON(http.StatusOK, dentalRecord)
 }
 
 // GET /dental_records
 func ListDentalRecords(c *gin.Context) {
-    var dentalRecords []entity.DentalRecord
+	var dentalRecords []entity.DentalRecord
 
-    db := config.DB()
-    result := db.Preload("Treatment").Preload("Status").Preload("Patient").Preload("Employee").Find(&dentalRecords)
-    if result.Error != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
-        return
-    }
+	db := config.DB()
+	result := db.Preload("Treatment").Preload("Status").Preload("Patient").Preload("Employee").Find(&dentalRecords)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
 
-    c.JSON(http.StatusOK, dentalRecords)
+	c.JSON(http.StatusOK, dentalRecords)
 }
 
 // DELETE /dental_record/:id
 func DeleteDentalRecord(c *gin.Context) {
-    id := c.Param("id")
-    db := config.DB()
+	id := c.Param("id")
+	db := config.DB()
 
-    var dentalRecord entity.DentalRecord
-    if err := db.First(&dentalRecord, id).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Dental record not found"})
-        return
-    }
+	var dentalRecord entity.DentalRecord
+	if err := db.First(&dentalRecord, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Dental record not found"})
+		return
+	}
 
-    if err := db.Delete(&dentalRecord).Error; err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
+	if err := db.Delete(&dentalRecord).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-    c.JSON(http.StatusOK, gin.H{"message": "Deleted successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Deleted successfully"})
 }
 
-// PATCH /dental_record/:id
 // PATCH /dental_record/:id
 func UpdateDentalRecord(c *gin.Context) {
-    var updateData struct {
-        Date                 time.Time `json:"date"`
-        Description          string    `json:"description"`
-        Fees                 float32   `json:"fees"`
-        Installment          float32   `json:"Installment"`
-        NumberOfInstallment string      `json:"NumberOfInstallment"`
-        TreatmentID          uint      `json:"TreatmentID"`
-        StatusID             uint      `json:"status_id"`
-        PatientID            uint      `json:"patientID"`
-        EmployeeID           uint      `json:"employee_id"`
-    }
+	var updateData struct {
+		Date                time.Time `json:"date"`
+		Description         string    `json:"description"`
+		Fees                float32   `json:"fees"`
+		Installment         float32   `json:"Installment"`
+		NumberOfInstallment string    `json:"NumberOfInstallment"`
+		TreatmentID         uint      `json:"TreatmentID"`
+		StatusID            uint      `json:"status_id"`
+		PatientID           uint      `json:"patientID"`
+		EmployeeID          uint      `json:"employee_id"`
+	}
 
-    DentalRecordID := c.Param("id")
-    db := config.DB()
+	DentalRecordID := c.Param("id")
+	db := config.DB()
 
-    var dentalRecord entity.DentalRecord
-    if err := db.First(&dentalRecord, DentalRecordID).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบบันทึกการรักษา"})
-        return
-    }
+	updateData.StatusID = 2
 
-    if err := c.ShouldBindJSON(&updateData); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "คำขอไม่ถูกต้อง ไม่สามารถแมพข้อมูลได้"})
-        return
-    }
+	var dentalRecord entity.DentalRecord
+	if err := db.First(&dentalRecord, DentalRecordID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบบันทึกการรักษา"})
+		return
+	}
 
-    // ปรับปรุงข้อมูลที่เกี่ยวข้อง
-    dentalRecord.Date = updateData.Date
-    dentalRecord.Description = updateData.Description
-    dentalRecord.Fees = updateData.Fees
-    dentalRecord.Installment = updateData.Installment
-    dentalRecord.NumberOfInstallment = updateData.NumberOfInstallment
-    dentalRecord.TreatmentID = updateData.TreatmentID
-    dentalRecord.StatusID = updateData.StatusID
-    dentalRecord.PatientID = updateData.PatientID
-    dentalRecord.EmployeeID = updateData.EmployeeID
+	if err := c.ShouldBindJSON(&updateData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "คำขอไม่ถูกต้อง ไม่สามารถแมพข้อมูลได้"})
+		return
+	}
 
-    if err := db.Save(&dentalRecord).Error; err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-        return
-    }
+	// ปรับปรุงข้อมูลที่เกี่ยวข้อง
+	dentalRecord.Date = updateData.Date
+	dentalRecord.Description = updateData.Description
+	dentalRecord.Fees = updateData.Fees
+	dentalRecord.Installment = updateData.Installment
+	dentalRecord.NumberOfInstallment = updateData.NumberOfInstallment
+	dentalRecord.TreatmentID = updateData.TreatmentID
+	dentalRecord.StatusID = updateData.StatusID
+	dentalRecord.PatientID = updateData.PatientID
+	dentalRecord.EmployeeID = updateData.EmployeeID
 
-    c.JSON(http.StatusOK, gin.H{"message": "อัปเดตข้อมูลเรียบร้อยแล้ว", "data": dentalRecord})
+	if err := db.Save(&dentalRecord).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "อัปเดตข้อมูลเรียบร้อยแล้ว", "data": dentalRecord})
 }
-
-
 
 // GET /dental_records/patient/:patientID
 func GetDentalRecordsByPatientID(c *gin.Context) {
-    var records []entity.DentalRecord
-    patientID := c.Param("patientID")
+	var records []entity.DentalRecord
+	patientID := c.Param("patientID")
 
-    db := config.DB()
+	db := config.DB()
 
-    if err := db.Where("patient_id = ?", patientID).Find(&records).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "No dental records found"})
-        return
-    }
+	if err := db.Where("patient_id = ?", patientID).Find(&records).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No dental records found"})
+		return
+	}
 
-    c.JSON(http.StatusOK, records)
+	c.JSON(http.StatusOK, records)
+}
+func GetDentalRecordByID(id uint) (entity.DentalRecord, error) {
+	var dentalRecord entity.DentalRecord
+	db := config.DB() // กำหนด db ที่นี่
+	if err := db.Preload("Treatment").Preload("Patient").Preload("Employee").First(&dentalRecord, id).Error; err != nil {
+		return dentalRecord, err
+	}
+	return dentalRecord, nil
 }

@@ -43,7 +43,8 @@
 }
 
 .schedulerecord-records-table {
-  width: 100%;
+  width: 100%; /* ปรับขนาดตารางให้แสดงเต็มพื้นที่ */
+  overflow-x: auto; /* ให้เลื่อนซ้ายขวาได้หากพื้นที่ไม่พอ */
   border-collapse: collapse;
   border-radius: 8px;
   overflow: hidden;
@@ -126,11 +127,16 @@
 
 
 .table-container {
-  border: 2px solid #ccc; /* ขอบรอบนอก */
-  padding: 0px; /* ระยะห่างระหว่างขอบกับตาราง */
-  border-radius: 10px; /* มุมมนของขอบ */
-  background-color: #f9f9f9; /* สีพื้นหลังอ่อน */
-  margin-bottom: 20px; /* ระยะห่างด้านล่าง */
+  border: 2px solid #ccc;
+  padding: 0;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin: 0 auto 20px auto; /* จัดให้อยู่ตรงกลางและมี margin ด้านล่าง */
+  max-width: 100%;
+  text-align: center; /* จัดตารางและเนื้อหาใน container ให้อยู่ตรงกลาง */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* จัดตำแหน่งตารางให้อยู่ตรงกลาง */
 }
 
 /* สำหรับสถานะ Done */
@@ -150,4 +156,11 @@
   border-radius: 15px;
   font-weight: bold;
   display: inline-block;
+}
+
+.pagination-container {
+  width: 100%; /* ให้กินพื้นที่เต็ม */
+  display: flex;
+  justify-content: flex-end; /* จัดปุ่มให้อยู่ขอบขวา */
+  margin-top: 10px; /* เพิ่มระยะห่างด้านบนปุ่ม */
 }

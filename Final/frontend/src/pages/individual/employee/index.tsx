@@ -9,7 +9,8 @@ import { EmployeesInterface } from "../../../interfaces/individual/IEmployee";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-import logoSamgt from '../../../assets/logoSamgt.png';
+//import logoSamgt from '../../../assets/logoSamgt.png';
+import new_logo from "../../../assets/stock/new_logo.png";
 const { Search } = Input;
 
 
@@ -184,7 +185,7 @@ function Employees() {
     <>
       {contextHolder}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img src={logoSamgt} alt="logoSamgt" style={{ width: '25%', height: 'auto' }} />
+          <img src={new_logo} alt="logo" className="logo1" />
       </div>
       <Row>
         

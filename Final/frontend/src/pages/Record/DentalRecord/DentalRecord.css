@@ -76,13 +76,13 @@
   
   /* Center align the header */
   .records-table th:nth-child(4) {
-    width: 40%;
+    width: 30%;
     text-align: center; /* Center align the header text */
   }
   
   /* Left align the content */
   .records-table td:nth-child(4) {
-    width: 40%;
+    width: 30%;
     text-align: left; /* Left align the content */
     word-wrap: break-word; /* Enable word wrapping for long descriptions */
     white-space: normal; /* Allow the text to wrap onto new lines */
@@ -102,7 +102,7 @@
   
   .records-table th:nth-child(7),
   .records-table td:nth-child(7) {
-    width: 10%;
+    width: 15%;
   }
   
   .records-table td {

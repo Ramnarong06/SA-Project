@@ -9,7 +9,7 @@ import { TstatusInterface } from "../../../interfaces/schedule/ITstatus";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import './record.css';
-
+import new_logo from "../../../assets/stock/new_logo.png";
 import { Pagination } from 'antd';
 
 const ScheduleRecord: React.FC = () => {
@@ -196,6 +196,12 @@ const formatPhoneNumber = (phoneNumber: string | undefined) => {
   };
   
   return (
+
+    <div>
+      {contextHolder}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <img src={new_logo} alt="logo" className="logo1" />
+      </div>
     <div className="schedule-records">
       <header className="schedulerecord-header">
         <h1>ประวัติการนัดหมาย</h1>
@@ -324,6 +330,7 @@ const formatPhoneNumber = (phoneNumber: string | undefined) => {
         <p>{modalText}</p>
       </Modal>
     </div>
+    </div> 
   );
   
 };

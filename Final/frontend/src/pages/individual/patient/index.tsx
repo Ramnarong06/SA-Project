@@ -6,7 +6,7 @@ import { GetPatients, DeletePatientByID  } from "../../../services/https/individ
 import { PatientsInterface } from "../../../interfaces/individual/IPatient";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-
+import new_logo from "../../../assets/stock/new_logo.png";
 import logoSamgt from '../../../assets/logoSamgt.png';
 
 const { Search } = Input;
@@ -223,7 +223,7 @@ function Patients() {
     <>
       {contextHolder}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <img src={logoSamgt} alt="logoSamgt" style={{ width: '25%', height: 'auto' }} />
+        <img src={new_logo} alt="logo" className="logo1" />
       </div>
       <Row>
         
