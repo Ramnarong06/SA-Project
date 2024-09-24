@@ -85,7 +85,7 @@ const ScheduleRecord: React.FC = () => {
 
   const showModal = (record: SchedulesInterface) => {
   if (record.ID !== undefined) {
-    setModalText(`คุณต้องการลบข้อมูลการนัดหมาย "${record.ID}" หรือไม่ ?`);
+    setModalText(`คุณต้องการลบข้อมูลการนัดหมาย "ID = ${record.ID}" หรือไม่ ?`);
     setDeleteId(record.ID);
     setOpen(true);
   } else {

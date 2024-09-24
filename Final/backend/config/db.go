@@ -49,11 +49,16 @@ func SetupDatabase() {
     TreatmentCleaning := entity.Treatment{TreatmentName: "ขูดหินปูน"}
 	TreatmentFillTeeth := entity.Treatment{TreatmentName: "อุดฟัน"}
 	TreatmentPullTooth := entity.Treatment{TreatmentName: "ถอนฟัน"}
+	TreatmentRootCanalTherapy := entity.Treatment{TreatmentName: "รักษารากฟัน"}
+	TreatmentCrown := entity.Treatment{TreatmentName: "ครอบฟัน"}
+	TreatmentFluorideApplication := entity.Treatment{TreatmentName: "เคลือบฟลูออไรด์"}
 
     db.FirstOrCreate(&TreatmentCleaning, &entity.Treatment{TreatmentName: "ขูดหินปูน"})
     db.FirstOrCreate(&TreatmentFillTeeth, &entity.Treatment{TreatmentName: "อุดฟัน"})
     db.FirstOrCreate(&TreatmentPullTooth, &entity.Treatment{TreatmentName: "ถอนฟัน"})
-
+	db.FirstOrCreate(&TreatmentRootCanalTherapy, &entity.Treatment{TreatmentName: "รักษารากฟัน"})
+	db.FirstOrCreate(&TreatmentCrown, &entity.Treatment{TreatmentName: "ครอบฟัน"})
+	db.FirstOrCreate(&TreatmentFluorideApplication, &entity.Treatment{TreatmentName: "เคลือบฟลูออไรด์"})
 	// TStatus
 	TStatusPending := entity.Tstatus{TStatusName: "Pending"}
 	TStatusDone := entity.Tstatus{TStatusName: "Done"}
@@ -304,4 +309,15 @@ func SetupDatabase() {
 		PaymentID: nil,
 		}
 	db.FirstOrCreate(&record)
+
+	var equipment entity.Equipments
+
+	// Define the values you want to check/create
+	newEquipment := entity.Equipments{
+   		EquipmentName: "เข็มฉีดยา",
+    	Unit:          "อัน",
+    	Cost:          100.50, // Direct assignment
+    	Quantity:      10,
+	}
+	db.FirstOrCreate(&equipment, newEquipment)
 }

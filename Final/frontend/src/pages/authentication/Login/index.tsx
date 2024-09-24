@@ -174,7 +174,7 @@ function SignInPages() {
               <Button type="primary" htmlType="submit" className="login-btn">
                 Login
               </Button>
-              Or <a onClick={() => navigate("/signup")}>signup now !</a>
+              {/* Or <a onClick={() => navigate("/signup")}>signup now !</a> */}
             </Form.Item>
           </Form>
         </Card>

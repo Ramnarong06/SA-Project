@@ -148,7 +148,7 @@ const items = [
         ),
       },
       // เงื่อนไขการแสดงเมนูย่อย "ประวัติการนัดหมาย"
-      ...(employeePositionID !== 3
+      ...(employeePositionID == 3
         ? [
             {
               key: "ScheduleRecord",

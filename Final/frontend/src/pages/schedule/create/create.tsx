@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react
 import Schedule from "./create.tsx";
 import ViewSchedule from "../view/view.tsx";
 
-
+import dayjs from 'dayjs';
 import save from '../../../assets/schedule/savecreate.gif'
 
 
@@ -143,6 +143,19 @@ function ScheduleCreate() {
           </Form.Item>
         </div>
 
+        {/* <div className="form-row">
+          <Form.Item
+            label="วันนัดหมาย"
+            name="Date"
+            rules={[{ required: true, message: "กรุณาเลือกวันนัดหมาย!" }]}
+            style={{ width: "100%" }}
+          >
+            <DatePicker
+              format="DD/MM/YYYY"
+              style={{ width: "48.5%", height: "40px", lineHeight: "40px" }}
+            />
+          </Form.Item>
+        </div> */}
         <div className="form-row">
           <Form.Item
             label="วันนัดหมาย"
@@ -153,6 +166,11 @@ function ScheduleCreate() {
             <DatePicker
               format="DD/MM/YYYY"
               style={{ width: "48.5%", height: "40px", lineHeight: "40px" }}
+              // กำหนดวันที่ไม่สามารถเลือกได้
+              disabledDate={(current) => {
+                // ไม่สามารถเลือกวันที่ย้อนหลังได้
+                return current && current < dayjs().startOf("day");
+              }}
             />
           </Form.Item>
         </div>

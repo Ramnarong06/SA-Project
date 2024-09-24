@@ -16,25 +16,23 @@ function Patients() {
   
   const myId = localStorage.getItem("id");
   const columns: ColumnsType<PatientsInterface> = [
-    // {
-    //   title: "ลำดับ",
-    //   dataIndex: "ID",
-    //   key: "id",
-    // },
     {
       title: "ชื่อ",
       dataIndex: "FirstName",
       key: "firstname",
+      align: "center",
     },
     {
       title: "นามสกุล",
       dataIndex: "LastName",
       key: "lastname",
+      align: "center",
     },
     {
       title: "เพศ",
       dataIndex: "Gender",
       key: "gender",
+      align: "center",
       render: (gender) => Object.values(gender?.Sex),
     },
     // ? ไม่สนใจข้อมูล null
@@ -56,6 +54,7 @@ function Patients() {
       title: "เบอร์โทร",
       dataIndex: "Tel",
       key: "tel",
+      align: "center",
       render: (tel) => {
         const formattedTel = `${tel.substring(0, 3)}-${tel.substring(3, 6)}-${tel.substring(6, 10)}`;
         return <p>{formattedTel}</p>;
@@ -65,24 +64,28 @@ function Patients() {
       title: "หมู่เลือด",
       dataIndex: "BloodType",
       key: "bloodType",
+      align: "center",
       render: (BloodType) => Object.values(BloodType?.BloodGroup),
     },
     {
       title: "แพ้ยา",
       dataIndex: "DrugAllergy",
       key: "drugAllergy",
+      align: "center",
     },
    
     {
       title: "โรคประจำตัว",
       dataIndex: "Chronicdisease",
       key: "chronicdisease",
+      align: "center",
       
     },
    
    
     {
       title: "จัดการ",
+      align: "center",
       // dataIndex: "Manage",
       // key: "manage",
       render: (record) => (

@@ -165,7 +165,7 @@ func DeleteEquipment(c *gin.Context) {
         return
     }
 
-    c.JSON(http.StatusOK, gin.H{"message": "ลบอุปกรณ์สำเร็จ (Soft Delete)"})
+    c.JSON(http.StatusOK, gin.H{"message": "ลบอุปกรณ์สำเร็จ"})
 }
 
 
