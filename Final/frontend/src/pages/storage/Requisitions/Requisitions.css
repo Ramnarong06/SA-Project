@@ -10,7 +10,6 @@
   text-align: center;
 }
 
-
 /* ตั้งค่าขอบตาราง */
 .ant-table {
   border: 1px solid #42C2C2;
@@ -35,39 +34,33 @@ margin-right: 0;
   margin-top: 16px;
 }
 
-/* ปรับแต่งเส้นคั่น */
 .ant-divider {
   border-top: 2px solid #42C2C2;
   width: 100%;
 }
 
-/* ปรับแต่งปุ่มค้นหา */
 button.ant-btn-primary {
 background-color: #42C2C2 !important;
 border-color: #42C2C2 !important;
 }
 
-/* เมื่อเม้าส์ hover */
 button.ant-btn-primary:hover {
-background-color: #5ed7d7 !important; /* สีเมื่อ hover */
+background-color: #5ed7d7 !important; 
 border-color: #35a1a1 !important;
 }
 
-/* เมื่อปุ่มถูก focus */
 button.ant-btn-primary:focus {
-background-color:  #42C2C2 !important; /* สีเมื่อ focus */
+background-color:  #42C2C2 !important; 
 border-color:  #42C2C2 !important;
-box-shadow: none !important; /* ลบเงาที่เป็นค่าเริ่มต้น (ถ้าไม่ต้องการ) */
+box-shadow: none !important;
 }
 
-/* เมื่อปุ่มถูก active (เช่นคลิก) */
 button.ant-btn-primary:active {
-background-color: #42C2C2 !important; /* สีเมื่อ active */
+background-color: #42C2C2 !important;
 border-color:#42C2C2 !important;
-box-shadow: none !important; /* ลบเงาที่เป็นค่าเริ่มต้น (ถ้าไม่ต้องการ) */
+box-shadow: none !important; 
 }
 
-/* เปลี่ยนสีขอบของ DatePicker เมื่อเมาส์ชี้ */
 .custom-search .ant-picker:hover {
-border-color: #0cdcdc !important; /* สีขอบเมื่อ hover */
+border-color: #0cdcdc !important; 
 }

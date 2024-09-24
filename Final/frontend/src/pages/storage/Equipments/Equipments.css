@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap');
+
+h2,table,button,h1,div{
+  font-family: 'Noto Sans Thai', sans-serif;
+}
+
 /* ตั้งค่าสีพื้นหลังให้กับตาราง */
 .ant-table-thead > tr > th {
     background-color: #f0f0f0;
@@ -41,46 +47,38 @@
     width: 100%;
 } 
   .table-container {
-    max-height: 2000px;   /* กำหนดความสูงสูงสุดให้กับตาราง */
-    overflow-y: auto;    /* เลื่อนขึ้นลงได้ */
-    overflow-x: hidden;  /* ปิดการเลื่อนซ้ายขวา */
+    max-height: 2000px;   
+    overflow-y: auto;   
+    overflow-x: hidden;  
   }
   
   body {
-    overflow-y: hidden;   /* ทำให้สามารถเลื่อนขึ้นลงได้ */
-    overflow-x: hidden; /* ปิดการเลื่อนซ้ายขวา */
+    overflow-y: hidden;   
+    overflow-x: hidden; 
   }
 
   .custom-search input {
-    color: #000; /* สีของข้อความในช่องค้นหา */
+    color: #000; 
   }
   
   .custom-search .ant-input {
-    background-color: #ffffff; /* สีพื้นหลังของช่องค้นหา */
-    border-color: #42C2C2; /* สีขอบ */
+    background-color: #ffffff; 
+    border-color: #42C2C2; 
   }
   
   .custom-search .ant-btn-primary {
-    background-color: #42C2C2; /* สีของปุ่มค้นหา */
+    background-color: #42C2C2; 
     color: #fff;
   }
 
 .custom-search .ant-btn-primary:hover {
-  background-color: #42C2C2 !important; /* สีพื้นหลังปุ่มเมื่อเมาส์ชี้ */
-  border-color: #0cdcdc !important; /* สีขอบปุ่มเมื่อเมาส์ชี้ */
-  color: #fff !important; /* สีข้อความในปุ่ม */
+  background-color: #42C2C2 !important; 
+  border-color: #0cdcdc !important; 
+  color: #fff !important;
 }
 
 /* เปลี่ยนสีขอบของช่องค้นหาเมื่อเมาส์ชี้ */
 .custom-search input[type="text"]:hover,
 .custom-search input[type="text"]:focus {
-  border-color: #0cdcdc !important; /* สีขอบเมื่อเมาส์ชี้หรือโฟกัส */
-}
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap');
-
-h2,table,button,h1,div{
-  font-family: 'Noto Sans Thai', sans-serif;
+  border-color: #0cdcdc !important; 
 }

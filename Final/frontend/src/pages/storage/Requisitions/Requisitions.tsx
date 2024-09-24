@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Table, Col, Row, Divider, message, DatePicker, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { GetRequisitionsDate, GetRequisitions } from "../../../services/https/storage/index"; // Update with the correct import path
+import { GetRequisitionsDate, GetRequisitions } from "../../../services/https/storage/index";
 import { RequisitionInterface } from "../../../interfaces/storage/IRequisition";
 import "./Requisitions.css";
-import new_logo from "../../../assets/new_logo.png";
-import requisitionss from "../../../assets/requisitionss.jpg";
+import new_logo from "../../../assets/stock/new_logo.png";
+import requisitionss from "../../../assets/stock/requisitionss.jpg";
 import moment, { Moment } from "moment";
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -48,7 +48,7 @@ function Requisition() {
       align: 'center',
     },
     {
-      title: "ชื่อผู้เบิก",
+      title: "ชื่อผู้ทำรายการ",
       dataIndex: "EmployeeName",
       key: "employee_name",
       align: 'center',
@@ -90,19 +90,19 @@ function Requisition() {
       const formattedDate = selectedDate.format("YYYY-MM-DD");
       getRequisitionsDate(formattedDate);
     } else {
-      getRequisitions(); // Fetch all requisitions if no date is selected
+      getRequisitions(); 
     }
   };
 
   useEffect(() => {
-    getRequisitions(); // Fetch all requisitions on initial load
+    getRequisitions(); 
   }, []);
 
   return (
     <>
       {contextHolder}
       <div className="logo-container">
-        <img src={new_logo} alt="logo" className="logo" />
+        <img src={new_logo} alt="logo" className="logo1" />
       </div>
 
       <Row align="top">
@@ -125,7 +125,7 @@ function Requisition() {
           onChange={(value) => {
             setSelectedDate(value ? (value as Moment) : null);
           if (!value) {
-            getRequisitions(); // ดึงข้อมูลทั้งหมดเมื่อกดกากบาท (ล้างวันที่)
+            getRequisitions(); 
           }
           }}
             placeholder="เลือกวันที่"
@@ -136,7 +136,7 @@ function Requisition() {
             type="primary"
             onClick={handleSearch}
             icon={<SearchOutlined />}
-            style={{ width: 40 }} // Adjust the width as needed
+            style={{ width: 40 }}
           />
           </Col>
         </Row>

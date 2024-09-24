@@ -16,6 +16,7 @@ import { Avatar,Layout, Menu, Button, message, Dropdown } from "antd";
 import CreateSchedule from "../../pages/schedule/create/create.tsx";
 import ViewSchedule from "../../pages/schedule/view/view.tsx";
 import EditSchedule from "../../pages/schedule/edit/edit.tsx";
+import RecordSchedule from "../../pages/schedule/record/record.tsx";
 
 // storage
 import CreateEq from "../../pages/storage/CreateEq/CreateEq";
@@ -54,6 +55,19 @@ import AddDentalRecord from "../../pages/Record/AddDentalRecord";
 import { GetLoggedInEmployee } from "../../services/https/login/index.tsx";
 
 const { Header, Content, Sider } = Layout;
+const App: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false); // สำหรับปิด/เปิดเมนู
+  const [showText, setShowText] = useState(true); // สำหรับแสดง/ซ่อนข้อความข้างๆปุ่ม
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const [employeeName, setEmployeeName] = useState(""); // เก็บชื่อ Employee ที่ล็อกอิน
+  const [employeePositionID, setEmployeePositionID] = useState<number | null>(null); // แก้ให้เป็น number หรือ null
+
+
+  const toggleMenu = () => {
+    setCollapsed(!collapsed); // เปลี่ยนสถานะ collapsed (เปิด/ปิดเมนู)
+    setShowText(!showText); // แสดงหรือซ่อนข้อความข้างๆ ปุ่ม
+  };
 
 const items = [
   {
@@ -79,6 +93,39 @@ const items = [
       },
     ],
   },
+  
+  // ...(employeePositionID === 3 ? [{
+  //   key: "Schedule",
+  //   label: "นัดหมาย",
+  //   icon: <CalendarOutlined />,
+  //   children: [
+  //     {
+  //       key: "Schedule",
+  //       label: (
+  //         <Link to="/viewschedule">
+  //           <div>กำหนดการ</div>
+  //         </Link>
+  //       ),
+  //     },
+  //     {
+  //       key: "ScheduleCreate",
+  //       label: (
+  //         <Link to="/viewschedule/schedulecreate">
+  //           <div>สร้างการนัดหมาย</div>
+  //         </Link>
+  //       ),
+  //     },
+  //     {
+  //       key: "ScheduleRecord",
+  //       label: (
+  //         <Link to="/viewschedule/schedulerecord">
+  //           <div>ประวัติการนัดหมาย</div>
+  //         </Link>
+  //       ),
+  //     },
+  //   ],
+  // }] : []),
+  //
   {
     key: "Schedule",
     label: "นัดหมาย",
@@ -93,15 +140,29 @@ const items = [
         ),
       },
       {
-        key: "CreateSchedule",
+        key: "ScheduleCreate",
         label: (
           <Link to="/viewschedule/schedulecreate">
             <div>สร้างการนัดหมาย</div>
           </Link>
         ),
       },
+      // เงื่อนไขการแสดงเมนูย่อย "ประวัติการนัดหมาย"
+      ...(employeePositionID !== 3
+        ? [
+            {
+              key: "ScheduleRecord",
+              label: (
+                <Link to="/viewschedule/schedulerecord">
+                  <div>ประวัติการนัดหมาย</div>
+                </Link>
+              ),
+            },
+          ]
+        : []),
     ],
   },
+  //
   {
     key: "finance",
     label: "การเงิน",
@@ -181,18 +242,7 @@ const items = [
   },
 ];
 
-const App: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false); // สำหรับปิด/เปิดเมนู
-  const [showText, setShowText] = useState(true); // สำหรับแสดง/ซ่อนข้อความข้างๆปุ่ม
-  const [messageApi, contextHolder] = message.useMessage();
 
-  const [employeeName, setEmployeeName] = useState(""); // เก็บชื่อ Employee ที่ล็อกอิน
-
-
-  const toggleMenu = () => {
-    setCollapsed(!collapsed); // เปลี่ยนสถานะ collapsed (เปิด/ปิดเมนู)
-    setShowText(!showText); // แสดงหรือซ่อนข้อความข้างๆ ปุ่ม
-  };
 
   const Logout = () => {
     localStorage.clear();
@@ -246,7 +296,8 @@ const App: React.FC = () => {
     // เรียกใช้ service เพื่อดึงข้อมูลพนักงานที่ล็อกอิน
     GetLoggedInEmployee().then((res) => {
       if (res && res.employee) {
-        setEmployeeName(res.employee.FirstName + " " + res.employee.LastName); // สมมติว่ามี FirstName และ LastName
+        setEmployeeName(res.employee.FirstName + " " + res.employee.LastName+ " "); // สมมติว่ามี FirstName และ LastName
+        setEmployeePositionID(res.employee.JobPositionID);
       } else {
         setEmployeeName("Guest"); // ถ้าไม่มีข้อมูล
       }
@@ -327,13 +378,14 @@ const App: React.FC = () => {
           {/* แสดงชื่อ Employee ที่ล็อกอิน */}
           <div></div>
 
-          <div>
+          <div style= {{marginRight: "20px"}}>
             {/* Avatar อยู่ใน Dropdown */}
             <Dropdown overlay={menu} placement="bottomRight">
               <Avatar
                 style={{ cursor: "pointer" }}
                 size="large"
                 icon={<UserOutlined />}
+                
               />
             </Dropdown>
           </div>
@@ -341,18 +393,32 @@ const App: React.FC = () => {
           <Content style={{ margin: "0 16px" }}>
             <div style={{ padding: 24, background: "#fff", minHeight: "100%" }}>
               <Routes>
-                {/* ระบบ schedule */}
+                
+                {/* ระบบ schedule
                 <Route path="/viewschedule" element={<ViewSchedule />} />
                 <Route path="/viewschedule/schedulecreate" element={<CreateSchedule />} />
-                <Route path="/viewschedule/editschedule/edit/:id" element={<EditSchedule />} />
+                <Route path="/viewschedule/editschedule/edit/:id" element={<EditSchedule />} /> */}
+                
+                  <>
+                    <Route path="/viewschedule" element={<ViewSchedule />} />
+                    <Route path="/viewschedule/schedulecreate" element={<CreateSchedule />} />
+                    <Route path="/viewschedule/editschedule/edit/:id" element={<EditSchedule />} />
+                    <Route path="/viewschedule/schedulerecord" element={<RecordSchedule />} />
+                  </>
+                
                 
                 
                 {/* ระบบ Equipment */}
-                <Route path="/CreateEq" element={<CreateEq />} />
-                <Route path="/EditEq" element={<EditEq />} />
                 <Route path="/Equipments" element={<Equipments />} />
+                <Route path="/CreateEq" element={<CreateEq />} />
+                <Route path="/Equipments/CreateEq" element={<CreateEq />} />
+                <Route path="/EditEq" element={<EditEq />} />
+                <Route path="/Equipments/EditEq/:id" element={<EditEq />} />
                 <Route path="/Requisitions" element={<Requisitions />} />
+                <Route path="/Equipments/RequestEq/:id" element={<RequestEq />} />
                 <Route path="/LittleEq" element={<LittleEq />} />
+                <Route path="/Equipments/LittleEq" element={<LittleEq />} />
+                <Route path="/Equipments/LittleEq/AddEq/:id" element={<AddEq/>} />
                 <Route path="/AddEq" element={<AddEq />} />
                 <Route path="/RequestEq" element={<RequestEq />} />
                 <Route path="/Restocks" element={<Restocks />} />
@@ -361,7 +427,7 @@ const App: React.FC = () => {
                 <Route path="/EditEq/:id" element={<EditEq />} />
 
                 //
-                <Route path="/" element={<div>Manage Patient Records</div>} />
+                <Route path="/" element={<div>Manage Patient Records2</div>} />
                 <Route path="/customer" element={<div>Manage Patient Records</div>} />
                 <Route path="/employee/create" element={<EmployeeCreate/>} />
                 <Route path="/employee/edit/:id" element={<EmployeeEdit/>} />
@@ -387,6 +453,7 @@ const App: React.FC = () => {
                 <Route path="/employee" element={<Employee />} />
                 <Route path="/patient" element={<Patient />} />
               </Routes>
+
             </div>
           </Content>
         </Layout>

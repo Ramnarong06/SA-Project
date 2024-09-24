@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { Space, Table, Col, Row, Divider, message, Modal, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
-//import { GetEquipments, DeleteEquipmentById } from "../../services/https/index";
 import { GetEquipments, DeleteEquipmentById } from "../../../services/https/storage/index";
-//import { EquipmentInterface } from "../../interfaces/IEquipment";
 import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
 import { Link, useNavigate } from "react-router-dom";
 import "./Equipments.css"; 
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import new_logo from "../../../assets/new_logo.png";
-import stocks from "../../../assets/stocks.jpg";
+import new_logo from "../../../assets/stock/new_logo.png";
+import stocks from "../../../assets/stock/stocks.jpg";
 
 const { Search } = Input;
 
@@ -17,9 +15,10 @@ function Equipments() {
   const navigate = useNavigate();
   const [equipments, setEquipments] = useState<EquipmentInterface[]>([]);
   const [filteredEquipments, setFilteredEquipments] = useState<EquipmentInterface[]>([]);
-  const [messageApi] = message.useMessage();
+
+  const [messageApi, contextHolder] = message.useMessage(); // เรียกใช้ messageApi
   const myId = localStorage.getItem("id");
-  const [modal, contextHolder] = Modal.useModal();
+  const [modal] = Modal.useModal();
 
   // ฟังก์ชันค้นหาอุปกรณ์ตามชื่อ
   const onSearch = (value: string) => {
@@ -55,8 +54,15 @@ function Equipments() {
           color: '#000',
         },
       },
-      onOk() {
-        deleteEquipmentById(String(record.ID));
+      async onOk() {
+        try {
+          await deleteEquipmentById(String(record.ID));
+        } catch (error) {
+          messageApi.open({
+            type: 'error',
+            content: `ไม่สามารถลบอุปกรณ์ ${record.EquipmentName} ได้`,
+          });
+        }
       },
       onCancel() {
         console.log('ยกเลิกการลบอุปกรณ์');
@@ -64,6 +70,7 @@ function Equipments() {
     };
     Modal.confirm(config);
   };
+  
 
   const columns: ColumnsType<EquipmentInterface> = [
     {
@@ -101,21 +108,19 @@ function Equipments() {
       key: "action",
       render: (record) => (
         <Space size="middle">
-          {myId === String(record.ID) ? null : (
-            <button className="delete" onClick={() => showModal(record)}>
-              ลบ
-            </button>
-          )}
-          <button className="submit" onClick={() => navigate(`/RequestEq/${record.ID}`)}>
+          <button className="delete" onClick={() => showModal(record)}>
+            ลบ
+          </button>
+          <button className="submit" onClick={() => navigate(`/Equipments/RequestEq/${record.ID}`)}>
             เบิก
           </button>
-          <button className="reset" onClick={() => navigate(`/EditEq/${record.ID}`)}>
+          <button className="reset" onClick={() => navigate(`/Equipments/EditEq/${record.ID}`)}>
             แก้ไข
           </button>
         </Space>
       ),
       width: 300,
-    },
+    }    
   ];
 
   const deleteEquipmentById = async (id: string) => {
@@ -151,7 +156,7 @@ function Equipments() {
     <>
       {contextHolder}
       <div className="logo-container">
-        <img src={new_logo} alt="logo" className="logo" />
+        <img src={new_logo} alt="logo" className="logo1" />
       </div>
       <Row align="top">
         <Col>
@@ -177,18 +182,16 @@ function Equipments() {
           getEquipments(); // โหลดข้อมูลทั้งหมดเมื่อช่องค้นหาถูกล้าง
         }
       }}
-        allowClear // เปิดใช้งานปุ่มกากบาท
+        allowClear
         enterButton 
         style={{ maxWidth: 300, backgroundColor: "#ffffff", borderColor: "#42C2C2" }} 
         className="custom-search"
       />
-
       </Col>
-
-
+      
         <Col span={11} style={{ textAlign: "end",marginTop: '-6px'}}>
           <Space>
-            <Link to="/CreateEq">
+            <Link to="/Equipments/CreateEq">
               <button className="submit">+ เพิ่มอุปกรณ์</button>
             </Link>
           </Space>
@@ -208,14 +211,14 @@ function Equipments() {
       style={{
       textAlign: 'right',
       position: 'fixed', 
-      bottom: '40px', 
-      left: '285px', 
+      bottom: '69px', 
+      left: '284px', 
       marginTop: '0', 
       backgroundColor: 'white',zIndex: 1000, 
       }}
       > 
         <Space>
-          <Link to="/LittleEq">
+          <Link to="/Equipments/LittleEq">
             <button className="reset">
               <ExclamationCircleOutlined /> อุปกรณ์เหลือน้อย
             </button>

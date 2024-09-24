@@ -124,6 +124,8 @@ async function CreateSchedule(data: SchedulesInterface) {
 
 
 
+
+
 async function UpdateSchedule(data: SchedulesInterface) {
   const requestOptions = {
     method: "PATCH",
@@ -162,6 +164,79 @@ async function UpdateScheduleStatus(id: Number | undefined) {
 
   return res;
 }
+async function DeleteScheduleByID(id: number | undefined) {
+  const requestOptions = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/schedules/${id}`, requestOptions)
+    .then((res) => {
+      if (res.status === 200) {
+        return true; // ลบสำเร็จ
+      } else {
+        return false; // ลบไม่สำเร็จ
+      }
+    });
+
+  return res;
+}
+
+async function GetAllSchedule() {
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+
+  let res = await fetch(`${apiUrl}/schedules`, requestOptions)
+    .then((res) => {
+      if (res.status === 200) {  // ใช้ status 200 สำหรับการดึงข้อมูลสำเร็จ
+        return res.json();
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+async function GetTstatus() {
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+
+  let res = await fetch(`${apiUrl}/tstatuss`, requestOptions)
+    .then((res) => {
+      if (res.status === 200) {  // ใช้ status 200 สำหรับการดึงข้อมูลสำเร็จ
+        return res.json();
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+async function GetTstatusById(id: Number | undefined) {
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+
+  let res = await fetch(`${apiUrl}/tstatus/${id}`, requestOptions)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
 
 
 export {
@@ -173,4 +248,8 @@ export {
   UpdateSchedule,
   GetScheduleById,
   GetPatients,
+  DeleteScheduleByID,
+  GetAllSchedule,
+  GetTstatus,
+  GetTstatusById,
 };

@@ -4,7 +4,6 @@
   align-items: center;
   height: 66.5vh;
   background-color: #ffffff;
-  
 }
 
 .equipment-card {
@@ -39,7 +38,6 @@
   border-radius: 4px;
   padding: 3px;   /*ความกว้างช่อง input*/
 }
-
 
 .formhAdd {
   width: auto;

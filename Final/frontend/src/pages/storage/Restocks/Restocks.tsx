@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import { Table, Col, Row, Divider, message, Modal, DatePicker, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { GetRestocksDate,GetRestocks } from "../../../services/https/storage/index";
-import "./Restocks.css"; // Import the CSS file
+import "./Restocks.css";
 import { RestockInterface } from "../../../interfaces/storage/IRestock";
-import new_logo from "../../../assets/new_logo.png";
-import restocks from "../../../assets/restocks.jpg";
+import new_logo from "../../../assets/stock/new_logo.png";
+import restocks from "../../../assets/stock/restocks.jpg";
 import moment, { Moment } from "moment";
 import { SearchOutlined } from '@ant-design/icons';
 
 function Restocks() {
-  //const navigate = useNavigate();
+  
   const [Restocks, setRestocks] = useState<RestockInterface[]>([]);
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null);
   const [messageApi] = message.useMessage();
@@ -44,7 +44,7 @@ function Restocks() {
       render: (text: any) => moment(text).format('YYYY-MM-DD HH:mm:ss') // Display both date and time
     },
     {
-      title: "ชื่อผู้เติม",
+      title: "ชื่อผู้ทำรายการ",
       dataIndex: "EmployeeName",
       key: "employee_name",
       align: 'center',
@@ -81,7 +81,6 @@ function Restocks() {
     } catch (error: any) {  // แปลง error เป็น any เพื่อให้เข้าถึง property ต่างๆ
       console.error("Error fetching equipment:", error);
       
-      // ตรวจสอบและแสดงข้อผิดพลาดที่สมบูรณ์
       messageApi.open({
         type: "error",
         content: error?.message || error?.response?.data?.error || "Unexpected error occurred",
@@ -97,7 +96,7 @@ function Restocks() {
       const formattedDate = selectedDate.format("YYYY-MM-DD");
       getRestocksDate(formattedDate);
     } else {
-      getRestocks(); // Fetch all requisitions if no date is selected
+      getRestocks();
     }
   };
 
@@ -111,16 +110,16 @@ function Restocks() {
       {contextHolder}
       <div className="logo-container">
           <img
-            src={new_logo} // replace with the correct path to your logo
+            src={new_logo}
             alt="logo"
-            className="logo"
+            className="logo1"
           />
       </div>
 
       <Row align="top">
         <Col>
           <div className="logo-icon">
-            <img src={restocks} alt="logo" style={{ marginTop: '-35px', width: '108px', marginLeft: '0px', /* ขยับไปทางขวา */}} />
+            <img src={restocks} alt="logo" style={{ marginTop: '-35px', width: '108px', marginLeft: '0px'}} />
           </div>
         </Col>
         <Col xs={24} sm={12} md={9} lg={9}>
@@ -138,7 +137,7 @@ function Restocks() {
           onChange={(value) => {
             setSelectedDate(value ? (value as Moment) : null);
           if (!value) {
-            getRestocks(); // ดึงข้อมูลทั้งหมดเมื่อกดกากบาท (ล้างวันที่)
+            getRestocks(); 
           }
           }}
             placeholder="เลือกวันที่"
@@ -150,7 +149,7 @@ function Restocks() {
             type="primary"
             onClick={handleSearch}
             icon={<SearchOutlined />}
-            style={{ width: 40 }} // Adjust the width as needed
+            style={{ width: 40 }} 
           />
           </Col>
         </Row>

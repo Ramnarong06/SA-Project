@@ -17,6 +17,20 @@ const EditPatient = Loadable(lazy(() => import("../pages/individual/patient/edit
 const ViewSchedule = Loadable(lazy(() => import("../pages/schedule/view/view")));
 const ScheduleCreate = Loadable(lazy(() => import("../pages/schedule/create/create")));
 const ScheduleEdit = Loadable(lazy(() => import("../pages/schedule/edit/edit")));
+const ScheduleRecord = Loadable(lazy(() => import("../pages/schedule/record/record")));
+//
+const DentalRecord = Loadable(lazy(() => import("../pages/Record/DentalRecord")));
+
+//
+const CreateEq = Loadable(lazy(() => import("../pages/storage/CreateEq/CreateEq")));
+const AddEq = Loadable(lazy(() => import("../pages/storage/AddEq/AddEq")));
+const EditEq= Loadable(lazy(() => import("../pages/storage/EditEq/EditEq")));
+const Equipments = Loadable(lazy(() => import("../pages/storage/Equipments/Equipments")));
+const LittleEq = Loadable(lazy(() => import("../pages/storage/LittleEq/LittleEq")));
+const RequestEq = Loadable(lazy(() => import("../pages/storage/RequestEq/RequestEq")));
+const Requisitions = Loadable(lazy(() => import("../pages/storage/Requisitions/Requisitions")));
+const Restocks = Loadable(lazy(() => import("../pages/storage/Restocks/Restocks")));
+//
 
 const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
   return {
@@ -75,9 +89,89 @@ const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
             path: "editschedule/edit/:id",
             element: <ScheduleEdit />,
           },
+          {
+            path: "schedulerecord",
+            element: <ScheduleRecord />,
+          },
         ],
       },
+      {
+        path: "/DentalRecord",
+        children: [
+          {
+            path: "",
+            element: <ScheduleCreate />,
+          },
+          {
+            path: "editschedule/edit/:id",
+            element: <ScheduleEdit />,
+          },
+          {
+            path: "DentalRecord",
+            element: <DentalRecord />,
+          },
+        ],
+      },
+      // storage
+      {
+        path: "/Equipments",
+        children: [
+          {
+            path: "AddEq",
+            element: <AddEq />,
+          },
+          {
+            path: "CreateEq",
+            element: <CreateEq />,
+          },
+          {
+            path: "EditEq",
+            element: <EditEq />,
+          },
+          {
+            path: "EditEq/:id",
+            element: <EditEq />,
+            children: [
+              {
+                path: "Equipments",
+                element: <Equipments />,
+              },
+            ],
+          },
 
+          {
+            path: "RequestEq",
+            element: <RequestEq />,
+          },
+          {
+            path: "RequestEq/:id",
+            element: <RequestEq />,
+          },
+          {
+            path: "LittleEq",
+            element: <LittleEq />,
+            children: [
+              {
+                path: "AddEq/:id",
+                element: <AddEq />,
+                children: [
+                  {
+                    path: "Equipments",
+                    element: <Equipments />,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/Requisitions",
+      },
+      {
+        path: "/Restocks",
+      },
+      //
      
       
 

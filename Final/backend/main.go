@@ -50,6 +50,8 @@ func main() {
 		router.GET("/patients", controller.ListPatients)
 		router.GET("/treatments", controller.ListTreatment)
 		router.GET("/tstatuss", controller.ListTstatuss)
+		router.GET("/tstatus/:id", controller.GetTstatusByID)
+
 		//----------------------------------------------------------
 		
 		// ระบบชำระเงิน

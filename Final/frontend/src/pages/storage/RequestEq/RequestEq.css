@@ -18,19 +18,19 @@
     text-align: center;
   }
   
-  .logo {
-    width: 115px;   /*ขนาด logo*/
-    margin-bottom: 3px; /*ระยะห่าง logo*/
+  .logo1 {
+    width: 115px; 
+    margin-bottom: 3px; 
   }
   
-  .form-title {          /*text-head*/
+  .form-title {     /*text-head*/
     text-align: center;
     margin-bottom: 10px;
     color: #42C2C2;
   }
 
   .ant-form-item {
-    margin-bottom: 5px; /*ขนาดแผ่น*/
+    margin-bottom: 5px; 
   }
   
   .ant-input,
@@ -63,8 +63,8 @@
 .equipment-info {
   display: table;
   width: 100%;
-  margin: 1px; /* ใช้เพื่อจัดกลางในคอนเทนเนอร์ */
-  text-align: center; /* ใช้เพื่อจัดกลางเนื้อหาภายใน */
+  margin: 1px; 
+  text-align: center; 
 }
 
 .equipment-row {
@@ -77,11 +77,15 @@
 }
 
 .label {
-  width: 150px; /* ปรับตามความต้องการ */
+  width: 150px; 
   text-align: left;
   padding-right: 10px;
 }
 
 .value {
   text-align: left;
+}
+
+.equipment-create-container {
+  margin-top: 35px;  
 }

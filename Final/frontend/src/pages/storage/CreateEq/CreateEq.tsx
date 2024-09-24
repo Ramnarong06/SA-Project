@@ -10,13 +10,13 @@ import {
   InputNumber,
 } from "antd";
 
-//import { EquipmentInterface } from "../../interfaces/IEquipment";
 import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
 import { useNavigate, Link } from "react-router-dom";
-//import { CreateEquipment } from "../../services/https";
 import { CreateEquipment } from "../../../services/https/storage";
-import new_logo from "../../../assets/new_logo.png";
-import "./CreateEq.css"; // Import the CSS file
+import new_logo from "../../../assets/stock/new_logo.png";
+import complete from "../../../assets/stock/complete.gif";
+import warning from "../../../assets/stock/warning.gif"
+import "./CreateEq.css";
 
 function EquipmentCreate() {
   const navigate = useNavigate();
@@ -29,15 +29,17 @@ function EquipmentCreate() {
       if (res.status === 201) { // สถานะ HTTP 201 สำหรับการสร้างสำเร็จ
         messageApi.open({
           type: "success",
-          content: "บันทึกข้อมูลสำเร็จ",
+          content: "เพิ่มอุปกรณ์สำเร็จ",
+          icon: <img src={complete} alt="success" style={{ width: 40, height: 40 }} />,
         });
         setTimeout(() => {
           navigate("/equipments");
-        }, 500);
-      } else if (res.status === 409) { // สถานะ HTTP 409 สำหรับกรณีอุปกรณ์มีอยู่แล้ว
+        }, 1600);
+      } else if (res.status === 409) { // สถานะ HTTP 409 สำหรับกรณ์อุปกรณ์มีอยู่แล้ว
         messageApi.open({
           type: "error",
           content: res.message || "อุปกรณ์นี้มีอยู่แล้ว",
+          icon: <img src={warning} alt="success" style={{ width: 40, height: 40 }} />,
         });
       } else {
         messageApi.open({
@@ -61,9 +63,9 @@ function EquipmentCreate() {
       <Card className="equipment-card">
         <div className="logo-container">
           <img
-            src={new_logo} // replace with the correct path to your logo
+            src={new_logo}
             alt="logo"
-            className="logo"
+            className="logo1"
           />
         </div>
         <form className="formhAdd">
@@ -141,7 +143,7 @@ function EquipmentCreate() {
             <Col xs={24} sm={24} md={12} lg={12} xl={12}></Col>
           </Row>
           
-          <Row justify="center" style={{ marginTop: "40px" }}>
+          <Row justify="end" style={{ marginTop: "40px" }}>
             <Col span={24} style={{ textAlign: "end", alignSelf: "center" }} xs={24} sm={24} md={12} lg={12} xl={12}></Col>
             <Space size="middle">
               <div className="form-buttons">

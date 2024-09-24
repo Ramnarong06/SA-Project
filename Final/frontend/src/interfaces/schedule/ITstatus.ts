@@ -1,4 +1,4 @@
 export interface TstatusInterface {
     ID?:            number;
-    TstatusName?: string;
+    TStatusName?: string;
   }

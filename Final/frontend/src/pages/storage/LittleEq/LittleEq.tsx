@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { Space, Table, Col, Row, Divider, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-//import { GetEquipmentsLittle } from "../../services/https/index";
 import { GetEquipmentsLittle } from "../../../services/https/storage/index";
-//import { EquipmentInterface } from "../../interfaces/IEquipment";
 import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
 import { useNavigate} from "react-router-dom";
 import "./LittleEq.css"; 
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import new_logo from "../../../assets/new_logo.png";
+import new_logo from "../../../assets/stock/new_logo.png";
 
 function EquipmentsLittle() {
   
@@ -56,7 +54,7 @@ function EquipmentsLittle() {
         <Space size="middle">
           <div className="form-buttons">
             <button type="submit" className="submit"
-              onClick={() => navigate(`/AddEq/${record.ID}`)}>เติม</button>
+              onClick={() => navigate(`/Equipments/LittleEq/AddEq/${record.ID}`)}>เติม</button>
           </div>
         </Space>
       ),
@@ -87,7 +85,7 @@ function EquipmentsLittle() {
         <img
           src={new_logo}
           alt="logo"
-          className="logo"
+          className="logo1"
         />
       </div>
       <Row>
@@ -106,7 +104,6 @@ function EquipmentsLittle() {
         dataSource={equipments} 
         style={{ width: "95%", margin: "0 auto" }}
         pagination={{ pageSize:4 }} 
-        scroll={{ x: 1000 }} // เลื่อนเฉพาะแนวตั้งที่ความสูง 300px
       />
       </div>
     </>

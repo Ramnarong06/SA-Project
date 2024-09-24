@@ -1,4 +1,3 @@
-/* ตั้งค่าสีพื้นหลังให้กับตาราง */
 .ant-table-thead > tr > th {
   background-color: #f0f0f0;
   color: #333;
@@ -10,16 +9,13 @@
   text-align: center;
 }
 
-
-/* ตั้งค่าขอบตาราง */
 .ant-table {
   border: 1px solid #42C2C2;
   border-radius: 50px;
 }
 
-/* ปรับแต่งหัวข้อของหน้า */
 h1 {
-  color: #140c5f;
+  color: #180e71;
   font-weight: bold;
   text-align: left;
   margin-top: 10px; 
@@ -28,7 +24,6 @@ h1 {
   margin-right: 0; 
 }
 
-/* ปรับแต่งพื้นที่ของปุ่มเพิ่มอุปกรณ์ */
 .space-align-container .ant-space {
   display: flex;
   justify-content: flex-end;
@@ -52,7 +47,7 @@ button {
 
 button.cancel {
   background-color: #ffffff;
-  border: 1.5px solid #bdbdbd; /* Add a solid border */
+  border: 1.5px solid #bdbdbd; 
   color: black;
 }
 
@@ -69,7 +64,7 @@ button.submit {
 
 button.delete {
   background-color: #dedede;
-  border: 1.5px solid #dedede; /* Add a solid border */
+  border: 1.5px solid #dedede; 
   color: black;
 }
 

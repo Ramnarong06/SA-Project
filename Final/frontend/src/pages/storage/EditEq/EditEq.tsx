@@ -11,10 +11,10 @@
     InputNumber,
   } from "antd";
   import { GetEquipmentById, UpdateEquipmentById } from "../../../services/https/storage";
-  //import { EquipmentInterface } from "../../interfaces/IEquipment";
   import { EquipmentInterface } from "../../../interfaces/storage/IEquipment";
   import { useNavigate, Link, useParams } from "react-router-dom";
-  import new_logo from "../../../assets/new_logo.png";
+  import new_logo from "../../../assets/stock/new_logo.png";
+  import save from "../../../assets/stock/save.gif";
   import "./EditEq.css";
 
   function EquipmentEdit() {
@@ -67,11 +67,12 @@
       if (res.status === 200) {
         messageApi.open({
           type: "success",
-          content: "บันทึกข้อมูลสำเร็จ",
+          content: "แก้ไขข้อมูลสำเร็จ",
+          icon: <img src={save} alt="success" style={{ width: 40, height: 40 }} />,
         });
         setTimeout(() => {
           navigate("/Equipments");
-        }, 500);
+        }, 1600);
       } else {
         messageApi.open({
           type: "error",
@@ -91,14 +92,14 @@
         {contextHolder}
         <Card className="equipment-card">
           <div className="logo-container">
-            <img src={new_logo} alt="logo" className="logo" />
+            <img src={new_logo} alt="logo" className="logo1" />
           </div>
           <form className="formhEdit">
             <div className="label1Edit">แก้ไขอุปกรณ์</div>
           </form>
           <Divider />
           <Form
-            form={form} // ใช้ฟอร์มที่สร้างขึ้น
+            form={form}
             name="basic"
             layout="vertical"
             onFinish={onFinish}
@@ -146,7 +147,7 @@
               </Col>
             </Row>
   
-            <Row justify="center" style={{ marginTop: "40px" }}>
+            <Row justify="end" style={{ marginTop: "40px" }}>
               <Space size="middle">
                 <div className="form-buttons">
                   <Link to="/Equipments">

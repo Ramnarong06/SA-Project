@@ -7,16 +7,17 @@ import {
   Card,
   message,
   InputNumber,
+  Input,
 } from "antd";
 
 import { useNavigate, Link, useParams } from "react-router-dom";
-//import { RestockInterface } from "../../interfaces/IRestock";
 import { RestockInterface } from "../../../interfaces/storage/IRestock";
-//import { CreateRestock, GetEquipmentById } from "../../services/https";
 import { CreateRestock, GetEquipmentById } from "../../../services/https/storage";
+import { GetLoggedInEmployee } from "../../../services/https/login/index.tsx";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import new_logo from "../../../assets/new_logo.png";
+import new_logo from "../../../assets/stock/new_logo.png";
+import truck from "../../../assets/stock/truck.gif";
 import "./AddEq.css";
 
 
@@ -26,7 +27,21 @@ function RestockCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [equipment, setEquipment] = useState<any>(null); // เก็บข้อมูลอุปกรณ์
   const [currentDate, setCurrentDate] = useState(dayjs()); // สร้าง state สำหรับเก็บเวลา ณ ปัจจุบัน
- 
+
+  const [employeeName, setEmployeeName] = useState<string>(""); // เก็บชื่อ Employee ที่ล็อกอิน
+  const [employeeId, setEmployeeId] = useState<number | null>(null); // เพิ่ม state สำหรับ employee ID
+
+  useEffect(() => {
+    GetLoggedInEmployee().then((res) => {
+      if (res && res.employee) {
+        setEmployeeName(res.employee.FirstName + " " + res.employee.LastName);
+        setEmployeeId(res.employee.ID); // เก็บ employee ID ใน state
+      } else {
+        setEmployeeName("Guest");
+        setEmployeeId(null);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -73,7 +88,7 @@ function RestockCreate() {
     const restockData = {
       equipment_id: equipment.ID,
       restock_quantity: values.RestockQuantity,
-      employee_id: values.EmployeeID,
+      employee_id: employeeId,
     };
 
     try {
@@ -81,11 +96,11 @@ function RestockCreate() {
       messageApi.open({
         type: "success",
         content: res.data.message,
+        icon: <img src={truck} alt="success" style={{ width: 45, height: 45 }} />,
       });
       setTimeout(() => {
-        console.log("เปลี่ยนหน้า");
         navigate("/Restocks");
-      }, 500);
+      }, 1600);
     } catch (error) {
       console.error('Error creating restock:', error);
       messageApi.open({
@@ -101,9 +116,9 @@ function RestockCreate() {
       <Card className="equipment-card">
         <div className="logo-container">
         <img
-            src={new_logo} // replace with the correct path to your logo
+            src={new_logo}
             alt="logo"
-            className="logo"
+            className="logo1"
           />
         </div>
         <form className="formhAdd">
@@ -141,6 +156,16 @@ function RestockCreate() {
        
         <Form name="basic" layout="vertical" onFinish={onFinish} autoComplete="off">
           <Row gutter={[16, 0]}>
+             {/* ชื่อผู้เติม */}
+             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+              <Form.Item
+                label="ผู้ทำรายการ"
+              >
+             {/* แสดงชื่อพนักงานและทำให้ช่องนี้แก้ไขไม่ได้ */}
+            <Input value={employeeName} disabled style={{ width: "100%", height: "37px"}} />
+            </Form.Item>
+          </Col>
+
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
               <Form.Item
                 label="จำนวน"
@@ -155,22 +180,6 @@ function RestockCreate() {
                 <InputNumber min={0} style={{ width: "100%" }} />
               </Form.Item>
             </Col>
-
-            {/* ชื่อผู้เติม */}
-            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-              <Form.Item
-                label="รหัสพนักงาน"
-                name="EmployeeID"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกรหัสพนักงาน!",
-                  },
-                ]}
-              >
-                <InputNumber min={0} style={{ width: "100%" }} />
-              </Form.Item>
-            </Col>
           </Row>
           <Row><Col xs={24} sm={24} md={12} lg={12} xl={12}><p> </p></Col></Row>
 
@@ -178,7 +187,7 @@ function RestockCreate() {
             <Col span={24} style={{ textAlign: "end", alignSelf: "center" }}>
               <Space size="middle">
                 <div className="form-buttons">
-                  <Link to="/LittleEq">
+                  <Link to="/Equipments/LittleEq">
                     <button type="button" className="cancel">
                       ยกเลิก
                     </button>
