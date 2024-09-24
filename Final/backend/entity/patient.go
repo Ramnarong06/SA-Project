@@ -20,7 +20,7 @@ type Patient struct {
 
 	DrugAllergy 	string
 	Chronicdisease 	string
-	Tel 			string
+	Tel 			string `gorm:"unique"`
 
 	Schedules 		[]Schedule 		`gorm:"foreignKey:PatientID"`
 

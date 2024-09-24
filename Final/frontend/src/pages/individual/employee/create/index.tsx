@@ -35,7 +35,7 @@ function EmployeeCreate() {
 
   const onFinish = async (values: EmployeesInterface) => {
     let res = await CreateEmployee(values);
-    console.log("Is Logged In: ", isLoggedIn);
+    // console.log("Is Logged In: ", isLoggedIn);
     if (res.status) {
       messageApi.open({
         type: "success",
@@ -148,7 +148,7 @@ function EmployeeCreate() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="รหัสผ่าน"
-                name="password"
+                name="Password"
                 rules={[
                   {
                     required: true,
@@ -164,7 +164,7 @@ function EmployeeCreate() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="วัน/เดือน/ปี เกิด"
-                name="birthday"
+                name="Birthday"
                 rules={[
                   {
                     required: true,
@@ -212,7 +212,7 @@ function EmployeeCreate() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="เบอร์โทร"
-                name="tel"
+                name="Tel"
                 rules={[
                   {
                     required: true,

@@ -102,7 +102,10 @@ import { useNavigate } from "react-router-dom";
 import { SignIn } from "../../../services/https/login";
 import { SignInInterface } from "../../../interfaces/SignIn";
 import new_logo from "../../../assets/stock/new_logo.png";
+import { UserOutlined, KeyOutlined } from '@ant-design/icons'; 
 import backgroundImage from "../../../assets/bg.png"; // เพิ่มไฟล์รูปภาพพื้นหลัง
+
+
 
 import './Login.css';
 
@@ -158,16 +161,31 @@ function SignInPages() {
               label="Email"
               name="email"
               rules={[{ required: true, message: 'Please input your email!' }]}
+              style={{ marginBottom: '20px' }}
             >
-              <Input type="email" style={{ width: '106%' }}/>
+              {/* <Input type="email" style={{ width: '106%' }}/> */}
+              {/* <Input placeholder="  กรุณากรอก email" variant="filled" style={{ width: '106%' }} /> */}
+              <Input 
+                placeholder="กรุณากรอก email" 
+                prefix={<UserOutlined />} 
+                variant="filled" 
+                style={{ width: '106%' }} 
+              />
             </Form.Item>
 
             <Form.Item
               label="Password"
               name="password"
               rules={[{ required: true, message: 'Please input your password!' }]}
+              style={{ marginBottom: '20px' }}
             >
-              <Input.Password style={{ width: '106%' }}/>
+              {/* <Input.Password style={{ width: '106%' }}/> */}
+              <Input.Password
+                placeholder="กรุณากรอก password" 
+                prefix={<KeyOutlined />} 
+                variant="filled" 
+                style={{ width: '106%' }} 
+              />
             </Form.Item>
 
             <Form.Item>

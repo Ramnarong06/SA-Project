@@ -390,7 +390,7 @@ const items = [
             </Dropdown>
           </div>
         </Header>
-          <Content style={{ margin: "0 16px" }}>
+          <Content style={{ padding: "0 16px", backgroundColor: "#ffff"  }}>
             <div style={{ padding: 24, background: "#fff", minHeight: "100%" }}>
               <Routes>
                 

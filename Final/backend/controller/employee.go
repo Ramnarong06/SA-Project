@@ -158,5 +158,5 @@ func UpdateEmployee(c *gin.Context) {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	// 	return
 	// }
-	c.JSON(http.StatusOK, gin.H{"message": "Updated successful"})
+	c.JSON(http.StatusOK, gin.H{"message": "อัพเดทข้อมูลสำเร็จ"})
 }

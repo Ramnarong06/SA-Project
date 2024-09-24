@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message ,Input } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined,SearchOutlined  } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined,SearchOutlined,AuditOutlined   } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { GetPatients, DeletePatientByID  } from "../../../services/https/individual/index";
 import { PatientsInterface } from "../../../interfaces/individual/IPatient";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-import logoSamgt from '../../../assets/logo.png';
+import logoSamgt from '../../../assets/logoSamgt.png';
 
 const { Search } = Input;
 // const employee :EmployeesInterface[] = []
@@ -164,9 +164,12 @@ function Patients() {
   const handleSearch = (value: string) => {
     const currValue = value.toLowerCase();
     setSearchText(currValue);
-    const filteredData = patients.filter(entry =>
-      entry?.Tel?.includes(currValue)
-    );
+    const filteredData = patients.filter(entry => {
+      const nameMatch = entry?.FirstName?.toLowerCase().includes(currValue);
+      const lastnameMatch = entry?.LastName?.toLowerCase().includes(currValue);
+      const telMatch = entry?.Tel?.includes(currValue);
+      return nameMatch || telMatch || lastnameMatch;
+    });
     //setEmployees(filteredData);
     setFilteredPatients(filteredData)
   };
@@ -225,7 +228,7 @@ function Patients() {
       <Row>
         
         <Col span={12}>
-          <h2>จัดการประวัติผู้ป่วย</h2>
+          <h2><AuditOutlined /> จัดการประวัติผู้ป่วย</h2>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
@@ -241,7 +244,7 @@ function Patients() {
       <Row>
         <Col span={24}>
           <Search
-            placeholder="ค้นหาด้วยเบอร์โทร"
+            placeholder="ค้นหาด้วยชื่อหรือเบอร์โทร"
             allowClear
             onSearch={handleSearch}
             style={{ width: 300, marginBottom: 20 }}

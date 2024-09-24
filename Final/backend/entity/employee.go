@@ -12,8 +12,8 @@ type Employee struct {
 	LastName 	string		
 	Birthday 	time.Time 	
 	Address 	string 		
-	Tel 		string 				
-	Email 		string 		
+	Tel 		string 	`gorm:"unique"`		
+	Email 		string 	`gorm:"unique"`
 	Password 	string 		
 
 	GenderID 		uint 			

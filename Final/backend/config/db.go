@@ -88,10 +88,12 @@ func SetupDatabase() {
 	JobPositionDentist := entity.JobPosition{Job: "ทันตแพทย์"}
 	JobPositionFinance := entity.JobPosition{Job: "เจ้าหน้าที่การเงิน"}
 	JobPositionPatientService := entity.JobPosition{Job: "เจ้าหน้าที่บริการคนไข้"}
+	JobPositionAdmin := entity.JobPosition{Job: "ผู้ดูแลระบบ"}
 
 	db.FirstOrCreate(&JobPositionDentist, &entity.JobPosition{Job: "ทันตแพทย์"})
 	db.FirstOrCreate(&JobPositionFinance, &entity.JobPosition{Job: "เจ้าหน้าที่การเงิน"})
 	db.FirstOrCreate(&JobPositionPatientService, &entity.JobPosition{Job: "เจ้าหน้าที่บริการคนไข้"})
+	db.FirstOrCreate(&JobPositionAdmin, &entity.JobPosition{Job: "ผู้ดูแลระบบ"})
 
 	//วิธีชำระเงิน
 	transfer:= entity.PaymentMethod{MethodName: "โอน"}//เอาไว้เช็คในฐานข้อมูลว่ามีคำนี้หรือยัง

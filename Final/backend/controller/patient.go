@@ -119,5 +119,5 @@ func UpdatePatient(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Updated successful"})
+	c.JSON(http.StatusOK, gin.H{"message": "อัพเดทข้อมูลสำเร็จ"})
 }

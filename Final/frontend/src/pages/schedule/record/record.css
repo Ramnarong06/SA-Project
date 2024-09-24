@@ -123,3 +123,31 @@
   color: white;
   font-weight: bold;
 }
+
+
+.table-container {
+  border: 2px solid #ccc; /* ขอบรอบนอก */
+  padding: 0px; /* ระยะห่างระหว่างขอบกับตาราง */
+  border-radius: 10px; /* มุมมนของขอบ */
+  background-color: #f9f9f9; /* สีพื้นหลังอ่อน */
+  margin-bottom: 20px; /* ระยะห่างด้านล่าง */
+}
+
+/* สำหรับสถานะ Done */
+.tstatuscolor.done {
+  background-color: #e0ffe0; /* สีพื้นหลังเขียวอ่อน */
+  color: #00be49; /* สีตัวอักษรเขียว */
+}
+
+/* สำหรับสถานะ Pending */
+.tstatuscolor.pending {
+  background-color: #fffbe0; /* สีพื้นหลังเหลืองอ่อน */
+  color: #ffcc00; /* สีตัวอักษรเหลืองเข้ม */
+}
+
+.tstatuscolor {
+  padding: 5px 15px;
+  border-radius: 15px;
+  font-weight: bold;
+  display: inline-block;
+}

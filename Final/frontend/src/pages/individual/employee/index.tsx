@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message ,Input } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined,SearchOutlined  } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined,SearchOutlined,AuditOutlined   } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 // import { GetEmployees, DeleteEmployeeByID  } from "../../services/https";
 // import { EmployeesInterface } from "../../interfaces/IEmployee";
@@ -9,7 +9,7 @@ import { EmployeesInterface } from "../../../interfaces/individual/IEmployee";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-import logoSamgt from '../../../assets/logo.png';
+import logoSamgt from '../../../assets/logoSamgt.png';
 const { Search } = Input;
 
 
@@ -122,9 +122,15 @@ function Employees() {
   const handleSearch = (value: string) => {
     const currValue = value.toLowerCase();
     setSearchText(currValue);
-    const filteredData = employees.filter(entry =>
-      entry?.Tel?.includes(currValue)
-    );
+    // const filteredData = employees.filter(entry =>
+    //   entry?.Tel?.includes(currValue)
+    // );
+    const filteredData = employees.filter(entry => {
+      const nameMatch = entry?.FirstName?.toLowerCase().includes(currValue);
+      const lastnameMatch = entry?.LastName?.toLowerCase().includes(currValue);
+      const telMatch = entry?.Tel?.includes(currValue);
+      return nameMatch || telMatch || lastnameMatch;
+    });
     // setEmployees(filteredData);
     setFilteredEmployees(filteredData)
   };
@@ -183,7 +189,7 @@ function Employees() {
       <Row>
         
         <Col span={12}>
-          <h2>จัดการประวัติพนักงาน</h2>
+          <h2><AuditOutlined /> จัดการประวัติพนักงาน</h2>
       
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
@@ -200,7 +206,7 @@ function Employees() {
       <Row>
         <Col span={24}>
           <Search
-            placeholder="ค้นหาด้วยเบอร์โทร"
+            placeholder="ค้นหาด้วยชื่อหรือเบอร์โทร"
             allowClear
             onSearch={handleSearch}
             style={{ width: 300, marginBottom: 20 }}

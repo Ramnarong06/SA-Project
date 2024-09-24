@@ -85,7 +85,7 @@ const ScheduleRecord: React.FC = () => {
 
   const showModal = (record: SchedulesInterface) => {
   if (record.ID !== undefined) {
-    setModalText(`คุณต้องการลบข้อมูลการนัดหมาย "ID = ${record.ID}" หรือไม่ ?`);
+    setModalText(`คุณต้องการลบข้อมูลการนัดหมาย "ID =${record.ID}" หรือไม่ ?`);
     setDeleteId(record.ID);
     setOpen(true);
   } else {
@@ -246,54 +246,61 @@ const formatPhoneNumber = (phoneNumber: string | undefined) => {
       </header>
   
       {/* ตาราง */}
-      <table className="schedulerecord-records-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>PatientName</th>
-            <th>Tel <PhoneOutlined /> </th>
-            <th>Date</th>
-            <th>Treatment</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentRecords.map((schedule) => {
-            const patient = patients.find((patient) => patient.ID === schedule.PatientID);
-            const treatment = treatments.find((treatment) => treatment.ID === schedule.TreatmentID);
-            const tstatus = statuses.find((status) => status.ID === schedule.TstatusID);
-  
-            return (
-              <tr key={schedule.ID}>
-                <td>{schedule.ID}</td>
-                <td>{patient?.FirstName} {patient?.LastName}</td>
-                <td>{formatPhoneNumber(patient?.Tel)}</td>
-                <td>{dayjs(schedule.Date).format("DD-MM-YYYY")}</td>
-                <td>{treatment?.TreatmentName}</td>
-                <td>{tstatus?.TStatusName}</td>
-                <td>
-                  <Button
-                    onClick={() => navigate(`/viewschedule/editschedule/edit/${schedule.ID}`)}
-                    shape="circle"
-                    icon={<EditOutlined />}
-                    size={"large"}
-                  />
-                  <Button
-                    onClick={() => showModal(schedule)}
-                    style={{ marginLeft: 10 }}
-                    shape="circle"
-                    icon={<DeleteOutlined />}
-                    size={"large"}
-                    danger
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-  
+      <div className="table-container">
+        <table className="schedulerecord-records-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>PatientName</th>
+              <th>Tel <PhoneOutlined /> </th>
+              <th>Date</th>
+              <th>Treatment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentRecords.map((schedule) => {
+              const patient = patients.find((patient) => patient.ID === schedule.PatientID);
+              const treatment = treatments.find((treatment) => treatment.ID === schedule.TreatmentID);
+              const tstatus = statuses.find((status) => status.ID === schedule.TstatusID);
+    
+              return (
+                <tr key={schedule.ID}>
+                  <td>{schedule.ID}</td>
+                  <td>{patient?.FirstName} {patient?.LastName}</td>
+                  <td>{formatPhoneNumber(patient?.Tel)}</td>
+                  <td>{dayjs(schedule.Date).format("DD-MM-YYYY")}</td>
+                  <td>{treatment?.TreatmentName}</td>
+                  <td>
+                    <span className={`tstatuscolor ${tstatus?.TStatusName === "Done" ? "done" : "pending"}`}>
+                      {tstatus?.TStatusName}
+                    </span>
+                  </td>
+
+                  <td>
+                    <Button
+                      onClick={() => navigate(`/viewschedule/editschedule/edit/${schedule.ID}`)}
+                      shape="circle"
+                      icon={<EditOutlined />}
+                      size={"large"}
+                    />
+                    <Button
+                      onClick={() => showModal(schedule)}
+                      style={{ marginLeft: 10 }}
+                      shape="circle"
+                      icon={<DeleteOutlined />}
+                      size={"large"}
+                      danger
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+
+          </tbody>
+        </table>
+      </div>      
       {/* Pagination */}
         <div style={{ marginTop: 20, display: "flex", justifyContent: "flex-end" }}>
             <Pagination
