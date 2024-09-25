@@ -4,7 +4,6 @@ export interface PatientsInterface {
     LastName?: string;
     Weight?: number;
     Height?: number;
-    
     DrugAllergy?: string;
     Chronicdisease?: string;
     Tel?: string;

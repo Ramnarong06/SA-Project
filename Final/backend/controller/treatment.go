@@ -1,5 +1,4 @@
 package controller
-
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -9,10 +8,7 @@ import (
 
 func ListTreatment(c *gin.Context) {
 	var treatment []entity.Treatment
-
 	db := config.DB()
-
 	db.Find(&treatment)
-
 	c.JSON(http.StatusOK, &treatment)
 }

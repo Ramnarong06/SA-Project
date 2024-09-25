@@ -257,11 +257,11 @@ const formatPhoneNumber = (phoneNumber: string | undefined) => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>PatientName</th>
-              <th>Tel <PhoneOutlined /> </th>
-              <th>Date</th>
-              <th>Treatment</th>
-              <th>Status</th>
+              <th>ชื่อคนไข้</th>
+              <th>เบอร์ติดต่อ <PhoneOutlined /> </th>
+              <th>วันนัดหมาย</th>
+              <th>การรักษา</th>
+              <th>สถานะการนัดหมาย</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -279,9 +279,10 @@ const formatPhoneNumber = (phoneNumber: string | undefined) => {
                   <td>{dayjs(schedule.Date).format("DD-MM-YYYY")}</td>
                   <td>{treatment?.TreatmentName}</td>
                   <td>
-                    <span className={`tstatuscolor ${tstatus?.TStatusName === "Done" ? "done" : "pending"}`}>
+                    <span className={`tstatuscolor ${tstatus?.TStatusName}`}>
                       {tstatus?.TStatusName}
                     </span>
+                    
                   </td>
 
                   <td>

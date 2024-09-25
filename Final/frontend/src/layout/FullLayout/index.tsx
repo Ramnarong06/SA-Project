@@ -71,178 +71,307 @@ const App: React.FC = () => {
     setShowText(!showText); // แสดงหรือซ่อนข้อความข้างๆ ปุ่ม
   };
 
-const items = [
-  {
-    key: "register",
-    label: "ทะเบียน",
-    icon: <UserOutlined />,
-    children: [
-      {
-        key: "employee",
-        label: (
-          <Link to="/employee">
-            <div>พนักงาน</div>
-          </Link>
-        ),
-      },
-      {
-        key: "patients",
-        label: (
-          <Link to="/patient">
-            <div>ผู้ป่วย</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-  
-  // ...(employeePositionID === 3 ? [{
-  //   key: "Schedule",
-  //   label: "นัดหมาย",
-  //   icon: <CalendarOutlined />,
-  //   children: [
-  //     {
-  //       key: "Schedule",
-  //       label: (
-  //         <Link to="/viewschedule">
-  //           <div>กำหนดการ</div>
-  //         </Link>
-  //       ),
-  //     },
-  //     {
-  //       key: "ScheduleCreate",
-  //       label: (
-  //         <Link to="/viewschedule/schedulecreate">
-  //           <div>สร้างการนัดหมาย</div>
-  //         </Link>
-  //       ),
-  //     },
-  //     {
-  //       key: "ScheduleRecord",
-  //       label: (
-  //         <Link to="/viewschedule/schedulerecord">
-  //           <div>ประวัติการนัดหมาย</div>
-  //         </Link>
-  //       ),
-  //     },
-  //   ],
-  // }] : []),
-  //
-  {
-    key: "Schedule",
-    label: "นัดหมาย",
-    icon: <CalendarOutlined />,
-    children: [
-      {
-        key: "Schedule",
-        label: (
-          <Link to="/viewschedule">
-            <div>กำหนดการ</div>
-          </Link>
-        ),
-      },
-      {
-        key: "ScheduleCreate",
-        label: (
-          <Link to="/viewschedule/schedulecreate">
-            <div>สร้างการนัดหมาย</div>
-          </Link>
-        ),
-      },
-      // เงื่อนไขการแสดงเมนูย่อย "ประวัติการนัดหมาย"
-      ...(employeePositionID == 3
-        ? [
+  const items = [
+    ...(employeePositionID === 1
+      ? [
+        {
+          key: "register",
+          label: "ทะเบียน",
+          icon: <UserOutlined />,
+          children: [
             {
-              key: "ScheduleRecord",
+              key: "patients",
               label: (
-                <Link to="/viewschedule/schedulerecord">
-                  <div>ประวัติการนัดหมาย</div>
+                <Link to="/patient">
+                  <div>ผู้ป่วย</div>
                 </Link>
               ),
             },
-          ]
-        : []),
-    ],
-  },
-  //
-  {
-    key: "finance",
-    label: "การเงิน",
-    icon: <DollarOutlined />,
-    children: [
-      {
-        key: "paymentList",
-        label: (
-          <Link to="/paymentList">
-            <div>รอชำระเงิน</div>
-          </Link>
-        ),
-      },
-      {
-        key: "savePayment",
-        label: (
-          <Link to="/savePayment">
-            <div>บันทึกชำระเงิน</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-  {
-    key: "stock",
-    label: "คลังวัสดุอุปกรณ์",
-    icon: <ProductOutlined />,
-    children: [
-      {
-        key: "equipment",
-        label: (
-          <Link to="/Equipments">
-            <div>อุปกรณ์</div>
-          </Link>
-        ),
-      },
-      {
-        key: "requisition",
-        label: (
-          <Link to="/Requisitions">
-            <div>รายการเบิก</div>
-          </Link>
-        ),
-      },
-      {
-        key: "restock",
-        label: (
-          <Link to="/Restocks">
-            <div>รายการเติม</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-  {
-    key: "treatment",
-    label: "การรักษา",
-    icon: <HeartOutlined />,
-    children: [
-      {
-        key: "DentalRecord",
-        label: (
-          <Link to="/DentalRecord">
-            <div>บันทึกการรักษา</div>
-          </Link>
-        ),
-      },
-      {
-        key: "AddDentalRecord",
-        label: (
-          <Link to="/AddDentalRecord">
-            <div>เพิ่มการรักษา</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-];
+          ],
+        },
+          {
+            key: "finance",
+            label: "การเงิน",
+            icon: <DollarOutlined />,
+            children: [
+              {
+                key: "savePayment",
+                label: (
+                  <Link to="/savePayment">
+                    <div>บันทึกชำระเงิน</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "treatment",
+            label: "การรักษา",
+            icon: <HeartOutlined />,
+            children: [
+              {
+                key: "DentalRecord",
+                label: (
+                  <Link to="/DentalRecord">
+                    <div>บันทึกการรักษา</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "AddDentalRecord",
+                label: (
+                  <Link to="/AddDentalRecord">
+                    <div>เพิ่มการรักษา</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+        ]
+      : []),
+    ...(employeePositionID === 2
+      ? [
+          {
+            key: "register",
+            label: "ทะเบียน",
+            icon: <UserOutlined />,
+            children: [
+              {
+                key: "patients",
+                label: (
+                  <Link to="/patient">
+                    <div>ผู้ป่วย</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "Schedule",
+            label: "นัดหมาย",
+            icon: <CalendarOutlined />,
+            children: [
+              {
+                key: "Schedule",
+                label: (
+                  <Link to="/viewschedule">
+                    <div>กำหนดการ</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "ScheduleCreate",
+                label: (
+                  <Link to="/viewschedule/schedulecreate">
+                    <div>สร้างการนัดหมาย</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "ScheduleRecord",
+                label: (
+                  <Link to="/viewschedule/schedulerecord">
+                    <div>ประวัตินัดหมาย</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "finance",
+            label: "การเงิน",
+            icon: <DollarOutlined />,
+            children: [
+              {
+                key: "paymentList",
+                label: (
+                  <Link to="/paymentList">
+                    <div>รอชำระเงิน</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "savePayment",
+                label: (
+                  <Link to="/savePayment">
+                    <div>บันทึกชำระเงิน</div>
+                  </Link>
+                ),
+              }
+            ],
+          },
+          {
+            key: "stock",
+            label: "คลังวัสดุอุปกรณ์",
+            icon: <ProductOutlined />,
+            children: [
+              {
+                key: "equipment",
+                label: (
+                  <Link to="/Equipments">
+                    <div>อุปกรณ์</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "requisition",
+                label: (
+                  <Link to="/Requisitions">
+                    <div>รายการเบิก</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "restock",
+                label: (
+                  <Link to="/Restocks">
+                    <div>รายการเติม</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+        ]
+      : []),
+    ...(employeePositionID === 3
+      ? [
+        
+          {
+            key: "register",
+            label: "ทะเบียน",
+            icon: <UserOutlined />,
+            children: [
+              {
+                key: "employee",
+                label: (
+                  <Link to="/employee">
+                    <div>พนักงาน</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "patients",
+                label: (
+                  <Link to="/patient">
+                    <div>ผู้ป่วย</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "Schedule",
+            label: "นัดหมาย",
+            icon: <CalendarOutlined />,
+            children: [
+              {
+                key: "Schedule",
+                label: (
+                  <Link to="/viewschedule">
+                    <div>กำหนดการ</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "ScheduleCreate",
+                label: (
+                  <Link to="/viewschedule/schedulecreate">
+                    <div>สร้างการนัดหมาย</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "ScheduleRecord",
+                label: (
+                  <Link to="/viewschedule/schedulerecord">
+                    <div>ประวัตินัดหมาย</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "finance",
+            label: "การเงิน",
+            icon: <DollarOutlined />,
+            children: [
+              {
+                key: "paymentList",
+                label: (
+                  <Link to="/paymentList">
+                    <div>รอชำระเงิน</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "savePayment",
+                label: (
+                  <Link to="/savePayment">
+                    <div>บันทึกชำระเงิน</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "treatment",
+            label: "การรักษา",
+            icon: <HeartOutlined />,
+            children: [
+              {
+                key: "DentalRecord",
+                label: (
+                  <Link to="/DentalRecord">
+                    <div>บันทึกการรักษา</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "AddDentalRecord",
+                label: (
+                  <Link to="/AddDentalRecord">
+                    <div>เพิ่มการรักษา</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "stock",
+            label: "คลังวัสดุอุปกรณ์",
+            icon: <ProductOutlined />,
+            children: [
+              {
+                key: "equipment",
+                label: (
+                  <Link to="/Equipments">
+                    <div>อุปกรณ์</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "requisition",
+                label: (
+                  <Link to="/Requisitions">
+                    <div>รายการเบิก</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "restock",
+                label: (
+                  <Link to="/Restocks">
+                    <div>รายการเติม</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+        ]
+      : []),
+  ];
+  
+  
 
 
 

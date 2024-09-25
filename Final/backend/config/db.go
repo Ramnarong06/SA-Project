@@ -60,12 +60,13 @@ func SetupDatabase() {
 	db.FirstOrCreate(&TreatmentCrown, &entity.Treatment{TreatmentName: "ครอบฟัน"})
 	db.FirstOrCreate(&TreatmentFluorideApplication, &entity.Treatment{TreatmentName: "เคลือบฟลูออไรด์"})
 	// TStatus
-	TStatusPending := entity.Tstatus{TStatusName: "Pending"}
-	TStatusDone := entity.Tstatus{TStatusName: "Done"}
+	TStatusPending := entity.Tstatus{TStatusName: "รอดำเนินการ"}
+	TStatusDone := entity.Tstatus{TStatusName: "สำเร็จ"}
+	TStatusCancel := entity.Tstatus{TStatusName: "ยกเลิก"}
 
-	db.FirstOrCreate(&TStatusPending, &entity.Tstatus{TStatusName: "Pending"})
-	db.FirstOrCreate(&TStatusDone, &entity.Tstatus{TStatusName: "Done"})
-
+	db.FirstOrCreate(&TStatusPending, &entity.Tstatus{TStatusName: "รอดำเนินการ"})
+	db.FirstOrCreate(&TStatusDone, &entity.Tstatus{TStatusName: "สำเร็จ"})
+	db.FirstOrCreate(&TStatusCancel, &entity.Tstatus{TStatusName: "ยกเลิก"})
 	// Gender
 	GenderMale := entity.Gender{Sex : "ชาย"}
 	GenderFemale := entity.Gender{Sex : "หญิง"}
@@ -86,12 +87,10 @@ func SetupDatabase() {
 
 	//แผนกพนักงาน
 	JobPositionDentist := entity.JobPosition{Job: "ทันตแพทย์"}
-	JobPositionFinance := entity.JobPosition{Job: "เจ้าหน้าที่การเงิน"}
 	JobPositionPatientService := entity.JobPosition{Job: "เจ้าหน้าที่บริการคนไข้"}
 	JobPositionAdmin := entity.JobPosition{Job: "ผู้ดูแลระบบ"}
 
 	db.FirstOrCreate(&JobPositionDentist, &entity.JobPosition{Job: "ทันตแพทย์"})
-	db.FirstOrCreate(&JobPositionFinance, &entity.JobPosition{Job: "เจ้าหน้าที่การเงิน"})
 	db.FirstOrCreate(&JobPositionPatientService, &entity.JobPosition{Job: "เจ้าหน้าที่บริการคนไข้"})
 	db.FirstOrCreate(&JobPositionAdmin, &entity.JobPosition{Job: "ผู้ดูแลระบบ"})
 

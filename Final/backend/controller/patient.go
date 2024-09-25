@@ -85,14 +85,19 @@ func GetPatient(c *gin.Context) {
 }
 
 func DeletePatient(c *gin.Context) {
+    id := c.Param("id")
+    db := config.DB()
 
-	id := c.Param("id")
-	db := config.DB()
-	if tx := db.Exec("DELETE FROM patients WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Deleted successful"})
+    // ลบการนัดหมายที่เชื่อมโยงกับคนไข้ก่อน
+    db.Exec("DELETE FROM schedules WHERE patient_id = ?", id)
+
+    // ลบข้อมูลคนไข้
+    if tx := db.Exec("DELETE FROM patients WHERE id = ?", id); tx.RowsAffected == 0 {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "Deleted successful"})
 }
 
 // PATCH /patients

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, DatePicker, Select, message } from "antd";
-import { ClockCircleOutlined } from "@ant-design/icons";
+import { Form, Input, Button, DatePicker, Select, message, Modal  } from "antd";
+import { ClockCircleOutlined,ExclamationCircleOutlined  } from "@ant-design/icons";
 import { TreatmentsInterface } from "../../../interfaces/schedule/ITreatment.ts";
 import { SchedulesInterface } from "../../../interfaces/schedule/ISchedule.ts";
 import { GetTreatment, UpdateSchedule, GetScheduleById } from "../../../services/https/schedule/index.tsx";
@@ -48,16 +48,105 @@ function ScheduleEdit() {
       console.error("Error fetching schedule:", error);
     }
   };
-  
 
+  // ฟังก์ชันเปลี่ยน TstatusID เป็น 3
+  // const handleChangeStatus = async () => {
+  //   if (!schedule) return;
+    
+  //   const updatedValues: SchedulesInterface = {
+  //     ID:           schedule.ID,
+  //     Date:         schedule.Date,
+  //     PatientID:    schedule.PatientID,
+  //     TreatmentID:  schedule.TreatmentID,
+  //     TstatusID:    3,
+  //   };
+
+  //   let res = await UpdateSchedule(updatedValues);
+  //   console.log(res);
+
+  //   if (res && res.message === "Updated successful") {
+  //     messageApi.open({
+  //       type: "success",
+  //       content: "เปลี่ยนสถานะสำเร็จ",
+  //     });
+  //     setTimeout(() => {
+  //       navigate("/viewschedule");
+  //     }, 2000);
+  //   } else {
+  //     messageApi.open({
+  //       type: "error",
+  //       content: "เกิดข้อผิดพลาดในการเปลี่ยนสถานะ",
+  //     });
+  //   }
+  // };
+  const { confirm } = Modal;
+  const showConfirm = () => {
+    confirm({
+      title: 'ยืนยันการเปลี่ยนสถานะ!',
+      content: (
+        <>
+          คุณต้องการยกเลิกการนัดหมายนี้เป็น ใช่หรือไม่?
+          <br />
+        </>
+      ),
+      icon: <ExclamationCircleOutlined />,
+      okText: 'ยืนยัน',
+      cancelText: 'ยกเลิก',
+      okButtonProps: {
+        style: {
+          backgroundColor: '#42C2C2',
+          borderColor: '#42C2C2',
+          color: '#fff',
+        },
+      },
+      onOk() {
+        // เรียกใช้ฟังก์ชัน handleChangeStatus เมื่อผู้ใช้กดยืนยัน
+        handleChangeStatus();
+      },
+      onCancel() {
+        console.log('ยกเลิกการเปลี่ยนสถานะ');
+      },
+    });
+  };
   
+  // ฟังก์ชันเปลี่ยน TstatusID เป็น 3
+  const handleChangeStatus = async () => {
+    if (!schedule) return;
+  
+    const updatedValues: SchedulesInterface = {
+      ID: schedule.ID,
+      Date: schedule.Date,
+      PatientID: schedule.PatientID,
+      TreatmentID: schedule.TreatmentID,
+      TstatusID: 3,
+    };
+  
+    let res = await UpdateSchedule(updatedValues);
+    console.log(res);
+  
+    if (res && res.message === "Updated successful") {
+      messageApi.open({
+        type: "success",
+        content: "เปลี่ยนสถานะสำเร็จ",
+      });
+      setTimeout(() => {
+        navigate("/viewschedule");
+      }, 2000);
+    } else {
+      messageApi.open({
+        type: "error",
+        content: "เกิดข้อผิดพลาดในการเปลี่ยนสถานะ",
+      });
+    }
+  };
+
   const onFinish = async (values: SchedulesInterface) => {
     if (!schedule) return; 
     
     const updatedValues: SchedulesInterface = {
               
               ...values, // อัปเดตค่าที่ถูกกรอกใหม่
-              ID: schedule.ID, // ระบุ ID ของการนัดหมายที่ต้องการอัปเดต
+              ID: schedule.ID, 
               PatientID: schedule.PatientID,
               TstatusID: schedule.TstatusID
           };
@@ -151,6 +240,18 @@ function ScheduleEdit() {
           </Form.Item>
         </div>
 
+        {/* เพิ่มข้อความสีแดงสำหรับเปลี่ยนสถานะ */}
+        <Form.Item>
+          <p
+            className="change-status-text"
+            // onClick={handleChangeStatus}
+            onClick={showConfirm}
+            style={{ color: "red", cursor: "pointer"}}
+          >
+            ยกเลิกการนัดหมาย
+          </p>
+        </Form.Item>
+
         <Form.Item>
           <div className="form-actions">
             <Button type="primary" htmlType="submit" className="submit-button-schedule-create">
@@ -162,6 +263,17 @@ function ScheduleEdit() {
             </Button>
           </div>
         </Form.Item>
+        {/* เพิ่มปุ่มสีแดง */}
+        {/* <Form.Item>
+          <Button
+            type="default"
+            onClick={handleChangeStatus}
+            className="change-status-button"
+            style={{ backgroundColor: "red", color: "white" }}
+          >
+            เปลี่ยนสถานะเป็นเสร็จสิ้น
+          </Button>
+        </Form.Item> */}
       </Form>
       <Routes>
         <Route path="/viewschedule" element={<ViewSchedule />} />
