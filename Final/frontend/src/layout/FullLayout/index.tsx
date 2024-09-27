@@ -102,8 +102,9 @@ const App: React.FC = () => {
       label: "การเงิน",
       icon: <DollarOutlined />,
       children: [
-        { key: "savePayment", label: <Link to="/savePayment"><div>บันทึกชำระเงิน</div></Link> }, // savePayment
         { key: "paymentList", label: <Link to="/paymentList"><div>รอชำระเงิน</div></Link> },
+        { key: "savePayment", label: <Link to="/savePayment"><div>บันทึกชำระเงิน</div></Link> }, // savePayment
+        
       ],
     },
     treatment: {
