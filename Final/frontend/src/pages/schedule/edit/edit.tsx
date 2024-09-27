@@ -236,8 +236,7 @@ function ScheduleEdit() {
           >
             <DatePicker
               format="DD/MM/YYYY"
-              style={{ width: "48.5%", height: "40px", lineHeight: "40px" }}
-              // กำหนดวันที่ไม่สามารถเลือกได้
+              style={{ width: "100%", height: "40px", lineHeight: "40px" }}
               disabledDate={(current) => {
                 // ไม่สามารถเลือกวันที่ย้อนหลังได้
                 return current && current < dayjs().startOf("day");

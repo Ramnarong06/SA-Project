@@ -165,7 +165,7 @@ function ScheduleCreate() {
           >
             <DatePicker
               format="DD/MM/YYYY"
-              style={{ width: "48.5%", height: "40px", lineHeight: "40px" }}
+              style={{ width: "47.5%", height: "40px", lineHeight: "40px" }}
               // กำหนดวันที่ไม่สามารถเลือกได้
               disabledDate={(current) => {
                 // ไม่สามารถเลือกวันที่ย้อนหลังได้

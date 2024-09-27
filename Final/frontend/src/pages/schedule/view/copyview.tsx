@@ -31,7 +31,7 @@ const ScheduleView: React.FC = () => {
 
   // ฟังก์ชันสำหรับดึงข้อมูลนัดหมายตามวันที่ที่เลือก
   const fetchAppointments = async (date: Date) => {
-    const formattedDate = date.toISOString().split('T')[0];  // แปลงวันที่เป็นรูปแบบ YYYY-MM-DD จาก Fri Sep 27 2024 14:48:00 GMT+0700 (ฺBankong Time)
+    const formattedDate = date.toISOString().split('T')[0];  // แปลงวันที่เป็นรูปแบบ YYYY-MM-DD จาก Thu Sep 26 2024 19:08:26 GMT+0700 (เวลาอินโดจีน)
     const data = await GetSchedulesByDate(formattedDate);     // เรียก API เพื่อดึงข้อมูลนัดหมายตามวันที่
     console.log(data)
     if (data && data.length > 0) {

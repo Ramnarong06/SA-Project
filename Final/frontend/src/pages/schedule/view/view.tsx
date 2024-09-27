@@ -22,7 +22,7 @@ const ScheduleView: React.FC = () => {
   const fetchAppointments = async (date: Date) => {
     const formattedDate = date.toISOString().split('T')[0];  // แปลงวันที่เป็น YYYY-MM-DD
     const data = await GetSchedulesByDate(formattedDate);     // เรียก API
-    console.log(data)
+    console.log(date)
     if (data && data.length > 0) {
       setAppointments(data);  // อัปเดตข้อมูลนัดหมาย
     } else {
@@ -61,7 +61,13 @@ const ScheduleView: React.FC = () => {
   // };
 
 
-
+  const formatTel = (tel: string) => {
+    if (!tel || tel.length !== 10) {
+      return tel; // กรณีที่เบอร์โทรไม่ครบ 10 หลัก จะส่งคืนค่าเดิม
+    }
+  
+    return `${tel.substring(0, 3)}-${tel.substring(3, 6)}-${tel.substring(6)}`;
+  };
 
   return (
     
@@ -153,7 +159,7 @@ const ScheduleView: React.FC = () => {
                 
                 <List.Item.Meta
                     title={<span style={{ color: "#22225E" }}>{item.TreatmentName}</span>}  // เปลี่ยนสีเฉพาะ title
-                    description={`${item.FirstName} ${item.LastName} Tel.${item.Tel}`}  // แสดงทั้งชื่อจริงและนามสกุล
+                    description={`${item.FirstName} ${item.LastName} เบอร์ ${formatTel(item.Tel)}`}  // แสดงทั้งชื่อจริงและนามสกุล
                 />
 
               
