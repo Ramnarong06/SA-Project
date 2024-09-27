@@ -229,7 +229,7 @@ func SetupDatabase() {
 
 		JobPositionID: 1,
 		
-		Tel: "063-111-2222",
+		Tel: "0631112222",
  
 	}
 	EmployeeDoctor := &entity.Employee{
@@ -250,7 +250,7 @@ func SetupDatabase() {
 
 		JobPositionID: 1,
 		
-		Tel: "063-111-4444",
+		Tel: "0631114444",
  
 	}
  
