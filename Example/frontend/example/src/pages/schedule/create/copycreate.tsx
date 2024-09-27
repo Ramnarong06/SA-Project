@@ -69,7 +69,7 @@ function ScheduleCreate() {
       {contextHolder}
       <div className="header">
         <ClockCircleOutlined className="icon" />
-        <h2>นัดหมายผู้ป่วยใน</h2>
+        <h2>นัดหมายคนไข้ใน</h2>
       </div>
 
       <Form
@@ -124,7 +124,7 @@ function ScheduleCreate() {
         </div>
 
         <div className="patient-status">
-          <a href="#">สำหรับผู้ป่วยนอก</a>
+          <a href="#">สำหรับคนไข้นอก</a>
         </div>
 
         <Form.Item>

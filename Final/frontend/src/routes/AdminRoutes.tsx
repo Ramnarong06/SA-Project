@@ -223,6 +223,10 @@ const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
             },
           ],
         },
+       
+      {
+        path: "/",
+      }
 
       
     ],

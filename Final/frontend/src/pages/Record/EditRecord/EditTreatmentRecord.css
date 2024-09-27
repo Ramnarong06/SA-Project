@@ -11,7 +11,7 @@
 }
 
 header h1 {
-  font-size: 28px; /* Increased font size */
+  font-size: 24px; /* Increased font size */
   color: #22225E; /* Dark blue color */
   margin-bottom: 20px; /* Space below the header */
   display: flex;
@@ -48,22 +48,6 @@ header h1::before {
   color: #333;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 90%;
-  padding: 12px; /* Increased padding inside inputs */
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-top: 1px;
-  font-size: 16px; /* Increased font size inside inputs */
-  box-sizing: border-box;
-}
-
-textarea {
-  resize: vertical;
-}
-
 .form-buttons {
   display: flex;
   gap: 15px; /* More space between the buttons */
@@ -71,47 +55,7 @@ textarea {
   justify-content: flex-start;
 }
 
-.submit-button,
-.reset-button,
-.cancel-button {
-  width: 9%; /* กำหนดความกว้างของปุ่ม */
-  min-width: 50px; /* Buttons will size automatically based on text */
-  padding: 12px 25px; /* Increased padding to match larger buttons */
-  font-size: 14px; /* Larger font size for buttons */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Noto Sans Thai', sans-serif;
-}
-
-.submit-button {
-  background-color: #42C2C2; /* Original confirm button color */
-  color: white;
-  border-color: #42C2C2;
-  font-family: 'Noto Sans Thai', sans-serif;
-}
-
-.cancel-button {
-  background-color: #d9d9d9; /* Original cancel button background color */
-  color: #333;
-  border-color: #d9d9d9;
-  font-family: 'Noto Sans Thai', sans-serif;
-}
-
-.reset-button {
-  background-color: #ffcc00; /* Yellow reset button */
-  color: white;
-  border-color: #ffcc00;
-  font-family: 'Noto Sans Thai', sans-serif;
-}
 /* Add more margin below the form items to create space */
-.form-item {
-  margin-bottom: 28px; /* Increased margin to create more space */
-  font-family: 'Noto Sans Thai', sans-serif;
-  font-size: 16px;
-  font-weight: normal;
-}
-
 .form-item.description label,
 .form-item.date label {
   font-weight: normal; /* กำหนดให้เป็นตัวปกติสำหรับเฉพาะ description และ date */
@@ -122,9 +66,18 @@ textarea {
   margin-bottom: 28px; /* Increased margin between input fields */
 }
 
-/* Optional: Add hover effects for the buttons */
-.submit-button:hover,
-.reset-button:hover,
-.cancel-button:hover {
-  opacity: 0.9;
+.logo-container-center {
+  width: 89px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto; /* จัดให้อยู่ตรงกลางในแนวนอน */
+  margin-bottom: -10px;
+  margin-top: -10px;
+}
+
+.logo-image-center {
+  width: 100%;
+  height: auto;
 }

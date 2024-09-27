@@ -5,6 +5,9 @@ import { DentalRecordInterface } from "../../../interfaces/dental/IDentalRecord"
 import { Button, Spin, Descriptions } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import './DentalRecordDetails.css'; // เพิ่มสไตล์ของหน้า
+import new_logo from "../../../assets/new_logo.png";
+
+
 
 const DentalRecordDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // ดึง ID จาก URL
@@ -47,8 +50,11 @@ const DentalRecordDetails: React.FC = () => {
 
   return (
     <div className="dental-record-details"> {/* ใช้ class จาก CSS */}
+    <div className="logo-wrapper">
+  <img src={new_logo} alt="logo" className="logo-image" />
+</div>
       <header className="header">
-        <h1>รายละเอียดบันทึกการรักษา</h1>
+      <h3>รายละเอียดบันทึกการรักษา</h3>
         <Button
           onClick={() => navigate(-1)}
           className="button button-cancel"
@@ -65,26 +71,26 @@ const DentalRecordDetails: React.FC = () => {
   layout="horizontal" // ปรับเป็นแนวนอน
   column={2} // แสดงข้อมูล 2 คอลัมน์ในแต่ละแถว
 >
-  <Descriptions.Item label="RecordID">{dentalRecord.ID}</Descriptions.Item>
-  <Descriptions.Item label="Date">
+  <Descriptions.Item label="รหัสบันทึก">{dentalRecord.ID}</Descriptions.Item>
+  <Descriptions.Item label="วันที่รักษา">
     {new Date(dentalRecord.Date).toLocaleDateString('th-TH', { year: 'numeric', month: '2-digit', day: '2-digit' })}
   </Descriptions.Item>
-  <Descriptions.Item label="PatientID">{dentalRecord.PatientID}</Descriptions.Item>
-  <Descriptions.Item label="PatientName">
+  <Descriptions.Item label="รหัสคนไข้">{dentalRecord.PatientID}</Descriptions.Item>
+  <Descriptions.Item label="ชื่อคนไข้">
     {dentalRecord.Patient ? `${dentalRecord.Patient.FirstName} ${dentalRecord.Patient.LastName}` : "ไม่พบข้อมูล"}
   </Descriptions.Item>
-  <Descriptions.Item label="TreatmentID">{dentalRecord.TreatmentID}</Descriptions.Item>
-  <Descriptions.Item label="TreatmentName">
+  <Descriptions.Item label="รหัสการรักษา">{dentalRecord.TreatmentID}</Descriptions.Item>
+  <Descriptions.Item label="การรักษา">
     {dentalRecord.Treatment ? dentalRecord.Treatment.TreatmentName : "ไม่พบข้อมูล"}
   </Descriptions.Item>
-  <Descriptions.Item label="Fees">{dentalRecord.Fees}</Descriptions.Item>
-  <Descriptions.Item label="Description" style={{ width: '350px' }}>
+  <Descriptions.Item label="ค่ารักษา">{dentalRecord.Fees}</Descriptions.Item>
+  <Descriptions.Item label="รายละเอียดการรักษา" style={{ width: '350px' }}>
   <div className="description">{dentalRecord.Description}</div>
 </Descriptions.Item>
-  <Descriptions.Item label="Installment">{dentalRecord.Installment}</Descriptions.Item>
-  <Descriptions.Item label="Number of Installment">{dentalRecord.NumberOfInstallment}</Descriptions.Item>
-  <Descriptions.Item label="EmployeeID">{dentalRecord.EmployeeID}</Descriptions.Item>
-  <Descriptions.Item label="EmployeeName">
+  <Descriptions.Item label="ค่างวดทั้งหมด">{dentalRecord.Installment}</Descriptions.Item>
+  <Descriptions.Item label="จำนวนงวด">{dentalRecord.NumberOfInstallment}</Descriptions.Item>
+  <Descriptions.Item label="รหัสทันตแพทย์">{dentalRecord.EmployeeID}</Descriptions.Item>
+  <Descriptions.Item label="ชื่อทันตแพทย์">
     {dentalRecord.Employee ? `${dentalRecord.Employee.FirstName} ${dentalRecord.Employee.LastName}` : "ไม่พบข้อมูล"}
   </Descriptions.Item>
 </Descriptions>

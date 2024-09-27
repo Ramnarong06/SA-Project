@@ -71,7 +71,7 @@ async function GetSavePayment() {
 }
 
 // ฟังก์ชันสำหรับการสร้าง Payment ใหม่
-async function CreatePayment(data:PaymentInterface) {
+async function CreatePayment(data:any) {
   return await axios
     .post(`${apiUrl}/api/newPayment`,data, requestOptions)
     .then((res) => res)

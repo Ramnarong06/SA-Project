@@ -69,7 +69,7 @@
 //         key: "patients",
 //         label: (
 //           <Link to="/patients">
-//             <div>ผู้ป่วย</div>
+//             <div>คนไข้</div>
 //           </Link>
 //         ),
 //       },

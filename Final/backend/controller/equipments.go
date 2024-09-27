@@ -183,7 +183,7 @@ func GetLowStockEquipments(c *gin.Context) {
     }
 
     if len(equipments) == 0 {
-        c.JSON(http.StatusNoContent, gin.H{"message": "No equipments found with low stock"})
+        c.JSON(http.StatusNoContent, gin.H{"message": "ไม่พบอุปกรณ์ที่เหลือน้อย"})
         return
     }
 

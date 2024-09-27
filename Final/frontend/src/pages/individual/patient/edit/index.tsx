@@ -106,7 +106,7 @@ function PatientEdit() {
     <div>
       {contextHolder}
       <Card>
-        <h2> แก้ไขข้อมูลผู้ป่วย</h2>
+        <h2> แก้ไขข้อมูลคนไข้</h2>
         <Divider />
         <Form
           name="basic"
@@ -186,7 +186,7 @@ function PatientEdit() {
             
             <Col  xs={24} sm={24} md={24} lg={24} xl={3}>
               <Form.Item
-                label="ส่วนสูง"
+                label="ส่วนสูง(cm)"
                 name="Height"
                 rules={[
                   {
@@ -200,7 +200,7 @@ function PatientEdit() {
             </Col>
             <Col  xs={24} sm={24} md={24} lg={24} xl={3}>
               <Form.Item
-                label="น้ำหนัก"
+                label="น้ำหนัก(Kg)"
                 name="Weight"
                 rules={[
                   {

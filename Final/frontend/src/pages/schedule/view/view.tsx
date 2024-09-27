@@ -10,8 +10,8 @@ import new_logo from "../../../assets/stock/new_logo.png";
 import check from '../../../assets/schedule/check.gif'
 
 const ScheduleView: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [appointments, setAppointments] = useState<any[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());      // เก็บค่าวันที่เลือกใน box ปฎิทิน
+  const [appointments, setAppointments] = useState<any[]>([]);                    // เก็บข้อมูลการนัดหมายของวันที่เลือก
   const [messageApi, contextHolder] = message.useMessage();
   //
   const [UpdateId, setUpdateId] = useState<Number>();
@@ -42,23 +42,23 @@ const ScheduleView: React.FC = () => {
   };
 
 
-  const Finish = async (values: SchedulesInterface) => {
-    let res = await UpdateSchedule(values); // ส่งค่า values ที่แก้ไขแล้ว
-    if (res) {
-      messageApi.open({
-        type: "success",
-        content: res.message,
-      });
-      setTimeout(function () {
-        navigate("/viewschedule/schedulecreate");
-      }, 2000);
-    } else {
-      messageApi.open({
-        type: "error",
-        content: res.message,
-      });
-    }
-  };
+  // const Finish = async (values: SchedulesInterface) => {
+  //   let res = await UpdateSchedule(values); // ส่งค่า values ที่แก้ไขแล้ว
+  //   if (res) {
+  //     messageApi.open({
+  //       type: "success",
+  //       content: res.message,
+  //     });
+  //     setTimeout(function () {
+  //       navigate("/viewschedule/schedulecreate");
+  //     }, 2000);
+  //   } else {
+  //     messageApi.open({
+  //       type: "error",
+  //       content: res.message,
+  //     });
+  //   }
+  // };
 
 
 

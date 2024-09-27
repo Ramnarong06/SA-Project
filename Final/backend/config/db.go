@@ -46,19 +46,24 @@ func SetupDatabase() {
 	
 
 	// Treatment
+    TreatmentTeethExamination := entity.Treatment{TreatmentName: "ตรวจฟัน"}
     TreatmentCleaning := entity.Treatment{TreatmentName: "ขูดหินปูน"}
 	TreatmentFillTeeth := entity.Treatment{TreatmentName: "อุดฟัน"}
 	TreatmentPullTooth := entity.Treatment{TreatmentName: "ถอนฟัน"}
+	TreatmentToothImpacdtionRemoval := entity.Treatment{TreatmentName: "ผ่าฟันคุด"}
 	TreatmentRootCanalTherapy := entity.Treatment{TreatmentName: "รักษารากฟัน"}
 	TreatmentCrown := entity.Treatment{TreatmentName: "ครอบฟัน"}
 	TreatmentFluorideApplication := entity.Treatment{TreatmentName: "เคลือบฟลูออไรด์"}
 
+	db.FirstOrCreate(&TreatmentTeethExamination, &entity.Treatment{TreatmentName: "ตรวจฟัน"})
     db.FirstOrCreate(&TreatmentCleaning, &entity.Treatment{TreatmentName: "ขูดหินปูน"})
     db.FirstOrCreate(&TreatmentFillTeeth, &entity.Treatment{TreatmentName: "อุดฟัน"})
     db.FirstOrCreate(&TreatmentPullTooth, &entity.Treatment{TreatmentName: "ถอนฟัน"})
-	db.FirstOrCreate(&TreatmentRootCanalTherapy, &entity.Treatment{TreatmentName: "รักษารากฟัน"})
+	db.FirstOrCreate(&TreatmentRootCanalTherapy, &entity.Treatment{TreatmentName: "ผ่าฟันคุด"})
+	db.FirstOrCreate(&TreatmentToothImpacdtionRemoval, &entity.Treatment{TreatmentName: "รักษารากฟัน"})
 	db.FirstOrCreate(&TreatmentCrown, &entity.Treatment{TreatmentName: "ครอบฟัน"})
 	db.FirstOrCreate(&TreatmentFluorideApplication, &entity.Treatment{TreatmentName: "เคลือบฟลูออไรด์"})
+
 	// TStatus
 	TStatusPending := entity.Tstatus{TStatusName: "รอดำเนินการ"}
 	TStatusDone := entity.Tstatus{TStatusName: "สำเร็จ"}
@@ -145,8 +150,8 @@ func SetupDatabase() {
 	})
 
 	Patient2 := &entity.Patient{
-		FirstName: 		"รามณรงค์",
-		LastName:  		"พันธเดช",
+		FirstName: 		"ธนภูมิ",
+		LastName:  		"กินอิ่ม",
 		Birthday:   	dob,
 		Weight:   		66,
 		Height:  		176,
@@ -157,8 +162,8 @@ func SetupDatabase() {
 		Tel:			"1111111111",
 	}
 	db.FirstOrCreate(&Patient2, entity.Patient{
-		FirstName: "รามณรงค์",
-		LastName:  "พันธเดช",
+		FirstName: "ธนภูมิ",
+		LastName:  "กินอิ่ม",
 	})
 	
 	
@@ -177,7 +182,7 @@ func SetupDatabase() {
        	Email:     		"sa@gmail.com",
        	Password:  		hashedPassword,
        	GenderID:  		1,
-		JobPositionID:  1,
+		JobPositionID:  3,
 	}
 
 	db.FirstOrCreate(Employee1, &entity.Employee{
@@ -195,7 +200,7 @@ func SetupDatabase() {
        	Email:     		"sa2@gmail.com",
        	Password:  		hashedPassword2,
        	GenderID:  		1,
-		JobPositionID:  1,
+		JobPositionID:  2,
 	}
 
 	db.FirstOrCreate(Employee2, &entity.Employee{
@@ -243,7 +248,7 @@ func SetupDatabase() {
  
 		GenderID:  2,
 
-		JobPositionID: 2,
+		JobPositionID: 1,
 		
 		Tel: "063-111-4444",
  
@@ -321,4 +326,77 @@ func SetupDatabase() {
     	Quantity:      10,
 	}
 	db.FirstOrCreate(&equipment, newEquipment)
+
+	//
+		//อุปกรณ์
+		equipment1 := entity.Equipments{
+			EquipmentName: "Orthodontic Wires (ลวดจัดฟัน)",
+			Unit:          "ม้วน",
+			Cost:          400.66,
+			Quantity:      96,
+		}
+		db.FirstOrCreate(&equipment1, entity.Equipments{
+			EquipmentName: "Orthodontic Wires (ลวดจัดฟัน)",
+		})
+	
+		equipment2 := entity.Equipments{
+			EquipmentName: "Cheek Retractors (แผ่นกันลิ้น)",
+			Unit:          "แพ็ค",
+			Cost:          301.56,
+			Quantity:      80,
+		}
+		db.FirstOrCreate(&equipment2, entity.Equipments{
+			EquipmentName: "Cheek Retractors (แผ่นกันลิ้น)",
+		})
+	
+		//เบิก
+		// แปลงสตริงของวันที่และเวลาให้เป็น time.Time
+		customTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-09-27 19:00:09")
+		customTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-09-27 19:00:29")
+	
+		requisition1 := entity.Requisitions{
+			RequisitionQuantity: 7,
+			Time:                customTime1,
+			Note:                "ใช้เปลี่ยน",
+			EquipmentID:         2,
+			EmployeeID:          1,
+		}
+		db.FirstOrCreate(&requisition1, entity.Requisitions{
+			Time: customTime1,
+		})
+	
+		requisition2 := entity.Requisitions{
+			RequisitionQuantity: 6,
+			Time:                customTime2,
+			Note:                "",
+			EquipmentID:         1,
+			EmployeeID:          2,
+		}
+		db.FirstOrCreate(&requisition2, entity.Requisitions{
+			Time: customTime2,
+		})
+	
+		//เติม
+		customTime3, _ := time.Parse("2006-01-02 15:04:05", "2024-08-15 08:30:09")
+		customTime4, _ := time.Parse("2006-01-02 15:04:05", "2024-08-15 08:30:29")
+	
+		restock1 := entity.Restocks{
+			RestockQuantity: 300,
+			ReceivingDate:   customTime3,
+			EquipmentID:     1,
+			EmployeeID:      1,
+		}
+		db.FirstOrCreate(&restock1, entity.Restocks{
+			ReceivingDate: customTime3,
+		})
+	
+		restock2 := entity.Restocks{
+			RestockQuantity: 400,
+			ReceivingDate:   customTime4,
+			EquipmentID:     2,
+			EmployeeID:      2,
+		}
+		db.FirstOrCreate(&restock2, entity.Restocks{
+			ReceivingDate: customTime4,
+		})
 }

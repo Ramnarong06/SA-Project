@@ -150,7 +150,7 @@ func RestockEquipment(c *gin.Context) {
     results := db.First(&equipment, restock.EquipmentID)
 
     if results.Error != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
+        c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบอุปกรณ์"})
         return
     }
 
@@ -159,14 +159,14 @@ func RestockEquipment(c *gin.Context) {
 
     // บันทึกการเปลี่ยนแปลงในตาราง equipments
     if err := db.Save(&equipment).Error; err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update equipment quantity"})
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "ไม่สามารถอัปเดตจำนวนอุปกรณ์ได้"})
         return
     }
 
     // เพิ่มข้อมูลการเติมลงในตาราง restocks
     restock.ReceivingDate = time.Now() // กำหนดวันที่เติมเป็นเวลาปัจจุบัน
     if err := db.Create(&restock).Error; err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create restock record"})
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "เกิดข้อผิดพลาด"})
         return
     }
 

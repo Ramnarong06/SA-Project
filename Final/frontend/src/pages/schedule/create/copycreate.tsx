@@ -17,7 +17,7 @@ function ScheduleCreate() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [treatments, setTreatments] = useState<TreatmentsInterface[]>([]);
-  const [patients, setPatients] = useState<{ value: string; label: string }[]>([]); // เพิ่ม state สำหรับผู้ป่วย
+  const [patients, setPatients] = useState<{ value: string; label: string }[]>([]); // เพิ่ม state สำหรับคนไข้
   const [messageApi, contextHolder] = message.useMessage();
 
   // ฟังก์ชันดึงข้อมูลการรักษา
@@ -32,7 +32,7 @@ function ScheduleCreate() {
     }
   };
 
-  // ฟังก์ชันดึงข้อมูลผู้ป่วยจาก backend
+  // ฟังก์ชันดึงข้อมูลคนไข้จาก backend
   const getPatients = async () => {
     try {
       let res = await GetPatients(); // เรียกใช้ service ที่ดึงข้อมูลจาก API
@@ -71,7 +71,7 @@ function ScheduleCreate() {
 
   useEffect(() => {
     getTreatment();
-    getPatients(); // เรียก getPatients เพื่อดึงข้อมูลผู้ป่วยจาก backend
+    getPatients(); // เรียก getPatients เพื่อดึงข้อมูลคนไข้จาก backend
   }, []);
 
   const onFinishFailed = (errorInfo: any) => {
@@ -87,7 +87,7 @@ function ScheduleCreate() {
       {contextHolder}
       <div className="headercreateschedule">
         <ClockCircleOutlined className="iconcreate" />
-        <h2>นัดหมายผู้ป่วยใน</h2>
+        <h2>นัดหมายคนไข้ใน</h2>
       </div>
 
       <Form
@@ -106,7 +106,7 @@ function ScheduleCreate() {
           >
             <Select
               showSearch
-              placeholder="ค้นหาเบอร์โทรหรือชื่อผู้ป่วย"
+              placeholder="ค้นหาเบอร์โทรหรือชื่อคนไข้"
               optionFilterProp="label" // ฟิลเตอร์ด้วย label (ค้นหาด้วยชื่อนามสกุล)
               options={patients} // ใช้ข้อมูล patients ที่ดึงมาจาก backend
               style={{ width: "100%", height: "40px", lineHeight: "40px" }}
@@ -149,7 +149,7 @@ function ScheduleCreate() {
 
         <div className="patient-status">
           <Link to="/patient/create">
-            สำหรับผู้ป่วยนอก
+            สำหรับคนไข้นอก
           </Link>
         </div>
 

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, DatePicker, Select, message } from "antd";
+import { Form, Input, Button, DatePicker, Select, message, Modal} from "antd";
 import { TreatmentsInterface } from "../../../interfaces/dental/ITreatment";
 import { GetTreatment, GetPatients } from "../../../services/https/dentalrecord/index";
 import { useNavigate } from "react-router-dom";
 import { PatientsInterface } from "../../../interfaces/dental/IPatient";
 import './AddDentalRecord.css';
 import { GetLoggedInEmployee } from "../../../services/https/login/index.tsx";
+import new_logo from "../../../assets/new_logo.png";
+
 
 const { Option } = Select;
 
@@ -24,6 +26,7 @@ function AddDentalRecord() {
   const [messageApi, contextHolder] = message.useMessage();
   const [employeeName, setEmployeeName] = useState<string>(""); // เก็บชื่อ Employee ที่ล็อกอิน
   const [employeeId, setEmployeeId] = useState<number | null>(null); // เพิ่ม state สำหรับ employee ID
+  const [isModalVisible, setIsModalVisible] = useState(false); // สถานะ Modal
 
   // ดึงข้อมูลพนักงานที่ล็อกอิน
   useEffect(() => {
@@ -51,7 +54,7 @@ function AddDentalRecord() {
     }
   };
 
-  // ดึงข้อมูลผู้ป่วย
+  // ดึงข้อมูลคนไข้
   const getPatients = async () => {
     try {
       const res = await GetPatients();
@@ -121,11 +124,30 @@ function AddDentalRecord() {
         content: 'เกิดข้อผิดพลาดในการติดต่อกับเซิร์ฟเวอร์',
       });
     }
+    setTimeout(function () {
+      navigate("/DentalRecord");
+    }, 2000);
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    form.submit(); // เรียกใช้งาน onFinish เมื่อกดยืนยัน
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   return (
     <div className="add-treatment-record">
       {contextHolder}
+      <div className="logo-container-center">
+        <img src={new_logo} alt="logo" className="logo-image-center" />
+      </div>
       <header>
         <h1>เพิ่มบันทึกการรักษา</h1>
       </header>
@@ -138,13 +160,13 @@ function AddDentalRecord() {
         <div className="form-row">
           <div className="form-group">
             <Form.Item
-              label="ชื่อผู้ป่วย"
+              label="ชื่อคนไข้"
               name="patientID"
               rules={[{ required: true, message: "กรุณากรอก" }]}
             >
               <Select
                 showSearch
-                placeholder="ค้นหาเบอร์โทรหรือชื่อผู้ป่วย"
+                placeholder="ค้นหาเบอร์โทรหรือชื่อคนไข้"
                 optionFilterProp="label"
                 options={patients}
                 style={{ width: "100%", height: "40px", lineHeight: "40px" }}
@@ -233,12 +255,23 @@ function AddDentalRecord() {
         
         <Form.Item>
           <div className="form-buttons">
-            <Button type="primary" htmlType="submit" className="submit-button">ยืนยัน</Button>
+            <Button type="primary" onClick={showModal} className="submit-button">ยืนยัน</Button>
             <Button htmlType="button" onClick={() => form.resetFields()} className="reset-button">รีเซต</Button>
             <Button htmlType="button" onClick={() => navigate(-1)} className="cancel-button">ยกเลิก</Button>
           </div>
         </Form.Item>
       </Form>
+
+      <Modal
+        title="ยืนยันการบันทึกการรักษา"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="ยืนยัน"
+        cancelText="ยกเลิก"
+      >
+        <p>คุณต้องการบันทึกข้อมูลการรักษาหรือไม่?</p>
+      </Modal>
     </div>
   );
 }

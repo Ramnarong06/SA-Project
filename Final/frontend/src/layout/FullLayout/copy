@@ -16,6 +16,7 @@ import { Avatar,Layout, Menu, Button, message, Dropdown } from "antd";
 import CreateSchedule from "../../pages/schedule/create/create.tsx";
 import ViewSchedule from "../../pages/schedule/view/view.tsx";
 import EditSchedule from "../../pages/schedule/edit/edit.tsx";
+import RecordSchedule from "../../pages/schedule/record/record.tsx";
 
 // storage
 import CreateEq from "../../pages/storage/CreateEq/CreateEq";
@@ -43,159 +44,336 @@ import SavePayment from '../../pages/payment/SavePayment/SavePayment.tsx';
 import Dashbord from '../../pages/payment/dashbord/dashbord.tsx';
 
 //Dental
+
 import DentalRecord from "../../pages/Record/DentalRecord";
 import Customer from "../../pages/Record/EditRecord";
-import CustomerCreate from "../../pages/Record/EditRecord";
-import CustomerEdit from "../../pages/Record/EditRecord";
+import EditRecord from "../../pages/Record/EditRecord";
 import AddDentalRecord from "../../pages/Record/AddDentalRecord";
+import DentalRecordDetails from "../../pages/Record/DentalRecordDetails";
+
 
 // login
 // Import service สำหรับดึงข้อมูลพนักงานที่ล็อกอิน
 import { GetLoggedInEmployee } from "../../services/https/login/index.tsx";
 
 const { Header, Content, Sider } = Layout;
-
-const items = [
-  {
-    key: "register",
-    label: "ทะเบียน",
-    icon: <UserOutlined />,
-    children: [
-      {
-        key: "employee",
-        label: (
-          <Link to="/employee">
-            <div>พนักงาน</div>
-          </Link>
-        ),
-      },
-      {
-        key: "patients",
-        label: (
-          <Link to="/patient">
-            <div>ผู้ป่วย</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-  
-  {
-    key: "Schedule",
-    label: "นัดหมาย",
-    icon: <CalendarOutlined />,
-    children: [
-      {
-        key: "Schedule",
-        label: (
-          <Link to="/viewschedule">
-            <div>กำหนดการ</div>
-          </Link>
-        ),
-      },
-      {
-        key: "CreateSchedule",
-        label: (
-          <Link to="/viewschedule/schedulecreate">
-            <div>สร้างการนัดหมาย</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-  
-  {
-    key: "finance",
-    label: "การเงิน",
-    icon: <DollarOutlined />,
-    children: [
-      {
-        key: "paymentList",
-        label: (
-          <Link to="/paymentList">
-            <div>รอชำระเงิน</div>
-          </Link>
-        ),
-      },
-      {
-        key: "savePayment",
-        label: (
-          <Link to="/savePayment">
-            <div>บันทึกชำระเงิน</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-  {
-    key: "stock",
-    label: "คลังวัสดุอุปกรณ์",
-    icon: <ProductOutlined />,
-    children: [
-      {
-        key: "equipment",
-        label: (
-          <Link to="/Equipments">
-            <div>อุปกรณ์</div>
-          </Link>
-        ),
-      },
-      {
-        key: "requisition",
-        label: (
-          <Link to="/Requisitions">
-            <div>รายการเบิก</div>
-          </Link>
-        ),
-      },
-      {
-        key: "restock",
-        label: (
-          <Link to="/Restocks">
-            <div>รายการเติม</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-  {
-    key: "treatment",
-    label: "การรักษา",
-    icon: <HeartOutlined />,
-    children: [
-      {
-        key: "DentalRecord",
-        label: (
-          <Link to="/DentalRecord">
-            <div>บันทึกการรักษา</div>
-          </Link>
-        ),
-      },
-      {
-        key: "AddDentalRecord",
-        label: (
-          <Link to="/AddDentalRecord">
-            <div>เพิ่มการรักษา</div>
-          </Link>
-        ),
-      },
-    ],
-  },
-];
-
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false); // สำหรับปิด/เปิดเมนู
   const [showText, setShowText] = useState(true); // สำหรับแสดง/ซ่อนข้อความข้างๆปุ่ม
   const [messageApi, contextHolder] = message.useMessage();
 
   const [employeeName, setEmployeeName] = useState(""); // เก็บชื่อ Employee ที่ล็อกอิน
-  const [employeePositionID, setEmployeePositionID] = useState("");
+  const [employeePositionID, setEmployeePositionID] = useState<number | null>(null); // แก้ให้เป็น number หรือ null
 
 
   const toggleMenu = () => {
     setCollapsed(!collapsed); // เปลี่ยนสถานะ collapsed (เปิด/ปิดเมนู)
     setShowText(!showText); // แสดงหรือซ่อนข้อความข้างๆ ปุ่ม
   };
+
+  const items = [
+    ...(employeePositionID === 1
+      ? [
+        {
+          key: "register",
+          label: "ทะเบียน",
+          icon: <UserOutlined />,
+          children: [
+            {
+              key: "patients",
+              label: (
+                <Link to="/patient">
+                  <div>คนไข้</div>
+                </Link>
+              ),
+            },
+          ],
+        },
+          {
+            key: "finance",
+            label: "การเงิน",
+            icon: <DollarOutlined />,
+            children: [
+              {
+                key: "savePayment",
+                label: (
+                  <Link to="/savePayment">
+                    <div>บันทึกชำระเงิน</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "treatment",
+            label: "การรักษา",
+            icon: <HeartOutlined />,
+            children: [
+              {
+                key: "DentalRecord",
+                label: (
+                  <Link to="/DentalRecord">
+                    <div>บันทึกการรักษา</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "AddDentalRecord",
+                label: (
+                  <Link to="/AddDentalRecord">
+                    <div>เพิ่มการรักษา</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+        ]
+      : []),
+    ...(employeePositionID === 2
+      ? [
+          {
+            key: "register",
+            label: "ทะเบียน",
+            icon: <UserOutlined />,
+            children: [
+              {
+                key: "patients",
+                label: (
+                  <Link to="/patient">
+                    <div>คนไข้</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "Schedule",
+            label: "นัดหมาย",
+            icon: <CalendarOutlined />,
+            children: [
+              {
+                key: "Schedule",
+                label: (
+                  <Link to="/viewschedule">
+                    <div>กำหนดการ</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "ScheduleCreate",
+                label: (
+                  <Link to="/viewschedule/schedulecreate">
+                    <div>สร้างการนัดหมาย</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "ScheduleRecord",
+                label: (
+                  <Link to="/viewschedule/schedulerecord">
+                    <div>ประวัตินัดหมาย</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "finance",
+            label: "การเงิน",
+            icon: <DollarOutlined />,
+            children: [
+              {
+                key: "paymentList",
+                label: (
+                  <Link to="/paymentList">
+                    <div>รอชำระเงิน</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "savePayment",
+                label: (
+                  <Link to="/savePayment">
+                    <div>บันทึกชำระเงิน</div>
+                  </Link>
+                ),
+              }
+            ],
+          },
+          {
+            key: "stock",
+            label: "คลังวัสดุอุปกรณ์",
+            icon: <ProductOutlined />,
+            children: [
+              {
+                key: "equipment",
+                label: (
+                  <Link to="/Equipments">
+                    <div>อุปกรณ์</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "requisition",
+                label: (
+                  <Link to="/Requisitions">
+                    <div>รายการเบิก</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "restock",
+                label: (
+                  <Link to="/Restocks">
+                    <div>รายการเติม</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+        ]
+      : []),
+    ...(employeePositionID === 3
+      ? [
+        
+          {
+            key: "register",
+            label: "ทะเบียน",
+            icon: <UserOutlined />,
+            children: [
+              {
+                key: "employee",
+                label: (
+                  <Link to="/employee">
+                    <div>พนักงาน</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "patients",
+                label: (
+                  <Link to="/patient">
+                    <div>คนไข้</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "Schedule",
+            label: "นัดหมาย",
+            icon: <CalendarOutlined />,
+            children: [
+              {
+                key: "Schedule",
+                label: (
+                  <Link to="/viewschedule">
+                    <div>กำหนดการ</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "ScheduleCreate",
+                label: (
+                  <Link to="/viewschedule/schedulecreate">
+                    <div>สร้างการนัดหมาย</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "ScheduleRecord",
+                label: (
+                  <Link to="/viewschedule/schedulerecord">
+                    <div>ประวัตินัดหมาย</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "finance",
+            label: "การเงิน",
+            icon: <DollarOutlined />,
+            children: [
+              {
+                key: "paymentList",
+                label: (
+                  <Link to="/paymentList">
+                    <div>รอชำระเงิน</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "savePayment",
+                label: (
+                  <Link to="/savePayment">
+                    <div>บันทึกชำระเงิน</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "treatment",
+            label: "การรักษา",
+            icon: <HeartOutlined />,
+            children: [
+              {
+                key: "DentalRecord",
+                label: (
+                  <Link to="/DentalRecord">
+                    <div>บันทึกการรักษา</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "AddDentalRecord",
+                label: (
+                  <Link to="/AddDentalRecord">
+                    <div>เพิ่มการรักษา</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+          {
+            key: "stock",
+            label: "คลังวัสดุอุปกรณ์",
+            icon: <ProductOutlined />,
+            children: [
+              {
+                key: "equipment",
+                label: (
+                  <Link to="/Equipments">
+                    <div>อุปกรณ์</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "requisition",
+                label: (
+                  <Link to="/Requisitions">
+                    <div>รายการเบิก</div>
+                  </Link>
+                ),
+              },
+              {
+                key: "restock",
+                label: (
+                  <Link to="/Restocks">
+                    <div>รายการเติม</div>
+                  </Link>
+                ),
+              },
+            ],
+          },
+        ]
+      : []),
+  ];
+  
+  
+
+
 
   const Logout = () => {
     localStorage.clear();
@@ -249,7 +427,7 @@ const App: React.FC = () => {
     // เรียกใช้ service เพื่อดึงข้อมูลพนักงานที่ล็อกอิน
     GetLoggedInEmployee().then((res) => {
       if (res && res.employee) {
-        setEmployeeName(res.employee.FirstName + " " + res.employee.LastName+ " " + res.employee.JobPositionID); // สมมติว่ามี FirstName และ LastName
+        setEmployeeName(res.employee.FirstName + " " + res.employee.LastName+ " "); // สมมติว่ามี FirstName และ LastName
         setEmployeePositionID(res.employee.JobPositionID);
       } else {
         setEmployeeName("Guest"); // ถ้าไม่มีข้อมูล
@@ -331,18 +509,19 @@ const App: React.FC = () => {
           {/* แสดงชื่อ Employee ที่ล็อกอิน */}
           <div></div>
 
-          <div>
+          <div style= {{marginRight: "20px"}}>
             {/* Avatar อยู่ใน Dropdown */}
             <Dropdown overlay={menu} placement="bottomRight">
               <Avatar
                 style={{ cursor: "pointer" }}
                 size="large"
                 icon={<UserOutlined />}
+                
               />
             </Dropdown>
           </div>
         </Header>
-          <Content style={{ margin: "0 16px" }}>
+          <Content style={{ padding: "0 16px", backgroundColor: "#ffff"  }}>
             <div style={{ padding: 24, background: "#fff", minHeight: "100%" }}>
               <Routes>
                 
@@ -355,16 +534,22 @@ const App: React.FC = () => {
                     <Route path="/viewschedule" element={<ViewSchedule />} />
                     <Route path="/viewschedule/schedulecreate" element={<CreateSchedule />} />
                     <Route path="/viewschedule/editschedule/edit/:id" element={<EditSchedule />} />
+                    <Route path="/viewschedule/schedulerecord" element={<RecordSchedule />} />
                   </>
                 
                 
                 
                 {/* ระบบ Equipment */}
-                <Route path="/CreateEq" element={<CreateEq />} />
-                <Route path="/EditEq" element={<EditEq />} />
                 <Route path="/Equipments" element={<Equipments />} />
+                <Route path="/CreateEq" element={<CreateEq />} />
+                <Route path="/Equipments/CreateEq" element={<CreateEq />} />
+                <Route path="/EditEq" element={<EditEq />} />
+                <Route path="/Equipments/EditEq/:id" element={<EditEq />} />
                 <Route path="/Requisitions" element={<Requisitions />} />
+                <Route path="/Equipments/RequestEq/:id" element={<RequestEq />} />
                 <Route path="/LittleEq" element={<LittleEq />} />
+                <Route path="/Equipments/LittleEq" element={<LittleEq />} />
+                <Route path="/Equipments/LittleEq/AddEq/:id" element={<AddEq/>} />
                 <Route path="/AddEq" element={<AddEq />} />
                 <Route path="/RequestEq" element={<RequestEq />} />
                 <Route path="/Restocks" element={<Restocks />} />
@@ -373,7 +558,7 @@ const App: React.FC = () => {
                 <Route path="/EditEq/:id" element={<EditEq />} />
 
                 //
-                <Route path="/" element={<div>Manage Patient Records</div>} />
+                <Route path="/" element={<div>Manage Patient Records2</div>} />
                 <Route path="/customer" element={<div>Manage Patient Records</div>} />
                 <Route path="/employee/create" element={<EmployeeCreate/>} />
                 <Route path="/employee/edit/:id" element={<EmployeeEdit/>} />
@@ -384,17 +569,21 @@ const App: React.FC = () => {
                 <Route path="/patient/create" element={<PatientCreate/>} />
                 <Route path="/patient/edit/:id" element={<PatientEdit/>} />
                 //
+                {/*ระบบ payment*/}
                 <Route path="/dashbord" element={<Dashbord />} />{/*แก้ตรงนี้วันที่11/9/67*/}
-                <Route path="/paymentPage/:id" element={<PaymentPage />} />{/*แก้ตรงนี้วันที่11/9/67*/}
                 <Route path="/paymentList" element={<PaymentList />} />
                 <Route path="/buttonPay" element={<PaymentList />} />
+                <Route path="/paymentList/paymentPage/:id" element={<PaymentPage/>} />{/*แก้ตรงนี้วันที่11/9/67*/}
+          
                 <Route path="/savePayment" element={<SavePayment />} />
                 //
                 <Route path="/DentalRecord" element={<DentalRecord />} />
                 <Route path="/EditRecord" element={<Customer />} />
-                <Route path="/EditRecord" element={<CustomerCreate />} />
-                <Route path="/EditRecord/:id" element={<CustomerEdit />} />
+                <Route path="/EditRecord" element={<EditRecord />} />
+                <Route path="/EditRecord/:id" element={<EditRecord />} />
                 <Route path="/AddDentalRecord" element={<AddDentalRecord />} />
+                <Route path="/DentalRecordDetails/:id" element={<DentalRecordDetails />} />
+                
                 //
                 <Route path="/employee" element={<Employee />} />
                 <Route path="/patient" element={<Patient />} />

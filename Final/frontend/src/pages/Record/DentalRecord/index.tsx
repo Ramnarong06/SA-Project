@@ -7,6 +7,9 @@ import { PatientsInterface } from "../../../interfaces/dental/IPatient";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import './DentalRecord.css';
+import document from '../../../assets/document.gif';
+import new_logo from "../../../assets/new_logo.png";
+
 
 const DentalRecord: React.FC = () => {
   const navigate = useNavigate();
@@ -44,7 +47,7 @@ const DentalRecord: React.FC = () => {
         setPatients(res);
       }
     } catch (error) {
-      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ป่วย");
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูลคนไข้");
     }
   };
 
@@ -115,13 +118,16 @@ const truncateDescription = (description: string) => {
 
   return (
     <div className="treatment-records">
+      <div className="centered-logo-wrapper">
+  <img src={new_logo} alt="logo" className="centered-logo-image" />
+</div>
       <header className="header">
-        <h1>บันทึกการรักษา</h1>
+        <img src={document} alt="logo" style={{width: '60px'}} /><h2>บันทึกการรักษา</h2>
         <div className="controls">
           <div className="controls-group">
             <Select
               showSearch
-              placeholder="ค้นหาเบอร์โทรหรือชื่อผู้ป่วย"
+              placeholder="ค้นหาเบอร์โทรหรือชื่อคนไข้"
               style={{ width: 250, height: "40px", marginRight: 40 }}
               onChange={handlePatientChange}
               allowClear
@@ -155,12 +161,12 @@ const truncateDescription = (description: string) => {
       <table className="records-table" >
         <thead>
           <tr>
-            <th>RecordID</th>
-            <th>PatientID</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Fees</th>
-            <th>TreatmentID</th>
+            <th>รหัสบันทึก</th>
+            <th>รหัสคนไข้</th>
+            <th>วันที่รักษา</th>
+            <th>รายละเอียดการรักษา</th>
+            <th>ค่ารักษา</th>
+            <th>รหัสการรักษา</th>
             <th></th>
           </tr>
         </thead>
@@ -171,7 +177,7 @@ const truncateDescription = (description: string) => {
               <td>{record.PatientID}</td>
               <td>{dayjs(record.Date).format("DD-MM-YYYY")}</td>
               <td>{truncateDescription(record.Description)}</td>
-              <td>{record.Fees}</td>
+              <td>{record.Fees.toFixed(2)}</td>
               <td>{record.TreatmentID}</td>
               <td>
               <Button

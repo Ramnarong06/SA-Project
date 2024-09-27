@@ -107,7 +107,7 @@ const items: MenuItem[] = [
         key: 'patient',
         label: (
           <Link to="/editschedule/edit/:id">
-            ผู้ป่วย
+            คนไข้
           </Link>
         ),
       },

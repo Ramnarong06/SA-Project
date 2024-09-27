@@ -12,4 +12,5 @@ export interface SavePaymentInterface{
     StatusName?:string;
     Efirst_name?:string;
     Elast_name?:string;
+    Date2?:string;
 }

@@ -11,14 +11,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
-.header h1 {
-    font-size: 28px;
+.header h3 {
+    font-size: 30px;
     color: #333;
     font-weight: bold;
 }
+.header h3::before {
+    content: '🏥'; /* อีโมจิ */
+    font-size: 45px; /* เพิ่มขนาดฟอนต์ (และขนาดของอีโมจิ) */
+    margin-right: 8px; /* เว้นระยะห่างระหว่างไอคอนและข้อความ */
+  }
+  
 
 .form-container {
     background-color: white;
@@ -150,4 +156,19 @@
     line-height: 1.5; /* เพิ่ม line-height เพื่อให้ดูไม่แน่นเกินไป */
 }
 
+.logo-wrapper {
+    width: 105px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* จัดให้อยู่ตรงกลางในแนวนอน */
+    margin-bottom: -47px;
+  }
+  
+  .logo-image {
+    width: 100%;
+    height: auto;
+  }
+  
   

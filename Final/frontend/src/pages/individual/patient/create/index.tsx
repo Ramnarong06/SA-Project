@@ -83,7 +83,7 @@ function PatientCreate() {
     <div>
       {contextHolder}
       <Card>
-        <h2> เพิ่มข้อมูลผู้ป่วย</h2>
+        <h2> เพิ่มข้อมูลคนไข้</h2>
         <Divider />
         <Form
           name="basic"
@@ -194,7 +194,7 @@ function PatientCreate() {
             
             <Col xs={24} sm={24} md={24} lg={24} xl={3}>
               <Form.Item
-                label="ส่วนสูง"
+                label="ส่วนสูง(cm)"
                 name="Height"
                 rules={[
                   {
@@ -208,7 +208,7 @@ function PatientCreate() {
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={3}>
               <Form.Item
-                label="น้ำหนัก"
+                label="น้ำหนัก(Kg)"
                 name="Weight"
                 rules={[
                   {

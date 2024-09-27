@@ -105,7 +105,7 @@ const items: MenuItem[] = [
         key: 'patient',
         label: (
           <Link to="002">
-            ผู้ป่วย
+            คนไข้
           </Link>
         ),
       },

@@ -96,7 +96,7 @@ function Patients() {
             icon={<EditOutlined />}
             size={"large"}
           />
-          <Button
+          {/* <Button
             onClick={() => {
               if (record) {
                 showModal(record);
@@ -111,7 +111,7 @@ function Patients() {
             icon={<DeleteOutlined />}
             size={"large"}
             danger
-          />
+          /> */}
         </>
       ),
        //
@@ -228,13 +228,13 @@ function Patients() {
       <Row>
         
         <Col span={12}>
-          <h2><AuditOutlined /> จัดการประวัติผู้ป่วย</h2>
+          <h2><AuditOutlined /> จัดการประวัติคนไข้</h2>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
             <Link to="/patient/create">
               <Button type="primary" icon={<PlusOutlined />}>
-                เพิ่มผู้ป่วย
+                เพิ่มคนไข้
               </Button>
             </Link>
           </Space>

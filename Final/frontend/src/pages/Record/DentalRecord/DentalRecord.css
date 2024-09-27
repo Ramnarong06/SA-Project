@@ -10,8 +10,10 @@
     margin-bottom: 20px;
   }
   
-  .header h1 {
-    font-size: 24px;
+  .header h2 {
+    margin-left: -580px;
+    margin-Top: 12px;
+    font-size: 32px;
     color: #333;
   }
   
@@ -128,5 +130,19 @@
     cursor: pointer;
     color: white;
     font-weight: bold;
+  }
+  .centered-logo-wrapper {
+    width: 98px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto; /* จัดให้อยู่ตรงกลางในแนวนอน */
+  margin-bottom: -10px;
+  }
+  
+  .centered-logo-image {
+    width: 100%;
+    height: auto;
   }
   

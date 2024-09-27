@@ -43,7 +43,7 @@ const ScheduleRecord: React.FC = () => {
   const currentRecords = filteredSchedules.slice(indexOfFirstRecord, indexOfLastRecord);
   //
 
-  // ดึงข้อมูลผู้ป่วยทั้งหมด
+  // ดึงข้อมูลคนไข้ทั้งหมด
   const getAllPatients = async () => {
     try {
       let patientRes = await GetPatients();
@@ -52,7 +52,7 @@ const ScheduleRecord: React.FC = () => {
         console.log('Patients retrieved:', patientRes);
       }
     } catch (error) {
-      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ป่วย");
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูลคนไข้");
     }
   };
 
@@ -203,7 +203,7 @@ const formatPhoneNumber = (phoneNumber: string | undefined) => {
           <div className="controls-group">
             <Select
               showSearch
-              placeholder="ค้นหาเบอร์โทรหรือชื่อผู้ป่วย"
+              placeholder="ค้นหาเบอร์โทรหรือชื่อคนไข้"
               style={{ width: 250, height: "35px", marginRight: "5px" }}
               onChange={handlePatientChange}
               allowClear
