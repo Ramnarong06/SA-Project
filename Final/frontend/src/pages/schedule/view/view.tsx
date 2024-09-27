@@ -22,7 +22,7 @@ const ScheduleView: React.FC = () => {
   const fetchAppointments = async (date: Date) => {
     const formattedDate = date.toISOString().split('T')[0];  // แปลงวันที่เป็น YYYY-MM-DD
     const data = await GetSchedulesByDate(formattedDate);     // เรียก API
-    console.log(date)
+    // console.log(date)
     if (data && data.length > 0) {
       setAppointments(data);  // อัปเดตข้อมูลนัดหมาย
     } else {
@@ -130,7 +130,7 @@ const ScheduleView: React.FC = () => {
                       onClick={() => {
                         UpdateScheduleStatus(item.ID);
 
-                        // แสดงข้อความหลังจากลบสำเร็จ
+                        
                         messageApi.open({
                           type: "success",
                           content: (
@@ -145,7 +145,7 @@ const ScheduleView: React.FC = () => {
                         // ตั้งเวลา 2 วินาทีก่อนที่จะรีโหลดหน้าใหม่
                         setTimeout(() => {
                           window.location.reload();
-                        }, 3000);
+                        }, 2000);
                       }}
                       style={{ marginLeft: 0 }}
                       shape="circle"

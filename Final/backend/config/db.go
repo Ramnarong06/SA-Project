@@ -115,7 +115,8 @@ func SetupDatabase() {
 
 
 	dob := getDOB(2011, 4, 2)
-
+	dob2 := getDOB(2000, 2, 1)
+	dob3 := getDOB(1999, 6, 6)
 	
 	Patient3:=entity.Patient{
 		FirstName :		"สมหญิง",
@@ -135,7 +136,7 @@ func SetupDatabase() {
 	Patient := &entity.Patient{
 		FirstName: 		"นรชาติ",
 		LastName:  		"ติวางวาย",
-		Birthday:   	dob,
+		Birthday:   	dob2,
 		Weight:   		66,
 		Height:  		166,
 		GenderID:		1,
@@ -152,7 +153,7 @@ func SetupDatabase() {
 	Patient2 := &entity.Patient{
 		FirstName: 		"ธนภูมิ",
 		LastName:  		"กินอิ่ม",
-		Birthday:   	dob,
+		Birthday:   	dob3,
 		Weight:   		66,
 		Height:  		176,
 		GenderID:		1,
@@ -308,26 +309,60 @@ func SetupDatabase() {
 		
 		EmployeeID :1,
 
+		TreatmentID :4,
+		
+		StatusID :2,
+
+		PaymentID: nil,
+		}
+	db.FirstOrCreate(&record,entity.DentalRecord{
+		Description :"ฟันพุเยอะมาก",
+	})
+
+
+	record2 := entity.DentalRecord{
+		Date :NowDate,
+		Description :"จัดฟันครั้งแรก",
+		Fees :400.00,
+		Installment: 40000.00,
+		NumberOfInstallment: "1/12",
+
+		PatientID :2,
+		
+		EmployeeID :1,
+
 		TreatmentID :1,
 		
 		StatusID :2,
 
 		PaymentID: nil,
 		}
-	db.FirstOrCreate(&record)
+	db.FirstOrCreate(&record2,entity.DentalRecord{
+		Description :"จัดฟันครั้งแรก",
+	})
 
-	var equipment entity.Equipments
+	record3 := entity.DentalRecord{
+		Date :NowDate,
+		Description :"ตรวจช่องปากหลายจุด",
+		Fees :1200.00,
+		Installment: 0,
+		NumberOfInstallment: "0/0",
 
-	// Define the values you want to check/create
-	newEquipment := entity.Equipments{
-   		EquipmentName: "เข็มฉีดยา",
-    	Unit:          "อัน",
-    	Cost:          100.50, // Direct assignment
-    	Quantity:      10,
-	}
-	db.FirstOrCreate(&equipment, newEquipment)
+		PatientID :3,
+		
+		EmployeeID :1,
 
-	//
+		TreatmentID :1,
+		
+		StatusID :2,
+
+		PaymentID: nil,
+		}
+	db.FirstOrCreate(&record3,entity.DentalRecord{
+		Description :"ตรวจช่องปากหลายจุด",
+	})
+
+
 		//อุปกรณ์
 		equipment1 := entity.Equipments{
 			EquipmentName: "Orthodontic Wires (ลวดจัดฟัน)",
@@ -368,7 +403,7 @@ func SetupDatabase() {
 		requisition2 := entity.Requisitions{
 			RequisitionQuantity: 6,
 			Time:                customTime2,
-			Note:                "",
+			Note:                "-",
 			EquipmentID:         1,
 			EmployeeID:          2,
 		}
@@ -399,4 +434,23 @@ func SetupDatabase() {
 		db.FirstOrCreate(&restock2, entity.Restocks{
 			ReceivingDate: customTime4,
 		})
+
+		record1 := entity.DentalRecord{
+			Date :NowDate,
+			Description :"ทำการถอนฟันซี่ที่ 18 (ฟันกรามล่างขวา) เนื่องจากฟันผุมากและไม่สามารถรักษาได้ แนะนำการดูแลหลังถอนฟันให้คนไข้ งดใช้ฟันฝั่งที่ถอน หลีกเลี่ยงอาหารร้อนหรือแข็ง",
+			Fees :1500.00,
+			Installment: 0,
+			NumberOfInstallment: "0/0",
+	
+			PatientID :2,
+			
+			EmployeeID :1,
+	
+			TreatmentID :4,
+			
+			StatusID :2,
+	
+			PaymentID: nil,
+			}
+		db.FirstOrCreate(&record1)
 }

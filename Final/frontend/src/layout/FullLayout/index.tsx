@@ -81,17 +81,12 @@ const App: React.FC = () => {
       key: "dashbord",
       label: (
         <Link to="/">
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center"}}>
             <HomeOutlined style={{ marginRight: "10px" }} />
-            หน้าหลัก
+            {!collapsed && "หน้าหลัก"} {/* แสดงข้อความเฉพาะเมื่อเมนูไม่ถูกย่อ */}
           </div>
         </Link>
       ),
-      // icon: <HomeOutlined />,
-      // children: [
-      //   { key: "Home", label: <Link to="/"><div>dashbord</div></Link> },
-        
-      // ],
     },
     register: {
       key: "register",
@@ -147,6 +142,7 @@ const App: React.FC = () => {
       ? [
           menuItems.dashbord,
           {...menuItems.register, children: menuItems.register.children.filter(item => item.key !== "employee")},
+
           { ...menuItems.finance, children: menuItems.finance.children.filter(item => item.key === "savePayment") }, // เห็นเฉพาะ savePayment
           menuItems.treatment, // treatment
           
