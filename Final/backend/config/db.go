@@ -54,6 +54,7 @@ func SetupDatabase() {
 	TreatmentRootCanalTherapy := entity.Treatment{TreatmentName: "รักษารากฟัน"}
 	TreatmentCrown := entity.Treatment{TreatmentName: "ครอบฟัน"}
 	TreatmentFluorideApplication := entity.Treatment{TreatmentName: "เคลือบฟลูออไรด์"}
+	TreatmentOrthodontics := entity.Treatment{TreatmentName: "จัดฟัน"}
 
 	db.FirstOrCreate(&TreatmentTeethExamination, &entity.Treatment{TreatmentName: "ตรวจฟัน"})
     db.FirstOrCreate(&TreatmentCleaning, &entity.Treatment{TreatmentName: "ขูดหินปูน"})
@@ -63,6 +64,7 @@ func SetupDatabase() {
 	db.FirstOrCreate(&TreatmentToothImpacdtionRemoval, &entity.Treatment{TreatmentName: "รักษารากฟัน"})
 	db.FirstOrCreate(&TreatmentCrown, &entity.Treatment{TreatmentName: "ครอบฟัน"})
 	db.FirstOrCreate(&TreatmentFluorideApplication, &entity.Treatment{TreatmentName: "เคลือบฟลูออไรด์"})
+	db.FirstOrCreate(&TreatmentOrthodontics, &entity.Treatment{TreatmentName: "จัดฟัน"})
 
 	// TStatus
 	TStatusPending := entity.Tstatus{TStatusName: "รอดำเนินการ"}
@@ -307,7 +309,7 @@ func SetupDatabase() {
 
 		PatientID :1,
 		
-		EmployeeID :1,
+		EmployeeID :3,
 
 		TreatmentID :4,
 		
@@ -329,9 +331,9 @@ func SetupDatabase() {
 
 		PatientID :2,
 		
-		EmployeeID :1,
+		EmployeeID :3,
 
-		TreatmentID :1,
+		TreatmentID :9,
 		
 		StatusID :2,
 
@@ -350,7 +352,7 @@ func SetupDatabase() {
 
 		PatientID :3,
 		
-		EmployeeID :1,
+		EmployeeID :3,
 
 		TreatmentID :1,
 		
