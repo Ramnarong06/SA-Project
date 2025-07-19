@@ -10,8 +10,8 @@ import new_logo from "../../../assets/stock/new_logo.png";
 import check from '../../../assets/schedule/check.gif'
 
 const ScheduleView: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());      // เก็บค่าวันที่เลือกใน box ปฎิทิน
-  const [appointments, setAppointments] = useState<any[]>([]);                    // เก็บข้อมูลการนัดหมายของวันที่เลือก
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [appointments, setAppointments] = useState<any[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
   //
   const [UpdateId, setUpdateId] = useState<Number>();
@@ -22,7 +22,7 @@ const ScheduleView: React.FC = () => {
   const fetchAppointments = async (date: Date) => {
     const formattedDate = date.toISOString().split('T')[0];  // แปลงวันที่เป็น YYYY-MM-DD
     const data = await GetSchedulesByDate(formattedDate);     // เรียก API
-    // console.log(date)
+    console.log(data)
     if (data && data.length > 0) {
       setAppointments(data);  // อัปเดตข้อมูลนัดหมาย
     } else {
@@ -42,24 +42,23 @@ const ScheduleView: React.FC = () => {
   };
 
 
-  // const Finish = async (values: SchedulesInterface) => {
-  //   let res = await UpdateSchedule(values); // ส่งค่า values ที่แก้ไขแล้ว
-  //   if (res) {
-  //     messageApi.open({
-  //       type: "success",
-  //       content: res.message,
-  //     });
-  //     setTimeout(function () {
-  //       navigate("/viewschedule/schedulecreate");
-  //     }, 2000);
-  //   } else {
-  //     messageApi.open({
-  //       type: "error",
-  //       content: res.message,
-  //     });
-  //   }
-  // };
-
+  const Finish = async (values: SchedulesInterface) => {
+    let res = await UpdateSchedule(values); // ส่งค่า values ที่แก้ไขแล้ว
+    if (res) {
+      messageApi.open({
+        type: "success",
+        content: res.message,
+      });
+      setTimeout(function () {
+        navigate("/viewschedule/schedulecreate");
+      }, 2000);
+    } else {
+      messageApi.open({
+        type: "error",
+        content: res.message,
+      });
+    }
+  };
 
   const formatTel = (tel: string) => {
     if (!tel || tel.length !== 10) {
@@ -68,6 +67,7 @@ const ScheduleView: React.FC = () => {
   
     return `${tel.substring(0, 3)}-${tel.substring(3, 6)}-${tel.substring(6)}`;
   };
+
 
   return (
     
@@ -130,7 +130,7 @@ const ScheduleView: React.FC = () => {
                       onClick={() => {
                         UpdateScheduleStatus(item.ID);
 
-                        
+                        // แสดงข้อความหลังจากลบสำเร็จ
                         messageApi.open({
                           type: "success",
                           content: (
@@ -145,7 +145,7 @@ const ScheduleView: React.FC = () => {
                         // ตั้งเวลา 2 วินาทีก่อนที่จะรีโหลดหน้าใหม่
                         setTimeout(() => {
                           window.location.reload();
-                        }, 2000);
+                        }, 3000);
                       }}
                       style={{ marginLeft: 0 }}
                       shape="circle"
@@ -159,7 +159,8 @@ const ScheduleView: React.FC = () => {
                 
                 <List.Item.Meta
                     title={<span style={{ color: "#22225E" }}>{item.TreatmentName}</span>}  // เปลี่ยนสีเฉพาะ title
-                    description={`${item.FirstName} ${item.LastName} เบอร์ ${formatTel(item.Tel)}`}  // แสดงทั้งชื่อจริงและนามสกุล
+                    // description={`${item.FirstName} ${item.LastName} Tel.${item.Tel}`}  // แสดงทั้งชื่อจริงและนามสกุล
+                    description={`${item.FirstName} ${item.LastName} เบอร์ ${formatTel(item.Tel)}`}
                 />
 
               

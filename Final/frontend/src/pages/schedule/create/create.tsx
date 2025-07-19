@@ -54,15 +54,8 @@ function ScheduleCreate() {
 
   const onFinish = async (values: SchedulesInterface) => {
     let res = await CreateSchedule(values);
-    if (res.status) {
-      messageApi.open({
-        type: "error",
-        content: res.message,
-      });
-      setTimeout(function () {
-        navigate("/viewschedule");
-      }, 2000);
-    } else {
+    //console.log('Response from CreateSchedule:', res.status);
+    if (res.message == "Created success") {
       messageApi.open({
         type: "success",
         content: (
@@ -76,6 +69,11 @@ function ScheduleCreate() {
       setTimeout(function () {
         navigate("/viewschedule");
       }, 2000);
+    } else {
+      messageApi.open({
+        type: "error",
+        content: res.message,
+      });
     }
   };
 
@@ -115,10 +113,10 @@ function ScheduleCreate() {
             style={{ width: "100%" }}
           >
             <Select
-              showSearch
+              showSearch      // เป็นการค้นหาผ่าน select
               placeholder="ค้นหาเบอร์โทรหรือชื่อคนไข้"
               optionFilterProp="label" // ฟิลเตอร์ด้วย label (ค้นหาด้วยชื่อนามสกุล)
-              options={patients} // ใช้ข้อมูล patients ที่ดึงมาจาก backend
+              options={patients}      // ใช้ข้อมูล patients ที่ดึงมาจาก backend ดลือกใช้แบบนี้เพราะกำหนดค่าที่แสดงง่ายกว่า เบอร์ ตามด้วยชื่อ
               style={{ width: "100%", height: "40px", lineHeight: "40px" }}
             />
           </Form.Item>
@@ -130,6 +128,7 @@ function ScheduleCreate() {
             style={{ width: "100%" }}
           >
             <Select
+              showSearch
               placeholder="เลือกการรักษา"
               allowClear
               style={{ width: "100%", height: "40px", lineHeight: "40px" }}

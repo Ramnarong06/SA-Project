@@ -156,7 +156,9 @@ function ScheduleCreate() {
               placeholder="ค้นหาเบอร์โทรหรือชื่อคนไข้"
               optionFilterProp="label" 
               // ฟิลเตอร์ dropdown ด้วย label (ค้นหาด้วยชื่อนามสกุล)
-              options={patients} 
+               options={patients} 
+              
+              
               // ใช้ข้อมูลคนไข้ที่ดึงมาจาก API
               style={{ width: "100%", height: "40px", lineHeight: "40px" }}
             />
@@ -172,7 +174,7 @@ function ScheduleCreate() {
               placeholder="เลือกการรักษา"
               allowClear
               style={{ width: "100%", height: "40px", lineHeight: "40px" }}
-            >
+            > 
               {treatments.map((item) => (
                 <Option value={item.ID} key={item.TreatmentName}>
                   {item.TreatmentName}
@@ -229,4 +231,4 @@ function ScheduleCreate() {
   );
 }
 
-export default ScheduleCreate;
+// export default ScheduleCreate;

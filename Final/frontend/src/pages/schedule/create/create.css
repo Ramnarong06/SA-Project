@@ -76,20 +76,20 @@ h2 {
 }
 
 .patient-status {
-  font-family: 'Noto Sans Thai';
-  margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
-  text-align: left; /* จัดลิงก์ให้ชิดซ้าย */
-  padding-left: -30px; /* ปรับระยะห่างจากขอบด้านซ้ายให้ติดขอบมากขึ้น */
-  margin-top: 10px; /* เพิ่มระยะห่างด้านบน */
+  
+  margin-bottom: 10px;            /* เพิ่มระยะห่างด้านล่าง */
+  text-align: left;               /* จัดลิงก์ให้ชิดซ้าย */
+  padding-left: -30px;            /* ปรับระยะห่างจากขอบด้านซ้ายให้ติดขอบมากขึ้น */
+  margin-top: 10px;               /* เพิ่มระยะห่างด้านบน */
   position: relative;
 }
 
 .patient-status a {
-  color: #1890ff; /* กำหนดสีของลิงก์ */
-  font-size: 14px; /* กำหนดขนาดของลิงก์ */
-  position: relative; /* กำหนดตำแหน่งเป็น relative เพื่อให้สามารถปรับตำแหน่งได้ */
-  top: 5px; /* เลื่อนลิงก์ลงด้านล่าง 5px */
-  left: 10px; /* เลื่อนลิงก์ไปทางซ้าย 20px */
+  color: #1890ff;     /* กำหนดสีของลิงก์ */
+  font-size: 14px;      /* กำหนดขนาดของลิงก์ */
+  position: relative;   /* กำหนดตำแหน่งเป็น relative เพื่อให้สามารถปรับตำแหน่งได้ */
+  top: 5px;             /* เลื่อนลิงก์ลงด้านล่าง 5px */
+  left: 10px;           /* เลื่อนลิงก์ไปทางซ้าย 20px */
 }
 .form-actions {
   display: flex; /* ใช้ Flexbox ในการจัดวางปุ่ม */

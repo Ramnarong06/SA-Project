@@ -152,13 +152,7 @@ function ScheduleEdit() {
           };
     let res = await UpdateSchedule(updatedValues);
 
-    if (res && res.status === true) {
-      messageApi.open({
-        type: "error", // แก้เป็น success
-        content: "อัปเดตข้อมูลสำเร็จ",
-      });
-      
-    } else {
+    if (res.message === "Updated successful") {
       messageApi.open({
         type: "success",
         content: (
@@ -168,6 +162,12 @@ function ScheduleEdit() {
           </div>
            ),
            icon: ' ',
+      });
+      
+    } else {
+      messageApi.open({
+        type: "error", 
+        content: res.message,
       });
     }
     
@@ -232,15 +232,10 @@ function ScheduleEdit() {
             name="Date"
             rules={[{ required: true, message: "กรุณาเลือกวันนัดหมาย!" }]}
             style={{ width: "100%" }}
-            
           >
             <DatePicker
               format="DD/MM/YYYY"
               style={{ width: "100%", height: "40px", lineHeight: "40px" }}
-              disabledDate={(current) => {
-                // ไม่สามารถเลือกวันที่ย้อนหลังได้
-                return current && current < dayjs().startOf("day");
-              }}
             />
           </Form.Item>
         </div>

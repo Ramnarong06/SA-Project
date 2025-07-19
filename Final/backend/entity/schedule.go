@@ -5,7 +5,7 @@ import (
 )
 type Schedule struct {
 	gorm.Model
-	Date        	time.Time `gorm:"type:DATE;not null;"`
+	Date        	time.Time `gorm:"type:DATE ;not null;"`
 	PatientID   	uint
 	Patient     	Patient `gorm:"foriegnKey:PatientID"`
 	TreatmentID 	uint

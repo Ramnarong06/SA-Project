@@ -49,7 +49,7 @@ const ScheduleRecord: React.FC = () => {
       let patientRes = await GetPatients();
       if (patientRes) {
         setPatients(patientRes);
-        console.log('Patients retrieved:', patientRes);
+        //console.log('Patients retrieved:', patientRes);
       }
     } catch (error) {
       messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ป่วย");
@@ -74,7 +74,7 @@ const ScheduleRecord: React.FC = () => {
     try {
       let scheduleRes = await GetAllSchedule();
       if (scheduleRes) {
-        console.log('Schedules retrieved:', scheduleRes); // ตรวจสอบข้อมูล Schedule ที่ดึงมา
+        //console.log('Schedules retrieved:', scheduleRes); // ตรวจสอบข้อมูล Schedule ที่ดึงมา
         setSchedules(scheduleRes);
         setFilteredSchedules(scheduleRes);
       }
@@ -98,7 +98,7 @@ const ScheduleRecord: React.FC = () => {
     try {
       let tstatusRes = await GetTstatus();
       if (tstatusRes) {
-        console.log('Tstatuses retrieved:', tstatusRes); // ตรวจสอบข้อมูล Tstatus ที่ดึงมา
+        //console.log('Tstatuses retrieved:', tstatusRes); // ตรวจสอบข้อมูล Tstatus ที่ดึงมา
         setStatuses(tstatusRes);
       }
     } catch (error) {
@@ -187,8 +187,8 @@ const ScheduleRecord: React.FC = () => {
   // ฟังก์ชันสำหรับการจัดรูปแบบเบอร์โทร
 const formatPhoneNumber = (phoneNumber: string | undefined) => {
     if (!phoneNumber) return '';
-    const cleaned = ('' + phoneNumber).replace(/\D/g, ''); // ลบเครื่องหมายที่ไม่ใช่ตัวเลข
-    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    //const cleaned = ('' + phoneNumber).replace(/\D/g, ''); // ลบเครื่องหมายที่ไม่ใช่ตัวเลข
+    const match = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
     if (match) {
       return `${match[1]}-${match[2]}-${match[3]}`;
     }
