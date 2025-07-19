@@ -36,5 +36,7 @@ npm instal axios --save
 npm instal dayjs --save
 ```
 - Run
+``` 
 go run main.go
 npm run dev
+```
